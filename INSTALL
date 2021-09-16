@@ -1,0 +1,59 @@
+PHPChain
+----
+
+-- Setup instructions.
+
+You will need:
+
+1. Apache with mod_ssl support.
+        See http://www.modssl.org
+
+2. PHP with mcrypt and MySQL support.
+        See http://www.php.net/manual/en/ref.mcrypt.php
+
+3. MySQL. 
+        See http://www.mysql.com
+
+
+Configuring the above is beyond the scope of this documentation. Each of the
+referenced sites should give you enough information to get going.
+
+Step 1:
+
+Create a database in MySQL and install the db.sql file into it:
+
+mysql -u<user> -p <database name> < db.sql
+
+Step 2:
+
+Edit the file inc/db.php and configure the username, password and database
+name. Optionally, if your MySQL server is not localhost, modify the host here
+as well.
+
+Step 3:
+
+Move all the files to location of your SSL configured website. Go to the site
+in your browser and verify that everything works. Create a user. Login. Create
+some categories. Try making an entry in the database. Make sure you are able
+to retrieve it. (NOTE! Passwords are hidden from the screen by default, to
+prevent people reading over your shoulder. To display the password for an 
+entry, move the mouse over the password field for that entry.)
+
+
+-- Questions?
+
+Email james@globalmegacorp.org if you have any questions.
+
+
+-- Known problems.
+
+There's no way to prevent anyone from creating a new login. The site you setup
+is effectively public. To work around this, either use .htaccess files to 
+restrict access to the site, or remove the newlogin.php file once you've
+created logins.
+
+If more than 24 entries exist in a category, the HTML of the page messes up.
+Various options exist to prevent this, such as 'tab'ifying the data, or simply
+changing the page style to allow unlimited vertical growth. It's not yet been
+a big enough of a problem for me that I've addressed it. If someone would like
+to resolve this, feel free to submit a patch.

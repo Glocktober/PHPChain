@@ -1,0 +1,211 @@
+td.menubar {
+	background-color: burlywood;
+	border-top: 3px solid gray;
+	border-bottom: 3px solid grey;
+	width: 100%;
+}
+
+td.nossl {
+	text-align: center;
+	font-family: Arial, Verdana;
+	font-size: 18px;
+	color: #FFFFFF;
+	background-color: #FF0000;
+	padding-top: 5px;
+	padding-bottom: 5px;
+	padding-left: 15px;
+	padding-right: 15px;
+	border-bottom: 1px solid Black;
+	width: 100%;
+}
+tr:hover {
+	background-color: gray;
+	color: white;
+}
+span.menuleft {
+	float: left;
+	width: 40%;
+	font-family: Source Sans Pro, Arial, Verdana;
+	font-size: 15px;
+	text-align: left;
+	padding-top: 5px;
+	padding-bottom: 5px;
+	padding-left: 15px;
+	padding-right: 15px;
+}
+
+span.menuright {
+	float: right;
+	width: 40%;
+	font-family: Arial, Verdana;
+	font-family: Source Sans Pro, Arial, Verdana;
+	font-size: 15px;
+	text-align: right;
+	padding-top: 5px;
+	padding-bottom: 5px;
+	padding-left: 15px;
+	padding-right: 15px;
+}
+
+td.titlebar {
+	font-family: Source Sans Pro, Arial, Verdana;
+	color: #f1f1f1;
+	font-size: 25px;
+	text-align: left;
+	padding-top: 5px;
+	padding-left: 15px;
+	padding-bottom: 4px;
+}
+td.titlebar a{
+	color: white;
+	text-decoration: none;
+}
+td.main {
+	background-color: #f1f1f1;
+	padding-top: 15px;
+	padding-left: 15px;
+	padding-right: 15px;
+	text-align: left;
+	vertical-align: top;
+	border-bottom: 1px solid Black;
+}
+td.header {
+	background-color: grey;
+	text-align: left;
+	font-family: Source Sans Pro, Arial, Verdana;
+	font-size: 16px;
+	color: #ffffff;
+}
+td.rowSite {
+	background-color: biege;
+	text-align: left;
+	font-size: 16px;
+}
+td.rowLogin {
+	background-color: biege;
+	text-align: left;
+	font-family: Source Sans Pro,Arial, Verdana;
+	font-size: 14px;
+}
+td.row {
+	background-color: biege;
+color:green;
+	text-align: left;
+	font-family: Source Sans Pro,Arial, Verdana;
+	font-size: 14px;
+}
+td.password {
+	background-color: #f1f1f1;
+	text-align: left;
+	font-family: Source Sans Pro, Arial, Verdana;
+	font-size: 15px;
+	color: #f1f1f1;
+}
+.password:hover {
+	background-color: #484848;
+	color: white;
+
+}
+td.cats {
+	background-color: lightgray;
+	border-right: 5px solid grey;
+}
+td.catsbot {
+	background-color: lightgray;
+	padding-bottom: 400px;
+	padding-left: 15px;
+	padding-top: 15px;
+	border-right: 5px solid grey;
+	border-bottom: 5px solid grey;
+}
+td.cat {
+	padding-left: 15px;
+	background-color: lightgray;
+	text-align: left;
+	vertical-align: top;
+	border-right: 5px solid grey;
+	padding-top: 2px;
+	padding-bottom: 2px;
+}
+td.ccat {
+	background-color: grey;
+	color: #f1f1f1;
+	font-weight: bolder;
+	padding-left: 15px;
+	padding-bottom: 2px;
+	text-align: left;
+	vertical-align: top;
+	border-top: 2px solid darkgrey;
+	border-bottom: 2px solid darkgrey;
+}
+body.main {
+	background-color: grey;
+	margin: 0px 15px 15px 15px;
+	padding: 0px 0px 0px 0px;
+}
+a.menubar {
+	text-decoration: none;
+	color: Black;
+	margin-right: 15px;
+	padding-left: 4px;
+	padding-right: 4px;
+}
+a.menubar:hover {
+	background-color: lightgrey;
+	color: Black;
+	margin-right: 15px;
+	padding-left: 4px;
+	padding-right: 4px;
+}
+td .cat:hover {
+	color: white;
+	background-color: gray;
+}
+a.cat {
+	text-decoration: none;
+	color: Black;
+	font-family: Arial, Verdana;
+	font-size: 13px;	
+}
+p.intro {
+	font-family: Source Sans Pro, Arial, Verdana;
+	font-size: 16px;
+	text-indent: 6px;
+	color: black;
+}
+.plain {
+	font-family: Arial, Verdana;
+	font-size: 13px;
+	color: black;
+}
+.error {
+	font-family: Arial, Verdana;
+	font-size: 13px;
+	color: #FF0000;
+}
+input.login {
+	border: 1px solid Black;
+	font-size: 10px;
+	font-family: Arial, Verdana;
+	background-color: #dad8d8;
+	padding-left: 2px;
+	margin-top: 0px;
+	margin-bottom: 0px;
+}
+input.submit {
+	border: 1px solid Black;
+	font-size: 10px;
+	font-family: Arial, Verdana;
+	margin-top: 0px;
+	margin-bottom: 0px;
+}
+form {
+	margin: 0px;
+}
+.blind{
+	background-color: grey;
+	color: grey;
+	font-size: 0.01em;
+	border-width: 0px;
+	border-color: grey;
+}
