@@ -38,16 +38,17 @@ if (isset($login)&&isset($key)) {
 	if ($row[0]<3) {
 		$result=mysqli_query($db,"select id, teststring, iv from user where name = \"$login\"");
 		if (mysqli_num_rows($result)==1) {
-			$row=mysqli_fetch_row($result);
+			$row=mysqli_fetch_assoc($result);
 			$key=md5($key);
-			if (testteststring(trim(decrypt($key,base64_decode($row[1]),base64_decode($row[2]))))) {
+			if (testteststring(trim(decrypt($key,base64_decode($row["teststring"]),base64_decode($row["iv"]))))) {
 				// Login log
 				mysqli_query($db,"insert loginlog values (\"$login\", \"$ip\", now(),1)");
-				$id=$row[0];
+				$id=$row["id"];
 				$_SESSION['login'] = $login;
 				$_SESSION['id'] = $id;
 				$_SESSION['key'] = $key;
 				$_SESSION['isauth'] = TRUE;
+				session_regenerate_id(TRUE);
 
 				header ("Location: index.php");
 				die();

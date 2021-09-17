@@ -23,7 +23,7 @@ $output="";
 
 if (isset($action)) {
 	
-	check_csrf();
+			check_csrf();
 		
 	switch ($action) {
 		case "save":
