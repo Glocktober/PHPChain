@@ -23,6 +23,8 @@ $action=gorp("action");
 if (empty($action)) $action="view";
 $output="";
 
+if ($action != "view") check_csrf();
+
 switch($action) {
 	case "delete":
 		$catid=gorp("catid");
@@ -37,7 +39,7 @@ switch($action) {
 		$result=mysqli_query($db,"select id, iv, login, password, site, url from logins where userid = \"$userid\" and catid = \"$catid\"");
 
 		if (mysqli_num_rows($result)==0) {
-			$output.="<SPAN CLASS=\"plain\">No data found</SPAN>";
+			$output.="<SPAN CLASS=\"plain\">Select a category</SPAN>";
 		} else {
 			
 			$output.="<TABLE BORDER=\"0\" CELLPADDING=\"2\" CELLSPACING=\"1\">\n";
@@ -66,7 +68,9 @@ switch($action) {
 				$output.="<TD CLASS=\"row\">".$val["login"]."</TD>\n";
 				//$output.="<TD OnMouseOver=\"this.style.color='#000000'\" OnMouseOut=\"this.style.color='#fdfed0'\" CLASS=\"password\">".$val["password"]."</TD>\n";
 				$output.="<TD  CLASS=\"password\">".$val["password"]."</TD>\n";
-				$output.="<TD CLASS=\"row\"><A HREF=\"".$_SERVER["PHP_SELF"]."?action=edit&itemid=".$val["id"]."\">Edit</A> | <A HREF=\"".$_SERVER["PHP_SELF"]."?action=delete&itemid=".$val["id"]."&catid=".$catid."\">Delete</A></TD>\n";
+				$output.="<TD CLASS=\"row\">";
+				$output.="<A HREF=\"".$_SERVER["PHP_SELF"]."?action=edit&itemid=".$val["id"]."&csrftok=".get_csrf()."\">Edit</A> | ";
+				$output.="<A HREF=\"".$_SERVER["PHP_SELF"]."?action=delete&itemid=".$val["id"]."&catid=".$catid."&csrftok=".get_csrf()."\">Delete</A></TD>\n";
 				$output.="</TR>";
 			}
 			$output.="</TABLE>\n";
@@ -93,8 +97,6 @@ switch($action) {
 				$url="";
 			}
 		} else {
-
-			check_csrf();
 			
 			$catid=gorp("catid");
 			$login="";
@@ -132,8 +134,6 @@ switch($action) {
 		$password=gorp("password");
 		$site=gorp("site");
 		$url=gorp("url");
-
-		check_csrf();
 
 		if (strpos($url,"http://")===FALSE && strpos($url,"https://")===FALSE) $url="http://".$url;
 

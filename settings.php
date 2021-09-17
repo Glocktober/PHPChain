@@ -22,11 +22,11 @@ $output="";
 
 
 if (isset($action)) {
-
+	
+	check_csrf();
+		
 	switch ($action) {
 		case "save":
-
-			check_csrf();
 
 			$catid=gorp("catid");
 			$title=gorp("title");
@@ -94,9 +94,12 @@ if (isset($action)) {
 	$output.="<TD CLASS=\"header\" WIDTH=\"150\">Action</TD>\n";
 	$output.="</TR>\n";
 
-	while ($row=mysqli_fetch_row($result)) {
-		$output.="<TR><TD CLASS=\"row\">".$row[1]."</TD>\n";
-		$output.="<TD CLASS=\"row\"><A HREF=\"".$_SERVER["PHP_SELF"]."?action=edit&catid=".$row[0]."\">Edit</A> | <A HREF=\"".$_SERVER["PHP_SELF"]."?action=delete&catid=".$row[0]."\">Delete</A></TD></TR>\n";
+	while ($row=mysqli_fetch_assoc($result)) {
+		$output.="<TR><TD CLASS=\"row\">".$row["title"]."</TD>\n";
+		$output.="<TD CLASS=\"row\">";
+			$output.="<A HREF=\"".$_SERVER["PHP_SELF"]."?action=edit&catid=".$row["id"]."&csrftok=".get_csrf()."\">Edit</A> | ";
+		   	$output.="<A HREF=\"".$_SERVER["PHP_SELF"]."?action=delete&catid=".$row["id"]."&csrftok=".get_csrf()."\">Delete</A>";
+		$output.="</TD></TR>\n";
 	}
 
 	$output.="</TABLE>\n<P>\n";
