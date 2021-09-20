@@ -35,13 +35,15 @@ $document_title = $site_name;
 $left="";
 $right="";
 
-function build_button($lab,$loc){
-	return "<button class=\"butbut\"><a href=\"$loc\" class=\"buttext\"> $lab </a></button>";
+function build_button($lab,$loc, $tip=''){
+	return "<button class=\"butbut\" title=$tip><a href=\"$loc\" class=\"buttext\"> $lab </a></button>";
 }
 
 if ($auth) {
-	$left = build_button('Categories', 'settings.php')."  ". build_button('Password','password.php');
-	$right.="Current User: <span class=info>".$_SESSION["login"] . "</span>&nbsp;&nbsp;&nbsp;&nbsp;". build_button('Logout ', 'logout.php');
+	$left = build_button('Categories', 'settings.php','"add/remove/edit categories"')."  ". 
+			build_button('Password','password.php','"Change the login password, (re-incrypting all passwords)"');
+	$right.="Current User: <span class=info>".$_SESSION["login"] . "</span>&nbsp;&nbsp;&nbsp;&nbsp;". 
+			build_button('Logout ', 'logout.php', "Log-off");
 
 } else {
 	$right = xyzzy('Login', 'login.php');
