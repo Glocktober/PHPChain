@@ -46,9 +46,9 @@ if ($auth) {
 			build_button('Logout ', 'logout.php', "Log-off");
 
 } else {
-	$right = xyzzy('Login', 'login.php');
+	$right = build_button('Login', 'login.php','"Logon an existing account"');
 	if ($allow_new_accounts)
-		$left = xyzzy('New Login', 'newlogin.php');
+		$left = build_button('New Login', 'newlogin.php','"Create a new account"');
 	else $left = "&nbsp;";
 }
 
