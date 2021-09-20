@@ -1,6 +1,5 @@
 <?php
-include ("inc/sessions.php");
-include ("inc/db.php");
+include ("inc/config.php");
 include ("inc/form.php");
 include ("inc/crypt.php");
 
@@ -17,29 +16,48 @@ if (!$auth) {
 
 $userid = $_SESSION['id'];
 $key = $_SESSION['key'];
+$authed_login = $_SESSION['login'];
 
 $action=gorp("action");
+error_log("action $action <");
 
 if (empty($action)) $action="view";
 $output="";
 
 if ($action != "view") check_csrf();
-
 switch($action) {
 	case "delete":
-		$catid=gorp("catid");
-		$itemid=gorp("itemid");
+		$catid=sanigorp("catid");
+		$itemid=sanigorp("itemid");
 
-		mysqli_query($db,"delete from logins where id = \"$itemid\" and userid = \"$userid\"");
-		header("Location: cat.php?catid=".$catid);
+		sql_query($db,"delete from logins where id = \"$itemid\" and userid = \"$userid\"");
+
+		set_status("Successfully deleted password entry");
+		header("Location: cat.php?action=view&catid=".$catid);
+		die();
 	break;
 	case "view":
-		$catid=gorp("catid");
+		$catid=sanigorp("catid");
 
-		$result=mysqli_query($db,"select id, iv, login, password, site, url from logins where userid = \"$userid\" and catid = \"$catid\"");
+		$result=sql_query($db,"select id, iv, login, password, site, url from logins where userid = \"$userid\" and catid = \"$catid\"");
 
-		if (mysqli_num_rows($result)==0) {
-			$output.="<SPAN CLASS=\"plain\">Select a category</SPAN>";
+		if (sql_num_rows($result)==0) {
+			# category has no entries, at least for this user
+			$result=sql_query($db,"select id, title from cat where userid = \"$userid\" order by title");
+			
+			# lets see if they have ANY catagories:
+			if (sql_num_rows($result)==0){
+				# User has no categories - new user
+				set_error("No categories exist for \"<b>$authed_login</b>\" - Create a category first");
+				header("Location: settings.php?action=edit&csrftok=".get_csrf());
+				die();
+			}
+
+			# So - there are catagories but no entries with this id
+			$error = "No password entries in the selected category. Create a password entry:";
+			set_error($error);
+			header("Location: cat.php?action=edit&catid=$catid&csrftok=".get_csrf());
+			die();
 		} else {
 			
 			$output.="<TABLE BORDER=\"0\" CELLPADDING=\"2\" CELLSPACING=\"1\">\n";
@@ -50,7 +68,7 @@ switch($action) {
 			$output.="<TD CLASS=\"header\" WIDTH=\"80\">Action</TD>\n";
 			$output.="</TR>\n";
 
-			while ($row=mysqli_fetch_assoc($result)) {
+			while ($row=sql_fetch_assoc($result)) {
 				$login=trim(decrypt($key,base64_decode($row["login"]),base64_decode($row["iv"])));
 				$password=trim(decrypt($key,base64_decode($row["password"]),base64_decode($row["iv"])));
 				$site=trim(decrypt($key,base64_decode($row["site"]),base64_decode($row["iv"])));
@@ -74,16 +92,19 @@ switch($action) {
 				$output.="</TR>";
 			}
 			$output.="</TABLE>\n";
+
 		}
 	break;
 	case "edit":
-		$itemid=gorp("itemid");
+		$itemid=sanigorp("itemid");
+		error_log('asdfdsf');
 		
 		if ($itemid!=0) {
+			set_status("Editing password entry");
 			//Get existing data and decrypt it first.
-			$result=mysqli_query($db,"select id, iv, catid, login, password, site, url from logins where id = \"$itemid\" and userid=\"$userid\"");
-			if (mysqli_num_rows($result)==1) {
-				$row=mysqli_fetch_assoc($result);
+			$result=sql_query($db,"select id, iv, catid, login, password, site, url from logins where id = \"$itemid\" and userid=\"$userid\"");
+			if (sql_num_rows($result)==1) {
+				$row=sql_fetch_assoc($result);
 				$catid=$row["catid"];
 				$login=trim(decrypt($key,base64_decode($row["login"]),base64_decode($row["iv"])));
 				$password=trim(decrypt($key,base64_decode($row["password"]),base64_decode($row["iv"])));
@@ -95,10 +116,11 @@ switch($action) {
 				$password="";
 				$site="";
 				$url="";
+				set_error("Error: Not authorized");
 			}
 		} else {
-			
-			$catid=gorp("catid");
+			set_status("Creating new password entry");
+			$catid=sanigorp("catid");
 			$login="";
 			$password="";
 			$site="";
@@ -106,9 +128,11 @@ switch($action) {
 		}
 
 		// Get categories.
-		$result=mysqli_query($db,"select id, title from cat where userid = \"$userid\" order by title");
-		if (mysqli_num_rows($result)==0) {
-			$output.="You must create some categories first";
+		$result=sql_query($db,"select id, title from cat where userid = \"$userid\" order by title");
+		if (sql_num_rows($result)==0) {
+			set_error("No categories exist for \"<b>$authed_login</b>\" - Create a category first");
+			header("Location: settings.php?action=edit&csrftok=".get_csrf());
+			die();
 		} else {
 			$cats=restoarray($result);
 
@@ -128,12 +152,13 @@ switch($action) {
 	break;
 
 	case "save":
-		$itemid=gorp("itemid");
-		$catid=gorp("catid");
-		$login=gorp("login");
-		$password=gorp("password");
-		$site=gorp("site");
-		$url=gorp("url");
+		$itemid=sanigorp("itemid");
+		$catid=sanigorp("catid");
+		$login=sanigorp("login");
+		$password=sanigorp("password");
+		$site=sanigorp("site");
+		$origsite=$site;
+		$url=sanigorp("url");
 
 		if (strpos($url,"http://")===FALSE && strpos($url,"https://")===FALSE) $url="http://".$url;
 
@@ -146,11 +171,13 @@ switch($action) {
 		$iv=base64_encode($iv);
 
 		if ($itemid==0) {
-			$query="insert logins values (NULL, \"$iv\", \"$userid\", \"$catid\", \"$login\", \"$password\", \"$site\", \"$url\")";
+			$query="insert into logins values (NULL, \"$iv\", \"$userid\", \"$catid\", \"$login\", \"$password\", \"$site\", \"$url\")";
 		} else {
 			$query="update logins set iv = \"$iv\", catid=\"$catid\", login=\"$login\", password=\"$password\", site = \"$site\", url = \"$url\" where id = \"$itemid\" and userid=\"$userid\"";
 		}
-		mysqli_query($db,$query);
+		sql_query($db,$query);
+
+		set_status("Entry \"<b>$origsite</b>\" has been updated");
 		header("Location: cat.php?catid=".$catid);
 		die();
 	break;

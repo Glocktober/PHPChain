@@ -1,8 +1,6 @@
 <?php
-include ("inc/sessions.php");
-include ("inc/db.php");
+include ("inc/config.php");
 include ("inc/form.php");
-include ("inc/crypt.php");
 
 $page="settings";
 
@@ -20,51 +18,53 @@ $userid = $_SESSION['id'];
 
 $output="";
 
-
 if (isset($action)) {
-	
-			check_csrf();
 		
 	switch ($action) {
 		case "save":
+			check_csrf();
 
-			$catid=gorp("catid");
-			$title=gorp("title");
+			$catid=get_post("catid");
+			$title=get_post("title");
 			if ($catid==0) {
-				$query="insert cat values (NULL, \"$userid\", \"$title\")";
+				$query="insert into cat values (NULL, \"$userid\", \"$title\")";
 			} else {
 				$query="update cat set title=\"$title\" where userid=\"$userid\" and id=\"$catid\"";
 			}
-			mysqli_query($db,$query);
+			sql_query($db,$query);
+			set_status("Changes to \"<b>$title</b>\" saved");
 			header("Location: ".$_SERVER["PHP_SELF"]);
 			die();
 		break;
 
 		case "delete":
-			// Check to see if this cat is used.
-			$catid=gorp("catid");
-			$result=mysqli_query($db,"select count(id) from logins where userid=\"$userid\" and catid=\"$catid\"");
-			$row=mysqli_fetch_row($result);
+			check_csrf();
+
+			# Check to see if this cat is used.
+			$catid=sanigorp("catid");
+			$result=sql_query($db,"select count(id) from logins where userid=\"$userid\" and catid=\"$catid\"");
+			$row=sql_fetch_row($result);
 			if ($row[0]>0) {
-				header("Location: ".$_SERVER["PHP_SELF"]."?error=1");
+				set_error('Unable to delete. Remove login entries from category first');
 			} else {
-				mysqli_query($db,"delete from cat where id = \"$catid\" and userid=\"$userid\"");
-				header("Location: ".$_SERVER["PHP_SELF"]);
-				die();
+				sql_query($db,"delete from cat where id = \"$catid\" and userid=\"$userid\"");
+				set_status('Category Successfully Removed');
 			}
+			header("Location: ".$_SERVER["PHP_SELF"]);
+			die();
 		break;
 
 		case "edit":
 
-			$catid=gorp("catid");
+			$catid=sanigorp("catid");
 			if ($catid==0) {
 
 				check_csrf();
 				
 				$title="";
 			} else {
-				$result=mysqli_query($db,"select title from cat where id = \"$catid\" and userid = \"$userid\"");
-				$row=mysqli_fetch_assoc($result);
+				$result=sql_query($db,"select title from cat where id = \"$catid\" and userid = \"$userid\"");
+				$row=sql_fetch_assoc($result);
 				$title=$row["title"];
 			}
 
@@ -77,16 +77,14 @@ if (isset($action)) {
 			$output.=input_text("title",30,255,$title);
 			$output.=submit("Save");
 			$output.=form_end();
+
+			if ($title) $msg = "Editing catagory \"$title\"";
+			else $msg = "Creating new category";
+			set_status($msg);
 		break;
 	}
 } else {
-	$result=mysqli_query($db,"select id, title from cat where userid = \"$userid\"");
-	$error=gorp("error");
-
-	if (isset($error)) {
-		$error="<SPAN CLASS=\"error\">Unable to delete. Remove entries from category first</SPAN>";
-		$output.=$error."<P>\n";
-	}
+	$result=sql_query($db,"select id, title from cat where userid = \"$userid\"");
 
 	$output.="<TABLE BORDER=\"0\" CELLPADDING=\"2\" CELLSPACING=\"1\">\n";
 	$output.="<TR>\n";
@@ -94,8 +92,8 @@ if (isset($action)) {
 	$output.="<TD CLASS=\"header\" WIDTH=\"150\">Action</TD>\n";
 	$output.="</TR>\n";
 
-	while ($row=mysqli_fetch_assoc($result)) {
-		$output.="<TR><TD CLASS=\"row\">".$row["title"]."</TD>\n";
+	while ($row=sql_fetch_assoc($result)) {
+		$output.="<TR><TD CLASS=\"row\"><a href=cat.php?catid=".$row["id"].">".$row["title"]."</a></TD>\n";
 		$output.="<TD CLASS=\"row\">";
 			$output.="<A HREF=\"".$_SERVER["PHP_SELF"]."?action=edit&catid=".$row["id"]."&csrftok=".get_csrf()."\">Edit</A> | ";
 		   	$output.="<A HREF=\"".$_SERVER["PHP_SELF"]."?action=delete&catid=".$row["id"]."&csrftok=".get_csrf()."\">Delete</A>";

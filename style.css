@@ -4,20 +4,40 @@ td.menubar {
 	border-bottom: 3px solid grey;
 	width: 100%;
 }
-
-td.nossl {
+.messagebar{
+	font-size: 1.1em;
+	color: navy;
+	background-color:azure;
+	border-top: 1px solid gray;
+	border-bottom: 1.5px solid grey;
+	width: 100%;
 	text-align: center;
-	font-family: Arial, Verdana;
-	font-size: 18px;
-	color: #FFFFFF;
-	background-color: #FF0000;
-	padding-top: 5px;
-	padding-bottom: 5px;
-	padding-left: 15px;
-	padding-right: 15px;
-	border-bottom: 1px solid Black;
+}
+.errorbar{
+	font-size: 1.1em;
+	color:red;
+	background-color:azure;
+	border-top: 1px solid gray;
+	border-bottom: 1.5px solid grey;
+	width: 100%;
+	text-align: center;
+}
+.statusbar{
+	font-size: 1.1em;
+	color:green;
+	background-color:azure;
+	border-top: 1px solid gray;
+	border-bottom: 1.5px solid grey;
+	width: 100%;
+	text-align: center;
+}
+tr.menubar {
+	background-color: burlywood;
+	border-top: 3px solid gray;
+	border-bottom: 3px solid grey;
 	width: 100%;
 }
+
 tr:hover {
 	background-color: gray;
 	color: white;
@@ -39,18 +59,26 @@ span.menuright {
 	width: 40%;
 	font-family: Arial, Verdana;
 	font-family: Source Sans Pro, Arial, Verdana;
-	font-size: 15px;
+	font-size: 1.1em;
 	text-align: right;
 	padding-top: 5px;
 	padding-bottom: 5px;
 	padding-left: 15px;
 	padding-right: 15px;
 }
-
+.butbut{
+	margin-left:20px;
+	margin-right:20px;
+	width: 30%;
+}
+.buttext{
+	text-decoration: none;
+	font-size: 1.3em;
+}
 td.titlebar {
 	font-family: Source Sans Pro, Arial, Verdana;
 	color: #f1f1f1;
-	font-size: 25px;
+	/* font-size: 25px; */
 	text-align: left;
 	padding-top: 5px;
 	padding-left: 15px;
@@ -175,12 +203,22 @@ p.intro {
 }
 .plain {
 	font-family: Arial, Verdana;
-	font-size: 13px;
+	/* font-size: 13px; */
 	color: black;
+}
+.success {
+	font-family: Arial, Verdana;
+	/* font-size: 13px; */
+	color: green;
+}
+.info {
+	font-family: Arial, Verdana;
+	/* font-size: 13px; */
+	color:navy;
 }
 .error {
 	font-family: Arial, Verdana;
-	font-size: 13px;
+	/* font-size: 13px; */
 	color: #FF0000;
 }
 input.login {

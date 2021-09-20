@@ -1,16 +1,12 @@
 <?php
-include ("inc/sessions.php");
-include ("inc/db.php");
+include ("inc/config.php");
 include ("inc/form.php");
 include ("inc/crypt.php");
 
-$login=$_POST["login"];
-$key=$_POST["key"];
+$login = get_post("login");
+$key = get_post("key");
 
-if (empty($login)) {
-	$login=$_SESSION['login'];
-	if (empty($login)) unset ($login);
-}
+if (empty($login) AND array_key_exists('login',$_SESSION)) $login = $_SESSION['login'];
 
 if (empty($key)) unset ($key);
 
@@ -19,11 +15,13 @@ if (!array_key_exists("HTTP_X_FORWARDED_FOR", $_SERVER)) {
 } else {
 	$ip=$_SERVER["HTTP_X_FORWARDED_FOR"];
 }
-
-if (empty($ip)) $ip="0.0.0.0";
+// ip validation
+if (filter_var($ip,FILTER_VALIDATE_IP)===false) $ip="0.0.0.0";
 
 $output="";
 $error="";
+
+$now = time();
 
 if (isset($login)&&isset($key)) {
 
@@ -31,18 +29,19 @@ if (isset($login)&&isset($key)) {
 	// Do DB login, redirect to welcome page.
 	$db = sql_conn();
 
-	// Check for failed login attempts in the last 10 minutes.
-	$result=mysqli_query($db,
-		"select count(name) from loginlog where date > date_sub(now(), INTERVAL 10 minute) and ip = \"$ip\" and outcome = 0");
-	$row=mysqli_fetch_row($result);
-	if ($row[0]<3) {
-		$result=mysqli_query($db,"select id, teststring, iv from user where name = \"$login\"");
-		if (mysqli_num_rows($result)==1) {
-			$row=mysqli_fetch_assoc($result);
+	// Check for $login_lockout_failures failed login attempts in the last $login_lockout_window minutes.
+	$result=sql_query($db,
+		"select count(name) from loginlog where date > " . ($now-($login_lockout_window*60)) ." and ip = \"$ip\" and outcome = 0");
+	
+	$row=sql_fetch_row($result);
+	if ($row[0]< $login_lockout_failures) {
+		$result=sql_query($db,"select id, teststring, iv from user where name = \"$login\"");
+		if (sql_num_rows($result)==1) {
+			$row=sql_fetch_assoc($result);
 			$key=md5($key);
 			if (testteststring(trim(decrypt($key,base64_decode($row["teststring"]),base64_decode($row["iv"]))))) {
 				// Login log
-				mysqli_query($db,"insert loginlog values (\"$login\", \"$ip\", now(),1)");
+				sql_query($db,"insert into loginlog values (\"$login\", \"$ip\", \"$now\",1)");
 				$id=$row["id"];
 				$_SESSION['login'] = $login;
 				$_SESSION['id'] = $id;
@@ -50,22 +49,24 @@ if (isset($login)&&isset($key)) {
 				$_SESSION['isauth'] = TRUE;
 				session_regenerate_id(TRUE);
 
+				set_status("\"<b>$login</b>\" - has successfully logged on");
 				header ("Location: index.php");
 				die();
 			} else {
-				$error="<SPAN CLASS=\"error\">Incorrect password</SPAN>\n";
+				$error="Error: Incorrect credentials";
 			}
 		} else {
-			$error="<SPAN CLASS=\"error\">Login does not exist</SPAN>\n";
+			$error="Error: Incorrect credentials";
 		}
 	} else {
-		$error="<SPAN CLASS=\"error\">Too many failed login attempts. Wait 10 minutes.</SPAN>\n";
+		$error="Error: Too many failed login attempts. Disabled for $login_lockout_window minutes.";
 	}
 }
 
 if (!empty($error)) {
-	// Make entry to login log table
-	mysqli_query($db, "insert loginlog values (\"$login\", \"$ip\", now(),0)");
+	# Failed login attempt
+	sql_query($db, "insert into loginlog values (\"$login\", \"$ip\", \"$now\",0)");
+	set_error($error);
 }
 
 $output.=form_begin($_SERVER["PHP_SELF"],"POST");
@@ -79,7 +80,9 @@ $output.="</TABLE>\n";
 $output.=form_end();
 
 include("inc/header.php");
+
 echo $output;
+
 include("inc/footer.php");
 
 ?>

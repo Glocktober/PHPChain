@@ -1,22 +1,20 @@
 <?php
-include("inc/sessions.php");
+include ("inc/config.php");
 include("inc/form.php");
 
-$output = "<p style=\"color:black\">";
-if (isset($_GET['error'])){
-    $output .= "<span style=\"color:red\">". $_GET['error'] . "</span><br>";
-}
+$login = "";
+if (array_key_exists('login',$_SESSION)) $login = $_SESSION['login'];
 
-$login = $_SESSION['login'];
+if (array_key_exists('error_message',$_SESSION)) $error = $_SESSION['error_message'];
 
 session_unset();
 session_regenerate_id(TRUE);
 $_SESSION['login'] = $login;
 
-$output .= "Logout completed.</p>";
-include ("inc/header.php");
+if(isset($error)) set_error($error);
+else set_status("Logout for \"<b>$login</b>\" complete");
 
-echo $output;
+header('Location: index.php');
+die();
 
-include ("inc/footer.php");
 ?>

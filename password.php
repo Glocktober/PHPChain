@@ -1,6 +1,5 @@
 <?php
-include ("inc/sessions.php");
-include ("inc/db.php");
+include ("inc/config.php");
 include ("inc/form.php");
 include ("inc/crypt.php");
 
@@ -15,9 +14,14 @@ if (!$auth) {
 	die();
 }
 
-$newkey=gorp("newkey");
-$newkey2=gorp("newkey2");
+$login = $_SESSION['login'];
+
+if ($is_get) set_status("Updating Password for \"<b>$login</b>\": Passwords must be at least $min_password_length long");
+
 $complete=gorp("complete");
+
+$newkey = get_post('newkey');
+$newkey2 = get_post('newkey2');
 
 if (empty($complete)) $complete=FALSE;
 
@@ -28,8 +32,8 @@ if (!empty($newkey)&&!empty($newkey2)) {
 
 	check_csrf();
 	
-	if ($newkey!=$newkey2) $error.="<SPAN CLASS=\"error\">The passwords you have entered do not match.</SPAN><BR>\n";
-	if (strlen($newkey)<6) $error.="<SPAN CLASS=\"error\">Password must be at least 6 characters long.</SPAN><BR>\n";
+	if (strlen($newkey)<$min_password_length) $error.="Error: Password must be at least $min_password_length characters long";
+	elseif ($newkey!=$newkey2) $error="Error: The passwords you have entered do not match.";
 
 	if (empty($error)) {
 
@@ -44,12 +48,12 @@ if (!empty($newkey)&&!empty($newkey2)) {
 		$teststring=base64_encode(encrypt($newkey,maketeststring(),$iv));
 		$iv=base64_encode($iv);
 
-		$result=mysqli_query($db, "insert user values (NULL, \"$login\", \"$teststring\", \"$iv\")");
-		$id=mysqli_insert_id($db);
+		$result=sql_query($db, "insert into user values (NULL, \"$login\", \"$teststring\", \"$iv\")");
+		$id=sql_insert_id($db);
 
-		$result=mysqli_query($db, "select id, iv, catid, login, password, site, url from logins where userid = \"$userid\"");
+		$result=sql_query($db, "select id, iv, catid, login, password, site, url from logins where userid = \"$userid\"");
 
-		while ($row=mysqli_fetch_assoc($result)) {
+		while ($row=sql_fetch_assoc($result)) {
 			$login=trim(decrypt($key,base64_decode($row["login"]),base64_decode($row["iv"])));
 			$password=trim(decrypt($key,base64_decode($row["password"]),base64_decode($row["iv"])));
 			$site=trim(decrypt($key,base64_decode($row["site"]),base64_decode($row["iv"])));
@@ -62,14 +66,14 @@ if (!empty($newkey)&&!empty($newkey2)) {
 			$site=base64_encode(encrypt($newkey,$site,$iv));
 			$url=base64_encode(encrypt($newkey,$url,$iv));
 			$iv=base64_encode($iv);
-			mysqli_query($db, "insert logins values (NULL, \"$iv\", \"$id\", \"$catid\", \"$login\", \"$password\", \"$site\", \"$url\")");
+			sql_query($db, "insert into logins values (NULL, \"$iv\", \"$id\", \"$catid\", \"$login\", \"$password\", \"$site\", \"$url\")");
 		}
 
 		// DB cleanup.
 
-		mysqli_query($db, "update cat set userid = \"$id\" where userid = \"$userid\"");
-		mysqli_query($db, "delete from logins where userid = \"$userid\"");
-		mysqli_query($db, "delete from user where id = \"$userid\"");
+		sql_query($db, "update cat set userid = \"$id\" where userid = \"$userid\"");
+		sql_query($db, "delete from logins where userid = \"$userid\"");
+		sql_query($db, "delete from user where id = \"$userid\"");
 
 		$_SESSION['id'] = $id;
 		$_SESSION['key'] = $newkey;
@@ -81,12 +85,8 @@ if (!empty($newkey)&&!empty($newkey2)) {
 
 if (!$complete) {
 	if (!empty($error)) {
-		$output.="The following error(s) occured:<P>\n";
-		$output.=$error."<P>";
-	}
-	$output.="<P CLASS=\"plain\">Changing your password requires all data in the database under your login to be decrypted and re-encrypted. This process can take some time if you have a lot of entries. Do not hit stop or close your browser after entering your new password, or data loss may occur.";
-	$output.="<P CLASS=\"plain\">Password must be at least 6 characters long";
-	$output.="<P>";
+		set_error($error);
+	} 
 	$output.=form_begin($_SERVER["PHP_SELF"],"POST");
 	$output.=input_hidden("action","save");
 	$output.="<TABLE BORDER=\"0\" CELLPADDING=\"2\" CELLSPACING=\"0\">\n";
@@ -96,10 +96,9 @@ if (!$complete) {
 	$output.="</TABLE>\n";
 	$output.=form_end();
 } else {
-	$output.="<SPAN CLASS=\"plain\">Password changed!</SPAN>";
+	$output.="<h2 CLASS=\"success\">Password changed!</h2>";
+	set_status( "Password for \"<b>login</b>\" has been updated.");
 }
-
-
 
 include ("inc/header.php");
 
