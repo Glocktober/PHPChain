@@ -3,6 +3,8 @@ include ("inc/config.php");
 include("inc/form.php");
 
 $login = "";
+
+# Save login and any error message for presentation after logout
 if (array_key_exists('login',$_SESSION)) $login = $_SESSION['login'];
 
 if (array_key_exists('error_message',$_SESSION)) $error = $_SESSION['error_message'];

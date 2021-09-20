@@ -18,11 +18,15 @@ function sql_conn(){
 	return $db;
 }
 
+function sql_log($msg){
+	global $db_log_queries;
+	if ($db_log_queries) error_log($msg);
+}
+
 function restoarray($resdata)
 {
 	$n=0;
-	while ($row=$resdata->fetchArray()){
-		// mysqli_fetch_row($resdata)) {
+	while ($row=$resdata->fetch_row()){
 		$data[$n]=$row;
 		$n++;
 	}
@@ -46,12 +50,12 @@ function sql_error($db)
 
 function sql_num_rows($result)
 {
-	return $result->num_rows();
+	return $result->num_rows;
 }
 
 function sql_query($db, $query)
 {
-	error_log('msqli query: ' . $query);
+	sql_log('msqli query: ' . $query);
 	return $db->query($query);
 }
 
@@ -67,7 +71,7 @@ function sql_fetch_assoc($result)
 
 function sql_insert_id($db)
 {
-	return $db->insert_id();
+	return $db->insert_id;
 }
 
 // function sql_prepare($db, $query)

@@ -39,8 +39,6 @@ function check_csrf(){
     set_csrf();
 }
 
-$stat_log = False;
-
 function status_log($msg){
     global $stat_log;
     if ($stat_log) error_log($msg);

@@ -35,25 +35,15 @@ $document_title = $site_name;
 <?php
 $left="";
 $right="";
-function xyzzy($lab,$loc){
+function build_button($lab,$loc){
 	return "<button class=\"butbut\"><a href=\"$loc\" class=\"buttext\"> $lab </a></button>";
 }
 if ($auth) {
-	// $left.="<A HREF=\"settings.php\" CLASS=\"menubar\">Settings</A>";
-	// $left.="<A HREF=\"password.php\" CLASS=\"menubar\">Password</A>";
-	// $left.="<A HREF=\"logout.php\" CLASS=\"menubar\">Logout</A>";
-	$left = xyzzy('Settings', 'settings.php')."  ". xyzzy('Password','password.php');
-	$right.="Current User: <span class=info>".$_SESSION["login"] . "</span>&nbsp;&nbsp;&nbsp;&nbsp;". xyzzy('Logout ', 'logout.php');
+	$left = build_button('Categories', 'settings.php')."  ". build_button('Password','password.php');
+	$right.="Current User: <span class=info>".$_SESSION["login"] . "</span>&nbsp;&nbsp;&nbsp;&nbsp;". build_button('Logout ', 'logout.php');
 
 
 } else {
-	// $left.="<A HREF=\"newlogin.php\" CLASS=\"menubar\">Create login</A>";
-	// $right.=form_begin("login.php","POST");
-	// $right.="Login: ".input_text("login",8,255,$login,"login");
-	// $right.="&nbsp;Password: ".input_passwd("key",8,255,NULL,"login")."&nbsp;";
-	// $right.=submit("Login",NULL,"submit");
-	// $right.=form_end();
-	// $right = "<button style=\"width:50%;\"><a href=\"login.php\" style=\"text-decoration:none;\">Login </a></button>";
 	$right = xyzzy('Login', 'login.php');
 	if ($allow_new_accounts)
 		$left = xyzzy('New Login', 'newlogin.php');

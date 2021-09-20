@@ -1,25 +1,34 @@
 <?php
+
+$env_list = getenv();
+function env_get($name, $default){
+    global $env_list;
+    
+    if (array_key_exists($name,$env_list)) return $env_list[$name];
+    else return $default;
+}
 #
 # Database selection
 #  valid coices are 'SQLITE3' or 'MYSQL'
-$db_choice = 'SQLITE3';          
+$db_choice = env_get('db_choice','SQLITE3');  
+$db_log_queries = env_get('db_log_queries', false);        
 
 # TZone
-$time_zone = 'America/New_York';
+$time_zone = env_get('TZONE','America/New_York');
 
 # Session name
-$session_name = 'passchain';
-$session_lifetime = 28800;
+$session_name = env_get('passcookie','passchain');
+$session_lifetime = env_get('session_lifetime',28800);
 # 
 # mysql options
-$mysql_host = 'localhost';
-$mysql_username = 'chain';
-$mysql_password = 'ch@1n';
-$mysql_db_name = 'chain';
+$mysql_host = env_get('mysql_host','localhost');
+$mysql_username = env_get('mysql_username','chain');
+$mysql_password = env_get('mysql_password','ch@1n');
+$mysql_db_name = env_get('mysql_db_name','chain');
 
 #
 # sqlite options
-$sqlite_db_path = '../test/test.db';
+$sqlite_db_path = env_get('sqlite_db_path','../test/test.db');
 
 #
 # login lockout
@@ -32,6 +41,9 @@ $min_password_length = 8;
 
 # force logout on CSRF error
 $csrf_force_logout = true;
+
+# log system status messages
+$stat_log = env_get('log_status_messages',false);
 
 # site name
 $site_name = $_SERVER['SERVER_NAME'];

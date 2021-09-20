@@ -19,7 +19,6 @@ $key = $_SESSION['key'];
 $authed_login = $_SESSION['login'];
 
 $action=gorp("action");
-error_log("action $action <");
 
 if (empty($action)) $action="view";
 $output="";
@@ -97,7 +96,6 @@ switch($action) {
 	break;
 	case "edit":
 		$itemid=sanigorp("itemid");
-		error_log('asdfdsf');
 		
 		if ($itemid!=0) {
 			set_status("Editing password entry");

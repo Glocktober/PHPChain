@@ -10,6 +10,11 @@ function sql_conn()
 	return $db;
 }
 
+function sql_log($msg){
+	global $db_log_queries;
+	if ($db_log_queries) error_log($msg);
+}
+
 function restoarray($resdata)
 {
 	$n=0;
@@ -46,7 +51,7 @@ function sql_num_rows($result)
 
 function sql_query($db, $query)
 {
-	// error_log('sqlite query: ' . $query);
+	sql_log('sqlite query: ' . $query);
 	return $db->query($query);
 }
 
