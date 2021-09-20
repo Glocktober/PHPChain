@@ -1,6 +1,5 @@
 <?php
 define ('C_VERSION','1.5');
-// Make sure nothing is cached
 header("Expires: Mon, 26 Jul 1997 05:00:00 GMT");    // Date in the past
 header("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT"); // always modified
 header("Cache-Control: no-store, no-cache, must-revalidate");  // HTTP/1.1
@@ -35,13 +34,14 @@ $document_title = $site_name;
 <?php
 $left="";
 $right="";
+
 function build_button($lab,$loc){
 	return "<button class=\"butbut\"><a href=\"$loc\" class=\"buttext\"> $lab </a></button>";
 }
+
 if ($auth) {
 	$left = build_button('Categories', 'settings.php')."  ". build_button('Password','password.php');
 	$right.="Current User: <span class=info>".$_SESSION["login"] . "</span>&nbsp;&nbsp;&nbsp;&nbsp;". build_button('Logout ', 'logout.php');
-
 
 } else {
 	$right = xyzzy('Login', 'login.php');

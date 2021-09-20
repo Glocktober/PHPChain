@@ -17,30 +17,28 @@ $db_log_queries = env_get('db_log_queries', false);
 $time_zone = env_get('TZONE','America/New_York');
 
 # Session name
-$session_name = env_get('passcookie','passchain');
+$session_name = env_get('session_name','passchain');
 $session_lifetime = env_get('session_lifetime',28800);
-# 
+ 
 # mysql options
 $mysql_host = env_get('mysql_host','localhost');
 $mysql_username = env_get('mysql_username','chain');
 $mysql_password = env_get('mysql_password','ch@1n');
 $mysql_db_name = env_get('mysql_db_name','chain');
 
-#
 # sqlite options
-$sqlite_db_path = env_get('sqlite_db_path','../test/test.db');
+$sqlite_db_path = env_get('sqlite_db_path','/var/www/db/phpchain.db');
 
-#
 # login lockout
-$login_lockout_failures = 5;
-$login_lockout_window = 10;
-$allow_new_accounts = true;
+$login_lockout_failures = env_get('login_lockout_failures',5);
+$login_lockout_window = env_get('login_lockout_window',10);
+$allow_new_accounts = env_get('allow_new_accounts',true);
 
 # Required min password length
-$min_password_length = 8;
+$min_password_length = env_get('min_password_length',8);
 
 # force logout on CSRF error
-$csrf_force_logout = true;
+$csrf_force_logout = env_get('csrf_force_logout',false);
 
 # log system status messages
 $stat_log = env_get('log_status_messages',false);
