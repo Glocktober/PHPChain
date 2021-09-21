@@ -25,8 +25,8 @@ $document_title = $site_name;
 <BODY CLASS="main">
 <TABLE BORDER="0" CELLPADDING="0" CELLSPACING="0" WIDTH="100%">
 <TR>
-<TD COLSPAN="2" CLASS="titlebar" onClick="javascript:document.location='index.php'">
-	<?php echo $document_title ?> <SPAN CLASS="plain">   <i>phpchain</i> password vault version <?php echo C_VERSION; ?></A> </SPAN>
+<TD COLSPAN="2" CLASS="titlebar" onClick="javascript:document.location='index.php'" style="padding-left:5%;">
+<span style=";">	<?php echo $document_title ?></span> <SPAN CLASS="plain" style="margin-right:5%;float:right;">   <i>phpchain</i> password vault version <?php echo C_VERSION; ?></A> </SPAN>
 </TD>
 </TR>
 <TR>

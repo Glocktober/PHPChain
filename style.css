@@ -201,6 +201,9 @@ p.intro {
 	text-indent: 6px;
 	color: black;
 }
+input.plain{
+	background-color: azure;
+}
 .plain {
 	font-family: Arial, Verdana;
 	/* font-size: 13px; */
