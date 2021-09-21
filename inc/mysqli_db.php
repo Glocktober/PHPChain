@@ -40,12 +40,12 @@ function sql_close($db)
 
 function sql_errno($db)
 {
-	return $db->errno();
+	return $db->errno;
 }
 
 function sql_error($db)
 {
-	return $db->error();
+	return $db->error;
 }
 
 function sql_num_rows($result)
@@ -73,35 +73,5 @@ function sql_insert_id($db)
 {
 	return $db->insert_id;
 }
-
-// function sql_prepare($db, $query)
-// {
-// 	return $db->prepare($query);
-// }
-
-// function sql_stmt_bind_param($stmt, $param, &$var, $type)
-// {
-// 	return $stmt->bindParam($param, $var, $type);
-// }
-
-// function sql_stmt_multi_bind_param($stmt, $types, &...$vars)
-// {
-// 	$stmt->bind_param($types, ...$vars);
-// }
-
-// function sql_stmt_execute($stmt)
-// {
-// 	return $db->execute();
-// }
-
-// function sql_stmt_clear($stmt)
-// {
-// 	return $stmt->clear();
-// }
-
-// function sql_stmt_close($stmt)
-// {
-// 	return $stmt->close();
-// }
 
 ?>

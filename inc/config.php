@@ -40,6 +40,9 @@ $min_password_length = env_get('min_password_length',8);
 # force logout on CSRF error
 $csrf_force_logout = env_get('csrf_force_logout',false);
 
+# allow dumpXML.php credential export
+$xml_dump_ok = false;
+
 # log system status messages
 $stat_log = env_get('log_status_messages',false);
 
