@@ -9,7 +9,7 @@ if (!isset($xml_dump_ok) OR ($xml_dump_ok != TRUE)){
     die();
 }
 
-if (!$is_authed()) {
+if (!is_authed()) {
     header("HTTP/1.1 401 Unauthorized");
     echo "Not authenticated";
     die();
