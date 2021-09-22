@@ -49,6 +49,12 @@ $stat_log = env_get('log_status_messages',false);
 # site name
 $site_name = $_SERVER['SERVER_NAME'];
 
+# local config
+$local_config_file = env_get('local_config_file','local/config.php');
+if (file_exists($local_config_file) AND is_readable($local_config_file)){
+    include($local_config_file);
+}
+
 # Automatic uplift to TLS
 if ($_SERVER["HTTPS"]!="on") {
 	header('Location: ' . "https://".$_SERVER["HTTP_HOST"].$_SERVER["PHP_SELF"] );

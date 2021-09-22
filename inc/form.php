@@ -82,6 +82,7 @@ function input_button ($name, $onclick="", $style="plain")
 {
 	return "<INPUT TYPE=\"BUTTON\" CLASS=\"$style\" VALUE=\"$name\" onClick=\"".$onclick."\">\n";
 }
+
 function gorp($fieldname)
 {
 	if (isset($_GET[$fieldname])) $return = $_GET[$fieldname];
@@ -110,4 +111,10 @@ function sanigorp($tag){
 	$tval = htmlspecialchars($tval);
 	return $tval;
 }
+
+function build_button($lab, $loc, $tip=''){
+	$butt = "<form action=\"$loc\" method=\"get\" class='butform'><button class=\"butbut\"><span class='buttext'>$lab</span></button></form>";
+	return $butt;
+}
+
 ?>

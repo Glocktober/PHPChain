@@ -25,8 +25,8 @@ $document_title = $site_name;
 <BODY CLASS="main">
 <TABLE BORDER="0" CELLPADDING="0" CELLSPACING="0" WIDTH="100%">
 <TR>
-<TD COLSPAN="2" CLASS="titlebar" onClick="javascript:document.location='index.php'">
-	<?php echo $document_title ?> <SPAN CLASS="plain">   <i>phpchain</i> password vault version <?php echo C_VERSION; ?></A> </SPAN>
+<TD COLSPAN="2" CLASS="titlebar" onClick="javascript:document.location='index.php'" style="padding-left:5%;">
+<span style=";"> <?php echo $document_title ?></span> <SPAN style="margin-right:5%;float:right;"><i>phpchain</i> password vault version <?php echo C_VERSION; ?></A> </SPAN>
 </TD>
 </TR>
 <TR>
@@ -35,13 +35,9 @@ $document_title = $site_name;
 $left="";
 $right="";
 
-function build_button($lab,$loc, $tip=''){
-	return "<button class=\"butbut\" title=$tip><a href=\"$loc\" class=\"buttext\"> $lab </a></button>";
-}
-
 if ($auth) {
-	$left = build_button('Categories', 'settings.php','"add/remove/edit categories"')."  ". 
-			build_button('Password','password.php','"Change the login password, (re-incrypting all passwords)"');
+	$left = build_button('Edit Categories', 'settings.php','"add/remove/edit categories"')."  ". 
+			build_button('Change Password','password.php','"Change the login password, (re-incrypting all passwords)"');
 	$right.="Current User: <span class=info>".$_SESSION["login"] . "</span>&nbsp;&nbsp;&nbsp;&nbsp;". 
 			build_button('Logout ', 'logout.php', "Log-off");
 

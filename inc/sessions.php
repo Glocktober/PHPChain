@@ -68,7 +68,7 @@ function status_message(){
 
         $msg = $_SESSION['status_message'];
         unset($_SESSION['status_message']);
-        return "<span class=statusbar>$msg</span";
+        return "<span class=success>$msg</span";
         
     } else {
 
@@ -76,8 +76,8 @@ function status_message(){
         if (array_key_exists('login',$_SESSION)) $login = $_SESSION['login'];
 
         if (is_authed()) 
-            return "<span class=messagebar> Current User: \"<b>$login</b>\"</span>";
-        else  return "<span class=messagebar>Please log in</span>";
+            return "<span class=info> Current User: \"<b>$login</b>\"</span>";
+        else  return "<span class=error><b>Please log in</b></span>";
     }
 }
 
