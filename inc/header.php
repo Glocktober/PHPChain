@@ -1,5 +1,5 @@
 <?php
-define ('C_VERSION','1.5');
+define ('C_VERSION','21.09.22');
 header("Expires: Mon, 26 Jul 1997 05:00:00 GMT");    // Date in the past
 header("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT"); // always modified
 header("Cache-Control: no-store, no-cache, must-revalidate");  // HTTP/1.1
@@ -23,28 +23,28 @@ $document_title = $site_name;
 <TITLE><?php echo $document_title; ?> phpchain</TITLE>
 </HEAD>
 <BODY CLASS="main">
-<TABLE BORDER="0" CELLPADDING="0" CELLSPACING="0" WIDTH="100%">
+<TABLE BORDER="0" CELLPADDING="0" CELLSPACING="0" WIDTH="100%" id="toptable">
 <TR>
 <TD COLSPAN="2" CLASS="titlebar" onClick="javascript:document.location='index.php'" style="padding-left:5%;">
 <span style=";"> <?php echo $document_title ?></span> <SPAN style="margin-right:5%;float:right;"><i>phpchain</i> password vault version <?php echo C_VERSION; ?></A> </SPAN>
 </TD>
 </TR>
 <TR>
-<TD COLSPAN="2" CLASS="menubar" WIDTH="100%">
+<TD COLSPAN="2" CLASS="menubar" WIDTH="100%" >
 <?php
 $left="";
 $right="";
 
 if ($auth) {
-	$left = build_button('Edit Categories', 'settings.php','"add/remove/edit categories"')."  ". 
-			build_button('Change Password','password.php','"Change the login password, (re-incrypting all passwords)"');
+	$left = menu_button('Edit Categories', 'settings.php',"add/remove/edit categories")."  ". 
+			menu_button('Change Password','password.php',"Change the login password, (re-incrypting all passwords)");
 	$right.="Current User: <span class=info>".$_SESSION["login"] . "</span>&nbsp;&nbsp;&nbsp;&nbsp;". 
-			build_button('Logout ', 'logout.php', "Log-off");
+			menu_button('Logout ', 'logout.php', "Log-off");
 
 } else {
-	$right = build_button('Login', 'login.php','"Logon an existing account"');
+	$right = menu_button('Login', 'login.php','"Logon an existing account"');
 	if ($allow_new_accounts)
-		$left = build_button('New Login', 'newlogin.php','"Create a new account"');
+		$left = menu_button('New Login', 'newlogin.php','"Create a new account"');
 	else $left = "&nbsp;";
 }
 
@@ -57,7 +57,7 @@ echo $menu;
 <tr><td  COLSPAN="2" width="100%" class=messagebar><?php echo status_message() ?></td></tr>
 <TR>
 <TD WIDTH="120" style="vertical-align: top">
-<TABLE BORDER="0" CELLPADDING="0" CELLSPACING="0" WIDTH="100%"> 
+<TABLE BORDER="0" CELLPADDING="0" CELLSPACING="0" WIDTH="100%" id=menutable> 
 	<!-- menu wrapper table -->
 <TR><TD WIDTH="100%" CLASS="cats">&nbsp;</TD></TR>
 <?php
@@ -75,12 +75,7 @@ if ($auth) {
 <TD WIDTH="100%" CLASS="catsbot">
 <?php
 if ($auth) {
-	echo form_begin("cat.php",'POST');
-	echo input_hidden("action","edit");
-	echo input_hidden("itemid",0);
-	echo input_hidden("catid",$catid);
-	echo submit("New entry");
-	echo form_end();
+	echo action_button('New Entry',"cat.php?action=edit&itemid=0&catid=$catid","Add new password entry");
 }
 ?>
 <IMG SRC="img/tiny.gif" WIDTH="120" HEIGHT="1">

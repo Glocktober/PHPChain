@@ -2,8 +2,6 @@
 include ("inc/config.php");
 include ("inc/form.php");
 
-$page="settings";
-
 sql_conn();
 
 $auth = is_authed();
@@ -15,6 +13,8 @@ if (!$auth) {
 
 $action=gorp("action");
 $userid = $_SESSION['id'];
+error_log("action is $action");
+error_log("get action ".$_GET['action']);
 
 $output="";
 
@@ -74,7 +74,7 @@ if (isset($action)) {
 			$output.=form_begin($_SERVER["PHP_SELF"],"POST","settings");
 			$output.=input_hidden("action","save");
 			$output.=input_hidden("catid",$catid);
-			$output.=input_text("title",30,255,$title);
+			$output.=input_text("title",30,255,$title,'plain focus',"The title for this category");
 			$output.=submit("Save");
 			$output.=form_end();
 
@@ -86,17 +86,17 @@ if (isset($action)) {
 } else {
 	$result=sql_query($db,"select id, title from cat where userid = \"$userid\"");
 
-	$output.="<TABLE BORDER=\"0\" CELLPADDING=\"2\" CELLSPACING=\"1\">\n";
+	$output.="<TABLE BORDER=\"0\" CELLPADDING=\"2\" CELLSPACING=\"1\" id=categorytable>\n";
 	$output.="<TR>\n";
-	$output.="<TD CLASS=\"header\" WIDTH=\"200\">Category</TD>\n";
-	$output.="<TD CLASS=\"header\" WIDTH=\"150\">Action</TD>\n";
+	$output.="<TD CLASS=\"header\" WIDTH=\"200\" id=catcolumn>Category</TD>\n";
+	$output.="<TD CLASS=\"header\" WIDTH=\"150\" id=actioncolumn>Action</TD>\n";
 	$output.="</TR>\n";
 
 	while ($row=sql_fetch_assoc($result)) {
-		$output.="<TR><TD CLASS=\"row\"><a href=cat.php?catid=".$row["id"].">".$row["title"]."</a></TD>\n";
-		$output.="<TD CLASS=\"row\">";
-			$output.="<A HREF=\"".$_SERVER["PHP_SELF"]."?action=edit&catid=".$row["id"]."&csrftok=".get_csrf()."\">Edit</A> | ";
-		   	$output.="<A HREF=\"".$_SERVER["PHP_SELF"]."?action=delete&catid=".$row["id"]."&csrftok=".get_csrf()."\">Delete</A>";
+		$output.="<TR><TD CLASS=\"row\"><a href=cat.php?catid=".$row["id"]." title=\"view password in this category\">".$row["title"]."</a></TD>\n";
+		$output.="<TD CLASS=\"row\" style='display:inline-block'>";
+		$output.= action_button('Edit',$_SERVER["PHP_SELF"].'?action=edit&catid='.$row['id'].'&csrftok='.get_csrf(), "Edit category name");
+		$output.= action_button('Delete','settings.php?action=delete&catid='.$row['id'].'&csrftok='.get_csrf(), "Delete (empty) category");
 		$output.="</TD></TR>\n";
 	}
 
@@ -105,7 +105,7 @@ if (isset($action)) {
 	$output.=form_begin($_SERVER["PHP_SELF"],"POST");
 	$output.=input_hidden("action","edit");
 	$output.=input_hidden("catid","0");
-	$output.=submit("New category");
+	$output.=submit("New category", '', "Create a new category");
 	$output.=form_end();
 }
 

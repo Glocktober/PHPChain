@@ -16,7 +16,7 @@ function form_end ()
 	return "</FORM>";
 }
 
-function input_text ($name, $size, $maxlength, $value=NULL, $style="plain")
+function input_text ($name, $size, $maxlength, $value=NULL, $style="plain", $tip="")
 {
 	return "<INPUT TYPE=\"TEXT\" NAME=\"".$name."\" SIZE=\"$size\" MAXLENGTH=\"$maxlength\" VALUE=\"".$value."\" CLASS=\"".$style."\">\n";
 }
@@ -28,15 +28,13 @@ function input_file ($name, $size, $style="plain")
 
 function input_passwd ($name, $size, $maxlength, $value=NULL, $style="plain")
 {
-	return "<INPUT TYPE=\"PASSWORD\" NAME=\"".$name."\" SIZE=\"$size\" MAXLENGTH=\"$maxlength\" VALUE=\"".$value."\" CLASS=\"".$style."\">\n";
+	return "<INPUT TYPE=\"PASSWORD\" NAME=\"".$name."\" SIZE=\"$size\" MAXLENGTH=\"$maxlength\" VALUE=\"".$value."\" CLASS=\"".$style."\" title=\"Passwords must be $min_password_length characters or longer\">\n";
 }
 
 function input_hidden ($name, $value)
 {
 	return "<INPUT TYPE=\"HIDDEN\" NAME=\"".$name."\" VALUE=\"".$value."\">\n";
 }
-
-
 
 function input_radio ($name, $value, $checked=FALSE, $style="plain")
 {
@@ -46,7 +44,6 @@ function input_radio ($name, $value, $checked=FALSE, $style="plain")
 		return "<INPUT TYPE=\"RADIO\" NAME=\"".$name."\" VALUE=\"".$value."\" CLASS=\"".$style."\">\n";
 	}
 }
-
 
 function input_select ($name, $default, $data, $style="plain")
 {
@@ -73,9 +70,9 @@ function textarea ($name, $text, $rows, $cols, $style="plain")
 	return $output;
 }
 
-function submit ($name, $onclick="", $style="plain")
+function submit ($name, $onclick="", $tip="", $style="butbut")
 {
-	return "<INPUT TYPE=\"SUBMIT\" CLASS=\"$style\" VALUE=\"$name\" onClick=\"".$onclick."\">\n";
+	return "<INPUT TYPE=\"SUBMIT\" CLASS=\"$style\" VALUE=\"$name\" onClick=\"".$onclick."\" title=\"$tip\">\n";
 }
 
 function input_button ($name, $onclick="", $style="plain")
@@ -86,9 +83,10 @@ function input_button ($name, $onclick="", $style="plain")
 function gorp($fieldname)
 {
 	if (isset($_GET[$fieldname])) $return = $_GET[$fieldname];
-	if (strtolower($_SERVER["REQUEST_METHOD"])=="get") {
-		if (isset($_GET[$fieldname])) $return = $_GET[$fieldname];
-	} else if (strtolower($_SERVER["REQUEST_METHOD"])=="post") {
+
+	if (isset($return)) return $return;
+
+	if (strtolower($_SERVER["REQUEST_METHOD"])=="post") {
 		$return=$_POST["$fieldname"];
 	}
 	if (isset($return)) return $return;
@@ -112,9 +110,13 @@ function sanigorp($tag){
 	return $tval;
 }
 
-function build_button($lab, $loc, $tip=''){
-	$butt = "<form action=\"$loc\" method=\"get\" class='butform'><button class=\"butbut\"><span class='buttext'>$lab</span></button></form>";
-	return $butt;
+function menu_button($lab, $loc, $tip=''){
+	return action_button($lab, $loc, $tip, 'buttext');
+}
+
+function action_button($lab, $loc, $tip="", $class=""){
+	return "<form action=\"$loc\" method=\"POST\" class='butform'><button class=\"butbut\" title=\"$tip\"><span class=\"$class\">$lab</span></button></form>";
+	
 }
 
 ?>
