@@ -73,9 +73,10 @@ $output.=form_begin($_SERVER["PHP_SELF"],"POST");
 $output.="<TABLE BORDER=\"0\" CELLPADDING=\"2\" CELLSPACING=\"0\">\n";
 $output.="<TR><TD CLASS=\"plain\" COLSPAN=\"2\">".$error."</TD></TR>\n";
 $output.="<TR><TD CLASS=\"plain\" COLSPAN=\"2\">&nbsp;&nbsp;</TD></TR>\n";
-$output.="<TR><TD CLASS=\"plain\">Login: </TD><TD CLASS=\"plain\">".input_text("login",30,255,$login)."</TD></TR>\n";
+$output.="<TR><TD CLASS=\"plain\">Login: </TD><TD CLASS=\"plain\">".input_text("login",30,255,$login,"plain focus")."</TD></TR>\n";
 $output.="<TR><TD CLASS=\"plain\">Password: </TD><TD CLASS=\"plain\">".input_passwd("key",30,255)."</TD></TR>\n";
-$output.="<TR><TD CLASS=\"plain\" COLSPAN=\"2\" ALIGN=\"RIGHT\">".submit("Login")."</TD></TR>\n";
+$output.="<TR><TD>&nbsp</TD></TR>";
+$output.="<TR><TD CLASS=\"plain\" COLSPAN=\"2\" ALIGN=\"RIGHT\">".submit("Login",'',"login to existing account")."</TD></TR>\n";
 $output.="</TABLE>\n";
 $output.=form_end();
 

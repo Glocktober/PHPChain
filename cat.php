@@ -59,12 +59,12 @@ switch($action) {
 			die();
 		} else {
 			
-			$output.="<TABLE BORDER=\"0\" CELLPADDING=\"2\" CELLSPACING=\"1\">\n";
+			$output.="<TABLE BORDER=\"0\" CELLPADDING=\"2\" CELLSPACING=\"1\" id=cattable>\n";
 			$output.="<TR>\n";
-			$output.="<TD CLASS=\"header\" WIDTH=\"300\">Site</TD>\n";
-			$output.="<TD CLASS=\"header\" WIDTH=\"200\">Login</TD>\n";
-			$output.="<TD CLASS=\"header\" WIDTH=\"150\">Password</TD>\n";
-			$output.="<TD CLASS=\"header\" WIDTH=\"80\">Action</TD>\n";
+			$output.="<TD CLASS=\"header\" WIDTH=\"25%\">Site</TD>\n";
+			$output.="<TD CLASS=\"header\" WIDTH=\"15%\">Login</TD>\n";
+			$output.="<TD CLASS=\"header\" WIDTH=\"25%\">Password</TD>\n";
+			$output.="<TD CLASS=\"header\" WIDTH=\"fit-content\">Actions</TD>\n";
 			$output.="</TR>\n";
 
 			while ($row=sql_fetch_assoc($result)) {
@@ -82,15 +82,19 @@ switch($action) {
 				if (strlen($val["url"])>1) $outsite="<A HREF=\"".$val["url"]."\" TARGET=\"_blank\">".$val["site"]."</A>";
 				else $outsite=$val["site"];
 				$output.="<TR><TD CLASS=\"row\">".$outsite."</TD>\n";
-				$output.="<TD CLASS=\"row\">".$val["login"]."</TD>\n";
-				//$output.="<TD OnMouseOver=\"this.style.color='#000000'\" OnMouseOut=\"this.style.color='#fdfed0'\" CLASS=\"password\">".$val["password"]."</TD>\n";
-				$output.="<TD  CLASS=\"password\">".$val["password"]."</TD>\n";
+				$output.="<TD CLASS=\"row login copyclick\" title=\"".$val["login"]."\" >".$val["login"]."</TD>\n";
+				$output.="<TD  CLASS=\"password copyclick\" title=\"Click to copy\">".$val["password"]."</TD>\n";
 				$output.="<TD CLASS=\"row\">";
-				$output.="<A HREF=\"".$_SERVER["PHP_SELF"]."?action=edit&itemid=".$val["id"]."&csrftok=".get_csrf()."\">Edit</A> | ";
-				$output.="<A HREF=\"".$_SERVER["PHP_SELF"]."?action=delete&itemid=".$val["id"]."&catid=".$catid."&csrftok=".get_csrf()."\">Delete</A></TD>\n";
+				$output.=action_button('Edit',$_SERVER["PHP_SELF"]."?action=edit&itemid=".$val["id"]."&csrftok=".get_csrf(), "Edit this password entry");
+				$output.=action_button('Delete',$_SERVER["PHP_SELF"]."?action=delete&itemid=".$val["id"]."&catid=".$catid."&csrftok=".get_csrf(),"Delete this password entry");
 				$output.="</TR>";
 			}
-			$output.="</TABLE>\n";
+			// $output.='<tr><td>&nbsp;</td></tr>';
+			$output.="</TABLE>\n<hr>";
+			$output.=action_button('Create New Password Entry',
+				"cat.php?action=edit&catid=".$catid."&csrftok=".get_csrf(),
+				"Add a new entry to this category"
+				);
 
 		}
 	break;
@@ -138,12 +142,13 @@ switch($action) {
 			$output.=input_hidden("itemid",$itemid);
 			$output.=input_hidden("action","save");
 			$output.="<TABLE BORDER=\"0\" CELLPADDING=\"2\" CELLSPACING=\"0\">\n";
-			$output.="<TR><TD CLASS=\"plain\">Category: </TD><TD CLASS=\"plain\">".input_select("catid",$catid,$cats)."</TD></TR>\n";
+			$output.="<TR><TD CLASS=\"plain\">Category: </TD><TD CLASS=\"plain\">".input_select("catid",$catid,$cats,'plain focus')."</TD></TR>\n";
 			$output.="<TR><TD CLASS=\"plain\">Site: </TD><TD CLASS=\"plain\">".input_text("site",30,255,$site)."</TD></TR>\n";
 			$output.="<TR><TD CLASS=\"plain\">URL: </TD><TD CLASS=\"plain\">".input_text("url",30,255,$url)."</TD></TR>\n";
 			$output.="<TR><TD CLASS=\"plain\">Login: </TD><TD CLASS=\"plain\">".input_text("login",30,255,$login)."</TD></TR>\n";
 			$output.="<TR><TD CLASS=\"plain\">Password: </TD><TD CLASS=\"plain\">".input_text("password",30,255,$password)."</TD></TR>\n";
-			$output.="<TR><TD CLASS=\"plain\" ALIGN=\"RIGHT\" COLSPAN=\"2\">".submit("Save entry")."</TD></TR>\n";
+			$output.="<TR><TD class=plain>&nbsp;</td></tr>";
+			$output.="<TR><TD CLASS=\"plain\" ALIGN=\"RIGHT\" COLSPAN=\"2\">".submit("Save entry",'','Save changes')."</TD></TR>\n";
 			$output.="</TABLE>\n";
 			$output.=form_end();
 		}
@@ -180,8 +185,6 @@ switch($action) {
 		die();
 	break;
 }
-
-
 
 include ("inc/header.php");
 

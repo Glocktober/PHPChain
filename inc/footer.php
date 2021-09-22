@@ -18,10 +18,11 @@ setClipboard = function(txt){
 	inp.blur();
 }
 
-
 setUp = function(){
-	var tds = document.getElementsByClassName("password");
-	for (var i in tds)  tds[i].onclick = copyTd2Clipboard; 
+	const tds = document.getElementsByClassName("copyclick");
+	for (var i in tds)  tds[i].onclick = copyTd2Clipboard;
+	const foc = document.getElementsByClassName("focus");
+	foc[0].focus();
 }
 setUp();
 

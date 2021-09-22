@@ -54,10 +54,10 @@ if ($allow_new_accounts){
 	$output.="<P>";
 	$output.=form_begin($_SERVER["PHP_SELF"],"POST");
 	$output.="<TABLE BORDER=\"0\" CELLPADDING=\"2\" CELLSPACING=\"0\">\n";
-	$output.="<TR><TD CLASS=\"plain\">New Login: </TD><TD CLASS=\"plain\">".input_text("login",20,255,$login)."</TD></TR>\n";
+	$output.="<TR><TD CLASS=\"plain\">New Login: </TD><TD CLASS=\"plain\">".input_text("login",20,255,$login, 'plain focus')."</TD></TR>\n";
 	$output.="<TR><TD CLASS=\"plain\">Password: </TD><TD CLASS=\"plain\">".input_passwd("key",20,255)."</TD></TR>\n";
 	$output.="<TR><TD CLASS=\"plain\">Verify password: &nbsp;&nbsp;</TD><TD CLASS=\"plain\">".input_passwd("key2",20,255)."</TD></TR>\n";
-	$output.="<TR><TD CLASS=\"plain\" COLSPAN=\"2\" ALIGN=\"RIGHT\">".submit("Create login")."</TD></TR>\n";
+	$output.="<TR><TD CLASS=\"plain\" COLSPAN=\"2\" ALIGN=\"RIGHT\">".submit("Create login",'',"Create the account")."</TD></TR>\n";
 	$output.="</TABLE>\n";
 	$output.=form_end();
 } else{

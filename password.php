@@ -90,9 +90,10 @@ if (!$complete) {
 	$output.=form_begin($_SERVER["PHP_SELF"],"POST");
 	$output.=input_hidden("action","save");
 	$output.="<TABLE BORDER=\"0\" CELLPADDING=\"2\" CELLSPACING=\"0\">\n";
-	$output.="<TR><TD CLASS=\"plain\">New Password: </TD><TD CLASS=\"plain\">".input_passwd("newkey",20,255)."</TD></TR>\n";
+	$output.="<TR><TD CLASS=\"plain\">New Password: </TD><TD CLASS=\"plain\">".input_passwd("newkey",20,255,'','plain focus')."</TD></TR>\n";
 	$output.="<TR><TD CLASS=\"plain\">Verify new password: &nbsp;&nbsp;</TD><TD CLASS=\"plain\">".input_passwd("newkey2",20,255)."</TD></TR>\n";
-	$output.="<TR><TD CLASS=\"plain\" COLSPAN=\"2\" ALIGN=\"RIGHT\">".submit("Change password")."</TD></TR>\n";
+	$output.="<TR><TD CLASS='plain'>&nbsp;</TD></TR>";
+	$output.="<TR><TD CLASS=\"plain\" COLSPAN=\"2\" ALIGN=\"RIGHT\">".submit("Change password",'',"Change password, reencrypting all entries")."</TD></TR>\n";
 	$output.="</TABLE>\n";
 	$output.=form_end();
 } else {
