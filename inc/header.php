@@ -30,6 +30,8 @@ $document_title = $site_name;
 <TD COLSPAN="2" CLASS="titlebar" onClick="javascript:document.location='index.php'" style="padding-left:5%;">
 <span style=";"> <?php echo $document_title ?></span> <SPAN style="margin-right:5%;float:right;"><i>phpchain</i> password vault version <?php echo C_VERSION; ?></A> </SPAN>
 <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+<script src="https://www.w3schools.com/lib/w3.js"></script>
+<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
 </TD>
 </TR>
 <TR class="w3-white">

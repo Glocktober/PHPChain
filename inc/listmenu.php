@@ -2,7 +2,9 @@
 function getmenu($userid,$catid=NULL)
 {
 	$db = sql_conn();
-	$menu='<ul class="w3-ul w3-small w3-boder"><li class="w3-small w3-light-grey" >Categories</li>';
+	$menu='';
+	$menu="<input oninput=\"w3.filterHTML('#catlist', 'li', this.value)\" placeholder='Search categories...'>";
+	$menu.='<ul id="catlist" class="w3-ul w3-small w3-boder">';
 
 	$result=sql_query($db,"select id, title from cat where userid = \"$userid\" order by title");
 

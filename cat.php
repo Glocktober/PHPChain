@@ -61,10 +61,12 @@ switch($action) {
 			die();
 		} else {
 			set_status("Hover over password to reveal. Click on <b>Login</b> or <b>Password</b> entry to copy to clipboard. Click on Site to open URL");
+			
+			$output.="<input oninput=\"w3.filterHTML('#cattable', '.trow', this.value)\" placeholder='Search this category...' class='w3-block' title='Filter content'>";
 			$output.="<TABLE BORDER=\"0\" CELLPADDING=\"2\" CELLSPACING=\"1\" id=cattable class=\"w3-table w3-small w3-border\">\n";
 			$output.="<TR class='w3-pale-blue'>\n";
-			$output.="<TD CLASS=\"header\" WIDTH=\"25%\">Site</TD>\n";
-			$output.="<TD CLASS=\"header\" WIDTH=\"15%\">Login</TD>\n";
+			$output.="<TD CLASS=\"header\" WIDTH=\"25%\" onclick=\"w3.sortHTML('#cattable','.trow', 'td:nth-child(1)')\" title='Click to sort..'>Site <i style='font-size:15px' class='material-icons'>&#xe164;</i></TD>\n";
+			$output.="<TD CLASS=\"header\" WIDTH=\"15%\" onclick=\"w3.sortHTML('#cattable','.trow', 'td:nth-child(2)')\" title='Click to sort..'>Login <i style='font-size:15px' class='material-icons'>&#xe164;</i></TD>\n";
 			$output.="<TD CLASS=\"header\" WIDTH=\"25%\">Password</TD>\n";
 			$output.="<TD CLASS=\"header\" WIDTH=\"fit-content\">Actions</TD>\n";
 			$output.="</TR>\n";
@@ -83,13 +85,13 @@ switch($action) {
 			foreach ($resarray as $val) {
 				if (strlen($val["url"])>1) $outsite="<A HREF=\"".$val["url"]."\" TARGET=\"_blank\" title=\"Click to open URL\">".$val["site"]."</A>";
 				else $outsite=$val["site"];
-				$output.="<TR  class='w3-hover-light-grey'>";
-					$output.="<TD CLASS=\"row\" title=\"Site URL ".$val["url"]."\" >".$outsite."</TD>\n";
-					$output.="<TD CLASS=\"row login copyclick\" title=\"Click to copy login\">".$val["login"]."</TD>\n";
-					$output.="<TD  CLASS=\"password copyclick\" title=\"Click to copy password\">".$val["password"]."</TD>\n";
-					$output.="<TD CLASS=\"row\">";
-					$output.=action_button('Edit',$_SERVER["PHP_SELF"]."?action=edit&itemid=".$val["id"]."&csrftok=".get_csrf(), "Edit this password entry", "w3-light-grey w3-hover-pale-red");
-					$output.=action_button('Delete',$_SERVER["PHP_SELF"]."?action=delete&itemid=".$val["id"]."&catid=".$catid."&csrftok=".get_csrf(),"Delete this password entry","w3-light-grey w3-hover-pale-red");
+				$output.="<TR  class='w3-hover-light-grey trow'>";
+					$output.="<TD CLASS=\"row \" title=\"Site URL ".$val["url"]."\" >".$outsite."</TD>\n";
+					$output.="<TD CLASS=\"row  login copyclick\" title=\"Click to copy login\">".$val["login"]."</TD>\n";
+					$output.="<TD  CLASS=\"row  password copyclick\" title=\"Click to copy password\">".$val["password"]."</TD>\n";
+					$output.="<TD CLASS=\"sea\">";
+					$output.=icon_button('<i style="font-size:20px" class="material-icons">&#xe254;</i>',$_SERVER["PHP_SELF"]."?action=edit&itemid=".$val["id"]."&csrftok=".get_csrf(), "Edit this password entry");
+					$output.=icon_button('<i style="font-size:20px" class="material-icons">&#xe872;</i>',$_SERVER["PHP_SELF"]."?action=delete&itemid=".$val["id"]."&catid=".$catid."&csrftok=".get_csrf(),"Delete this password entry");
 				$output.="</TR>";
 			}
 			$output.="<tr><td COLSPAN=4 width=100% class=w3-center>";

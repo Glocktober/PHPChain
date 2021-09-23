@@ -119,5 +119,8 @@ function action_button($lab, $loc, $tip="", $class=""){
 	return "<form action=\"$loc\" method=\"POST\" class='butform' ><button class=\"butbut w3-btn w3-small w3-ripple $class\" title=\"$tip\"><span class=\" btntext\">$lab</span></button></form>";
 	
 }
-
+function icon_button($lab, $loc, $tip="", $class=""){
+	return "<form action=\"$loc\" method=\"POST\" class='butform' ><button class=\"butbut w3-small w3-ripple $class\" title=\"$tip\"><span class=\" btntext\">$lab</span></button></form>";
+	
+}
 ?>

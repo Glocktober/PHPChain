@@ -92,18 +92,18 @@ if (isset($action)) {
 	}
 } else {
 	$result=sql_query($db,"select id, title from cat where userid = \"$userid\"");
-
-	$output.="<TABLE BORDER=\"0\" CELLPADDING=\"2\" CELLSPACING=\"1\" id=categorytable>\n";
+	$output.="<input oninput=\"w3.filterHTML('#categorytable', '.sea', this.value)\" placeholder='Search...' style='width:35%'>";
+	$output.="<TABLE BORDER=\"0\" CELLPADDING=\"2\" CELLSPACING=\"1\" id=categorytable width='35%'>\n";
 	$output.="<TR class=w3-pale-blue >\n";
-	$output.="<TD CLASS=\"header\" WIDTH=\"200\" id=catcolumn>Category</TD>\n";
-	$output.="<TD CLASS=\"header\" WIDTH=\"150\" id=actioncolumn>Action</TD>\n";
+	$output.="<TD CLASS=\"header\" WIDTH=\"200\" id=catcolumn onclick=\"w3.sortHTML('#categorytable','.trow', 'td:nth-child(1)')\" title='Click to sort..'>Category <i style='font-size:15px' class='material-icons'>&#xe164;</i></TD>\n";
+	$output.="<TD CLASS=\"header\" WIDTH=\"50\" id=actioncolumn>Action</TD>\n";
 	$output.="</TR>\n";
 
 	while ($row=sql_fetch_assoc($result)) {
-		$output.="<TR><TD CLASS=\"row\"><a href=cat.php?catid=".$row["id"]." title=\"view password in this category\">".$row["title"]."</a></TD>\n";
-		$output.="<TD CLASS=\"row\" style='display:inline-block'>";
-		$output.= action_button('Edit',$_SERVER["PHP_SELF"].'?action=edit&catid='.$row['id'].'&csrftok='.get_csrf(), "Edit category name", 'w3-light-grey w3-hover-pale-red');
-		$output.= action_button('Delete',$_SERVER["PHP_SELF"].'?action=delete&catid='.$row['id'].'&csrftok='.get_csrf(), "Delete (empty) category",'w3-light-grey w3-hover-pale-red');
+		$output.="<TR class=trow ><TD CLASS=\"row sea\"><a href=cat.php?catid=".$row["id"]." title=\"view password entries in this category\">".$row["title"]."</a></TD>\n";
+		$output.="<TD CLASS=\"row sea\" style='display:inline-block'>";
+		$output.= icon_button('<i style="font-size:20px" class="material-icons">&#xe254;</i>',$_SERVER["PHP_SELF"].'?action=edit&catid='.$row['id'].'&csrftok='.get_csrf(), "Edit category name", '');
+		$output.= icon_button('<i style="font-size:20px" class="material-icons">&#xe872;</i>',$_SERVER["PHP_SELF"].'?action=delete&catid='.$row['id'].'&csrftok='.get_csrf(), "Delete (empty) category",'');
 		$output.="</TD></TR>\n";
 	}
 
@@ -115,6 +115,7 @@ if (isset($action)) {
 	$output.=form_end();
 	$output.='</td></tr>';
 	$output.="</TABLE>\n<P>\n";
+	$output.="<SCRIPT>w3.sortHTML('#categorytable','.trow', 'td:nth-child(1)');</SCRIPT>";
 }
 
 include ("inc/header.php");

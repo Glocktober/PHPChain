@@ -2,10 +2,23 @@
     display: inline-block;
 }
 .butbut{
-
+	border-width: 0px;
+	background-color: transparent;
 }
 .butspan{
 
+}
+.material-icons{
+	color:grey;
+}
+.material-icons:hover{
+	color: red;
+}
+.iconoffs{
+	position: relative;
+	top: 3px;
+	font-size: 20px
+	;
 }
 .left{
     float: left;
