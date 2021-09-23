@@ -55,7 +55,7 @@ if (isset($action)) {
 			} else {
 				if (!sql_query($db,"delete from cat where id = \"$catid\" and userid=\"$userid\""))
 					set_error("Error: Deleting catalog entry: ".sql_error($db));
-				else:set_status('Category Successfully Removed');
+				else set_status('Category Successfully Removed');
 			}
 			header("Location: ".$_SERVER["PHP_SELF"]);
 			die();
