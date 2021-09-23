@@ -28,6 +28,7 @@ function input_file ($name, $size, $style="plain")
 
 function input_passwd ($name, $size, $maxlength, $value=NULL, $style="plain")
 {
+	global $min_password_length;
 	return "<INPUT TYPE=\"PASSWORD\" NAME=\"".$name."\" SIZE=\"$size\" MAXLENGTH=\"$maxlength\" VALUE=\"".$value."\" CLASS=\"".$style."\" title=\"Passwords must be $min_password_length characters or longer\">\n";
 }
 
@@ -70,13 +71,13 @@ function textarea ($name, $text, $rows, $cols, $style="plain")
 	return $output;
 }
 
-function submit ($name, $onclick="", $tip="", $style="butbut")
+function submit ($name, $onclick="", $tip="", $style="")
 {
-	return "<INPUT TYPE=\"SUBMIT\" CLASS=\"$style\" VALUE=\"$name\" onClick=\"".$onclick."\" title=\"$tip\">\n";
+	return "<INPUT TYPE=\"SUBMIT\" class=\"butbut w3-btn w3-small w3-ripple $style\" VALUE=\"$name\" onClick=\"".$onclick."\" title=\"$tip\">\n";
 }
 
 function input_button ($name, $onclick="", $style="plain")
-{
+{# Not used
 	return "<INPUT TYPE=\"BUTTON\" CLASS=\"$style\" VALUE=\"$name\" onClick=\"".$onclick."\">\n";
 }
 
@@ -87,7 +88,7 @@ function gorp($fieldname)
 	if (isset($return)) return $return;
 
 	if (strtolower($_SERVER["REQUEST_METHOD"])=="post") {
-		$return=$_POST["$fieldname"];
+		if (array_key_exists($fieldname,$_POST)) $return=$_POST[$fieldname];
 	}
 	if (isset($return)) return $return;
 	return null;
@@ -115,7 +116,7 @@ function menu_button($lab, $loc, $tip=''){
 }
 
 function action_button($lab, $loc, $tip="", $class=""){
-	return "<form action=\"$loc\" method=\"POST\" class='butform'><button class=\"butbut\" title=\"$tip\"><span class=\"$class\">$lab</span></button></form>";
+	return "<form action=\"$loc\" method=\"POST\" class='butform' ><button class=\"butbut w3-btn w3-small w3-ripple $class\" title=\"$tip\"><span class=\" btntext\">$lab</span></button></form>";
 	
 }
 

@@ -16,13 +16,13 @@ if ($auth) {
 
 	$result=sql_query($db,"select  date, ip, outcome from loginlog where name = \"$login\" order by loginlog.date desc limit 11");
 	if (sql_num_rows($result)>0) {
-		$class = array (0 => "error", 1=> "success");
+		$class = array (0 => "error", 1=> "plain");
 		$outcome = array (0 => "Failed", 1=> "Succeeded");
 		$output.="<P>\n";
 		$output.="<SPAN CLASS=\"plain\">Last 10 logins to your account:</SPAN>";
 		$output.="<P>\n";
-		$output.="<TABLE BORDER=\"0\" CELLPADDING=\"2\" CELLSPACING\"0\">\n";
-		$output.="<TR><TD CLASS=\"plain\" WIDTH=\"180\">Date</TD>";
+		$output.="<TABLE BORDER=\"0\" width=50% CELLPADDING=\"2\" CELLSPACING\"0\" class='w3-small w3-striped w3-border' >\n";
+		$output.="<TR class='w3-pale-green'><TD CLASS=\"plain\" WIDTH=\"180\">Date</TD>";
 		$output.="<TD CLASS=\"plain\" WIDTH=\"280\">IP (host)</TD>";
 		$output.="<TD CLASS=\"plain\">Outcome</TD></TR>\n";
 		# Skip this login entry

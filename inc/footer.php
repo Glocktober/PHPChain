@@ -2,6 +2,7 @@
 </TR>
 </TABLE>
 <input type="text" id="blind" class="blind">
+</div>
 <script>
 var inp = document.getElementById("blind");
 

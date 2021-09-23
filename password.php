@@ -93,11 +93,13 @@ if (!$complete) {
 	$output.="<TR><TD CLASS=\"plain\">New Password: </TD><TD CLASS=\"plain\">".input_passwd("newkey",20,255,'','plain focus')."</TD></TR>\n";
 	$output.="<TR><TD CLASS=\"plain\">Verify new password: &nbsp;&nbsp;</TD><TD CLASS=\"plain\">".input_passwd("newkey2",20,255)."</TD></TR>\n";
 	$output.="<TR><TD CLASS='plain'>&nbsp;</TD></TR>";
-	$output.="<TR><TD CLASS=\"plain\" COLSPAN=\"2\" ALIGN=\"RIGHT\">".submit("Change password",'',"Change password, reencrypting all entries")."</TD></TR>\n";
+	$output.="<TR><TD CLASS=\"w3-center\" COLSPAN=\"2\" ALIGN=\"RIGHT\">".submit("Change password",'',"Change password, reencrypting all entries","w3-border w3-hover-pale-green")."</TD></TR>\n";
 	$output.="</TABLE>\n";
 	$output.=form_end();
 } else {
-	$output.="<h2 CLASS=\"success\">Password changed!</h2>";
+	$output.="<p CLASS=\"success\">PHPchain password changed!</p>";
+	$output.="<p class='plain'>Remember your chain passwords - your stored passwords can not
+	be recovered if you forget your chain password</p>";
 	set_status( "Password for \"<b>login</b>\" has been updated.");
 }
 

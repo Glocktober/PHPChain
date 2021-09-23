@@ -57,7 +57,7 @@ if ($allow_new_accounts){
 	$output.="<TR><TD CLASS=\"plain\">New Login: </TD><TD CLASS=\"plain\">".input_text("login",20,255,$login, 'plain focus')."</TD></TR>\n";
 	$output.="<TR><TD CLASS=\"plain\">Password: </TD><TD CLASS=\"plain\">".input_passwd("key",20,255)."</TD></TR>\n";
 	$output.="<TR><TD CLASS=\"plain\">Verify password: &nbsp;&nbsp;</TD><TD CLASS=\"plain\">".input_passwd("key2",20,255)."</TD></TR>\n";
-	$output.="<TR><TD CLASS=\"plain\" COLSPAN=\"2\" ALIGN=\"RIGHT\">".submit("Create login",'',"Create the account")."</TD></TR>\n";
+	$output.="<TR><TD CLASS=\"w3-center\" COLSPAN=\"2\" ALIGN=\"RIGHT\">".submit("Create login",'',"Create the account","w3-border w3-hover-pale-green")."</TD></TR>\n";
 	$output.="</TABLE>\n";
 	$output.=form_end();
 } else{

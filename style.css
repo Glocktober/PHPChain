@@ -1,129 +1,26 @@
-td.menubar {
-	background-color: burlywood;
-	border-top: 3px solid gray;
-	border-bottom: 3px solid grey;
-	width: 100%;
-}
-.messagebar{
-	font-size: 1.1em;
-	color: navy;
-	background-color:azure;
-	border-top: 1px solid gray;
-	border-bottom: 1.5px solid grey;
-	width: 100%;
-	text-align: center;
-}
-.errorbar{
-	font-size: 1.1em;
-	color:red;
-	background-color:azure;
-	border-top: 1px solid gray;
-	border-bottom: 1.5px solid grey;
-	width: 100%;
-	text-align: center;
-}
-.statusbar{
-	font-size: 1.1em;
-	color:green;
-	background-color:azure;
-	border-top: 1px solid gray;
-	border-bottom: 1.5px solid grey;
-	width: 100%;
-	text-align: center;
-}
-tr.menubar {
-	background-color: burlywood;
-	border-top: 3px solid gray;
-	border-bottom: 3px solid grey;
-	width: 100%;
-}
-
-tr:hover {
-	background-color: gray;
-	color: white;
-}
-span.menuleft {
-	float: left;
-	width: 40%;
-	font-family: Source Sans Pro, Arial, Verdana;
-	font-size: 15px;
-	text-align: left;
-	padding-top: 5px;
-	padding-bottom: 5px;
-	padding-left: 15px;
-	padding-right: 15px;
-}
-
-span.menuright {
-	float: right;
-	width: 40%;
-	font-family: Arial, Verdana;
-	font-family: Source Sans Pro, Arial, Verdana;
-	font-size: 1.1em;
-	text-align: right;
-	padding-top: 5px;
-	padding-bottom: 5px;
-	padding-left: 15px;
-	padding-right: 15px;
-}
 .butform{
-	display: inline-block;
+    display: inline-block;
 }
 .butbut{
-	margin-left:20px;
-	margin-right:20px;
+
 }
-.buttext{
-	font-size: 1.2em;
+.butspan{
+
 }
-#categorytable, #actioncolumn{
-	width: 50%;
+.left{
+    float: left;
 }
-td.titlebar {
-	font-family: Source Sans Pro, Arial, Verdana;
-	color: #f1f1f1;
-	text-align: left;
-	padding-top: 5px;
-	padding-left: 15px;
-	padding-bottom: 4px;
+.right{
+    float: right;
 }
-td.titlebar a{
-	color: white;
-	text-decoration: none;
+.fullw{
+    width: 100%;
 }
-td.main {
-	background-color: #f1f1f1;
-	padding-top: 15px;
-	padding-left: 15px;
-	padding-right: 15px;
-	text-align: left;
-	vertical-align: top;
-	border-bottom: 1px solid Black;
+.catitem{
+    border-bottom: 1px solid #ddd;
 }
-td.header {
-	background-color: grey;
-	text-align: left;
-	font-family: Source Sans Pro, Arial, Verdana;
-	font-size: 16px;
-	color: #ffffff;
-}
-td.rowSite {
-	background-color: biege;
-	text-align: left;
-	font-size: 16px;
-}
-td.rowLogin {
-	background-color: biege;
-	text-align: left;
-	font-family: Source Sans Pro,Arial, Verdana;
-	font-size: 14px;
-}
-td.row {
-	background-color: biege;
-color:green;
-	text-align: left;
-	font-family: Source Sans Pro,Arial, Verdana;
-	font-size: 14px;
+.catitem a{
+    text-decoration: none;
 }
 td.password {
 	background-color: #f1f1f1;
@@ -137,119 +34,44 @@ td.password {
 	color: white;
 
 }
-td.cats {
-	background-color: lightgray;
-	border-right: 5px solid grey;
-}
-td.catsbot {
-	background-color: lightgray;
-	padding-bottom: 400px;
-	padding-left: 15px;
-	padding-top: 15px;
-	border-right: 5px solid grey;
-	border-bottom: 5px solid grey;
-}
-td.cat {
-	padding-left: 15px;
-	background-color: lightgray;
-	text-align: left;
-	vertical-align: top;
-	border-right: 5px solid grey;
-	padding-top: 2px;
-	padding-bottom: 2px;
-}
-td.ccat {
-	background-color: grey;
-	color: #f1f1f1;
-	font-weight: bolder;
-	padding-left: 15px;
-	padding-bottom: 2px;
-	text-align: left;
-	vertical-align: top;
-	border-top: 2px solid darkgrey;
-	border-bottom: 2px solid darkgrey;
-}
-body.main {
-	background-color: grey;
-	margin: 0px 15px 15px 15px;
-	padding: 0px 0px 0px 0px;
-}
-a.menubar {
-	text-decoration: none;
-	color: Black;
-	margin-right: 15px;
-	padding-left: 4px;
-	padding-right: 4px;
-}
-a.menubar:hover {
-	background-color: lightgrey;
-	color: Black;
-	margin-right: 15px;
-	padding-left: 4px;
-	padding-right: 4px;
-}
-td .cat:hover {
-	color: white;
-	background-color: gray;
-}
-a.cat {
-	text-decoration: none;
-	color: Black;
-	font-family: Arial, Verdana;
-	font-size: 13px;	
-}
-p.intro {
-	font-family: Source Sans Pro, Arial, Verdana;
-	font-size: 16px;
-	text-indent: 6px;
-	color: black;
-}
-input.plain{
-	background-color: azure;
-}
-.plain {
-	font-family: Arial, Verdana;
-	/* font-size: 13px; */
-	color: black;
-}
-.success {
-	font-family: Arial, Verdana;
-	/* font-size: 13px; */
-	color: green;
-}
-.info {
-	font-family: Arial, Verdana;
-	/* font-size: 13px; */
-	color:navy;
-}
-.error {
-	font-family: Arial, Verdana;
-	/* font-size: 13px; */
-	color: #FF0000;
-}
-input.login {
-	border: 1px solid Black;
-	font-size: 10px;
-	font-family: Arial, Verdana;
-	background-color: #dad8d8;
-	padding-left: 2px;
-	margin-top: 0px;
-	margin-bottom: 0px;
-}
-input.submit {
-	border: 1px solid Black;
-	font-size: 10px;
-	font-family: Arial, Verdana;
-	margin-top: 0px;
-	margin-bottom: 0px;
-}
-form {
-	margin: 0px;
-}
 .blind{
-	background-color: grey;
-	color: grey;
+	background-color:transparent;
+	color: transparent;
 	font-size: 0.01em;
 	border-width: 0px;
-	border-color: grey;
+	border-color:transparent;
+}
+.success {
+	color: green;
+}
+.error {
+	color: #FF0000;
+}
+.info {
+	color:navy;
+}
+.messagebar{
+	font-size: 1.1em;
+	color: navy;
+	width: 100%;
+	text-align: center;
+}
+.errorbar{
+	font-size: 1.1em;
+	color:red;
+	background-color:azure;
+	width: 100%;
+	text-align: center;
+}
+.statusbar{
+	font-size: 1.1em;
+	color:green;
+	width: 100%;
+	text-align: center;
+}
+.ghostwhite{
+	background-color:antiquewhite;
+}
+td.row a{
+	text-decoration: none;
 }

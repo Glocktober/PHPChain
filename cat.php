@@ -58,9 +58,9 @@ switch($action) {
 			header("Location: cat.php?action=edit&catid=$catid&csrftok=".get_csrf());
 			die();
 		} else {
-			
-			$output.="<TABLE BORDER=\"0\" CELLPADDING=\"2\" CELLSPACING=\"1\" id=cattable>\n";
-			$output.="<TR>\n";
+			set_status("Hover over password to reveal. Click on <b>Login</b> or <b>Password</b> entry to copy to clipboard. Click on Site to open URL");
+			$output.="<TABLE BORDER=\"0\" CELLPADDING=\"2\" CELLSPACING=\"1\" id=cattable class=\"w3-table w3-small w3-border\">\n";
+			$output.="<TR class='w3-pale-blue'>\n";
 			$output.="<TD CLASS=\"header\" WIDTH=\"25%\">Site</TD>\n";
 			$output.="<TD CLASS=\"header\" WIDTH=\"15%\">Login</TD>\n";
 			$output.="<TD CLASS=\"header\" WIDTH=\"25%\">Password</TD>\n";
@@ -79,23 +79,22 @@ switch($action) {
 			array_multisort($sortarray, SORT_ASC, $resarray);
 
 			foreach ($resarray as $val) {
-				if (strlen($val["url"])>1) $outsite="<A HREF=\"".$val["url"]."\" TARGET=\"_blank\">".$val["site"]."</A>";
+				if (strlen($val["url"])>1) $outsite="<A HREF=\"".$val["url"]."\" TARGET=\"_blank\" title=\"Click to open URL\">".$val["site"]."</A>";
 				else $outsite=$val["site"];
-				$output.="<TR><TD CLASS=\"row\">".$outsite."</TD>\n";
-				$output.="<TD CLASS=\"row login copyclick\" title=\"".$val["login"]."\" >".$val["login"]."</TD>\n";
-				$output.="<TD  CLASS=\"password copyclick\" title=\"Click to copy\">".$val["password"]."</TD>\n";
-				$output.="<TD CLASS=\"row\">";
-				$output.=action_button('Edit',$_SERVER["PHP_SELF"]."?action=edit&itemid=".$val["id"]."&csrftok=".get_csrf(), "Edit this password entry");
-				$output.=action_button('Delete',$_SERVER["PHP_SELF"]."?action=delete&itemid=".$val["id"]."&catid=".$catid."&csrftok=".get_csrf(),"Delete this password entry");
+				$output.="<TR  class='w3-hover-light-grey'>";
+					$output.="<TD CLASS=\"row\" title=\"Site URL ".$val["url"]."\" >".$outsite."</TD>\n";
+					$output.="<TD CLASS=\"row login copyclick\" title=\"Click to copy login\">".$val["login"]."</TD>\n";
+					$output.="<TD  CLASS=\"password copyclick\" title=\"Click to copy password\">".$val["password"]."</TD>\n";
+					$output.="<TD CLASS=\"row\">";
+					$output.=action_button('Edit',$_SERVER["PHP_SELF"]."?action=edit&itemid=".$val["id"]."&csrftok=".get_csrf(), "Edit this password entry", "w3-light-grey w3-hover-pale-red");
+					$output.=action_button('Delete',$_SERVER["PHP_SELF"]."?action=delete&itemid=".$val["id"]."&catid=".$catid."&csrftok=".get_csrf(),"Delete this password entry","w3-light-grey w3-hover-pale-red");
 				$output.="</TR>";
 			}
-			// $output.='<tr><td>&nbsp;</td></tr>';
-			$output.="</TABLE>\n<hr>";
-			$output.=action_button('Create New Password Entry',
-				"cat.php?action=edit&catid=".$catid."&csrftok=".get_csrf(),
-				"Add a new entry to this category"
-				);
-
+			$output.="<tr><td COLSPAN=4 width=100% class=w3-center>";
+			$output.=action_button('Create a New Password Entry',
+			"cat.php?action=edit&catid=".$catid."&csrftok=".get_csrf(),
+			"Add a new entry to this category", "w3-border w3-hover-pale-green");
+			$output.="</tr></TABLE>";
 		}
 	break;
 	case "edit":
@@ -147,8 +146,7 @@ switch($action) {
 			$output.="<TR><TD CLASS=\"plain\">URL: </TD><TD CLASS=\"plain\">".input_text("url",30,255,$url)."</TD></TR>\n";
 			$output.="<TR><TD CLASS=\"plain\">Login: </TD><TD CLASS=\"plain\">".input_text("login",30,255,$login)."</TD></TR>\n";
 			$output.="<TR><TD CLASS=\"plain\">Password: </TD><TD CLASS=\"plain\">".input_text("password",30,255,$password)."</TD></TR>\n";
-			$output.="<TR><TD class=plain>&nbsp;</td></tr>";
-			$output.="<TR><TD CLASS=\"plain\" ALIGN=\"RIGHT\" COLSPAN=\"2\">".submit("Save entry",'','Save changes')."</TD></TR>\n";
+			$output.="<TR><TD CLASS=\"plain w3-center\"  COLSPAN=\"2\">".submit("Save entry",'','Save changes',"w3-border w3-hover-pale-green")."</TD></TR>\n";
 			$output.="</TABLE>\n";
 			$output.=form_end();
 		}
@@ -163,7 +161,7 @@ switch($action) {
 		$origsite=$site;
 		$url=sanigorp("url");
 
-		if (strpos($url,"http://")===FALSE && strpos($url,"https://")===FALSE) $url="http://".$url;
+		if (strpos($url,"http://")===FALSE && strpos($url,"https://")===FALSE) $url="https://".$url;
 
 		// Encrypt login and pass using key.
 		$iv=make_iv();
