@@ -67,11 +67,8 @@ if ($auth) {
 		$catid=gorp("catid");
 	}	
 	echo getmenu($_SESSION["id"],$catid);
-}
-?>
-<?php
-if ($auth) {
-	echo action_button('New Entry',"cat.php?action=edit&itemid=0&catid=$catid","Add new password entry", "w3-hover-pale-green w3-pale-grey w3-brder");
+
+	echo action_button('New Entry',"cat.php?action=edit&itemid=0&catid=$catid","Add new password entry", "w3-hover-pale-green w3-pale-grey w3-border w3-block");
 }
 ?>
 </TD></TR></TABLE> <!-- End menu wrapping table -->

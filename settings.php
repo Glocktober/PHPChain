@@ -35,8 +35,10 @@ if (isset($action)) {
 			} else {
 				$query="update cat set title=\"$title\" where userid=\"$userid\" and id=\"$catid\"";
 			}
-			sql_query($db,$query);
-			set_status("Changes to \"<b>$title</b>\" saved");
+			if (!sql_query($db,$query))
+				set_error("Error: saving category: ".sql_error($db));
+			else set_status("Changes to \"<b>$title</b>\" saved");
+			
 			header("Location: ".$_SERVER["PHP_SELF"]);
 			die();
 		break;
@@ -51,8 +53,9 @@ if (isset($action)) {
 			if ($row[0]>0) {
 				set_error('Unable to delete. Remove login entries from category first');
 			} else {
-				sql_query($db,"delete from cat where id = \"$catid\" and userid=\"$userid\"");
-				set_status('Category Successfully Removed');
+				if (!sql_query($db,"delete from cat where id = \"$catid\" and userid=\"$userid\""))
+					set_error("Error: Deleting catalog entry: ".sql_error($db));
+				else:set_status('Category Successfully Removed');
 			}
 			header("Location: ".$_SERVER["PHP_SELF"]);
 			die();
@@ -100,7 +103,7 @@ if (isset($action)) {
 		$output.="<TR><TD CLASS=\"row\"><a href=cat.php?catid=".$row["id"]." title=\"view password in this category\">".$row["title"]."</a></TD>\n";
 		$output.="<TD CLASS=\"row\" style='display:inline-block'>";
 		$output.= action_button('Edit',$_SERVER["PHP_SELF"].'?action=edit&catid='.$row['id'].'&csrftok='.get_csrf(), "Edit category name", 'w3-light-grey w3-hover-pale-red');
-		$output.= action_button('Delete','settings.php?action=delete&catid='.$row['id'].'&csrftok='.get_csrf(), "Delete (empty) category",'w3-light-grey w3-hover-pale-red');
+		$output.= action_button('Delete',$_SERVER["PHP_SELF"].'?action=delete&catid='.$row['id'].'&csrftok='.get_csrf(), "Delete (empty) category",'w3-light-grey w3-hover-pale-red');
 		$output.="</TD></TR>\n";
 	}
 

@@ -29,9 +29,11 @@ switch($action) {
 		$catid=sanigorp("catid");
 		$itemid=sanigorp("itemid");
 
-		sql_query($db,"delete from logins where id = \"$itemid\" and userid = \"$userid\"");
-
-		set_status("Successfully deleted password entry");
+		$query = "delete from logins where id = \"$itemid\" and userid = \"$userid\"";
+		if (!sql_query($db,$query)) 
+			set_error("Error: deleting password entry: ".sql_error($db));
+		else set_status("Successfully deleted password entry");
+		
 		header("Location: cat.php?action=view&catid=".$catid);
 		die();
 	break;
@@ -182,9 +184,9 @@ switch($action) {
 		} else {
 			$query="update logins set iv = \"$iv\", catid=\"$catid\", login=\"$login\", password=\"$password\", site = \"$site\", url = \"$url\" where id = \"$itemid\" and userid=\"$userid\"";
 		}
-		sql_query($db,$query);
+		if (!sql_query($db,$query)) set_error("Error: saving entry \"<b>$origsite</b>\": ".sql_error($db));
+		else set_status("Entry \"<b>$origsite</b>\" has been updated");
 
-		set_status("Entry \"<b>$origsite</b>\" has been updated");
 		header("Location: cat.php?catid=".$catid);
 		die();
 	break;

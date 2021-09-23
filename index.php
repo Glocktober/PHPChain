@@ -21,10 +21,10 @@ if ($auth) {
 		$output.="<P>\n";
 		$output.="<SPAN CLASS=\"plain\">Last 10 logins to your account:</SPAN>";
 		$output.="<P>\n";
-		$output.="<TABLE BORDER=\"0\" width=50% CELLPADDING=\"2\" CELLSPACING\"0\" class='w3-small w3-striped w3-border' >\n";
-		$output.="<TR class='w3-pale-green'><TD CLASS=\"plain\" WIDTH=\"180\">Date</TD>";
-		$output.="<TD CLASS=\"plain\" WIDTH=\"280\">IP (host)</TD>";
-		$output.="<TD CLASS=\"plain\">Outcome</TD></TR>\n";
+		$output.="<TABLE BORDER=\"0\" CELLPADDING=\"2\" CELLSPACING\"0\" class='w3-small w3-striped w3-border' >\n";
+		$output.="<TR class='w3-pale-green'><TD CLASS=\"plain\" xWIDTH=\"180\">Date</TD>";
+		$output.="<TD CLASS=\"plain\" >IP (host)</TD>";
+		$output.="<TD CLASS=\"plain\" >Outcome</TD></TR>\n";
 		# Skip this login entry
 		$row = sql_fetch_assoc($result);
 		while ($row=sql_fetch_assoc($result)) {

@@ -35,7 +35,12 @@ if ($allow_new_accounts and isset($login)) {
 		$teststring=base64_encode(encrypt($key,maketeststring(),$iv));
 		$iv=base64_encode($iv);
 
-		$result=sql_query($db,"insert into user values (NULL, \"$login\", \"$teststring\", \"$iv\")");
+		if (!sql_query($db,"insert into user values (NULL, \"$login\", \"$teststring\", \"$iv\")")){
+			set_error("Error: database error adding $login: ".sql_error($db));
+
+			header("Location: ".$_SERVER["PHP_SELF"]);
+			die();
+		}
 		$id=sql_insert_id($db);
 
 		$_SESSION['login'] = $login;

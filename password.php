@@ -14,9 +14,9 @@ if (!$auth) {
 	die();
 }
 
-$login = $_SESSION['login'];
+$loginname = $_SESSION['login'];
 
-if ($is_get) set_status("Updating Password for \"<b>$login</b>\": Passwords must be at least $min_password_length long");
+if ($is_get) set_status("Updating Password for \"<b>$loginname</b>\": Passwords must be at least $min_password_length long");
 
 $complete=gorp("complete");
 
@@ -39,7 +39,7 @@ if (!empty($newkey)&&!empty($newkey2)) {
 
 		$key = $_SESSION['key'];
 		$userid = $_SESSION['id'];
-		$login = $_SESSION['login'];
+		$loginname = $_SESSION['login'];
 
 		$newkey=md5($newkey);
 
@@ -48,7 +48,11 @@ if (!empty($newkey)&&!empty($newkey2)) {
 		$teststring=base64_encode(encrypt($newkey,maketeststring(),$iv));
 		$iv=base64_encode($iv);
 
-		$result=sql_query($db, "insert into user values (NULL, \"$login\", \"$teststring\", \"$iv\")");
+		if (!sql_query($db, "insert into user values (NULL, \"$loginname\", \"$teststring\", \"$iv\")")){
+			set_error("Error: changing password - password not changed: ".sql_error($db));
+			header("Location: ".$_SERVER["PHP_SELF"]);
+			die();
+		}
 		$id=sql_insert_id($db);
 
 		$result=sql_query($db, "select id, iv, catid, login, password, site, url from logins where userid = \"$userid\"");
@@ -67,6 +71,7 @@ if (!empty($newkey)&&!empty($newkey2)) {
 			$url=base64_encode(encrypt($newkey,$url,$iv));
 			$iv=base64_encode($iv);
 			sql_query($db, "insert into logins values (NULL, \"$iv\", \"$id\", \"$catid\", \"$login\", \"$password\", \"$site\", \"$url\")");
+			# At this point, too late to backout on an error - should use a transaction here.
 		}
 
 		// DB cleanup.
@@ -78,7 +83,8 @@ if (!empty($newkey)&&!empty($newkey2)) {
 		$_SESSION['id'] = $id;
 		$_SESSION['key'] = $newkey;
 
-		header("Location: ".$_SERVER["PHP_SELF"]."?complete=TRUE");
+		set_status( "Password for \"<b>$loginname</b>\" has been updated.");
+		header("Location: index.php");
 		die();
 	}
 }
@@ -96,12 +102,7 @@ if (!$complete) {
 	$output.="<TR><TD CLASS=\"w3-center\" COLSPAN=\"2\" ALIGN=\"RIGHT\">".submit("Change password",'',"Change password, reencrypting all entries","w3-border w3-hover-pale-green")."</TD></TR>\n";
 	$output.="</TABLE>\n";
 	$output.=form_end();
-} else {
-	$output.="<p CLASS=\"success\">PHPchain password changed!</p>";
-	$output.="<p class='plain'>Remember your chain passwords - your stored passwords can not
-	be recovered if you forget your chain password</p>";
-	set_status( "Password for \"<b>login</b>\" has been updated.");
-}
+} 
 
 include ("inc/header.php");
 

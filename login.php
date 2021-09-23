@@ -42,6 +42,7 @@ if (isset($login)&&isset($key)) {
 			if (testteststring(trim(decrypt($key,base64_decode($row["teststring"]),base64_decode($row["iv"]))))) {
 				// Login log
 				sql_query($db,"insert into loginlog values (\"$login\", \"$ip\", \"$now\",1)");
+				# going to skip reporting errors as the db may be in RO mode
 				$id=$row["id"];
 				$_SESSION['login'] = $login;
 				$_SESSION['id'] = $id;

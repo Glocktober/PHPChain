@@ -75,3 +75,6 @@ input.password, td.password {
 td.row a{
 	text-decoration: none;
 }
+.boldx{
+	font-weight: bold;
+}
