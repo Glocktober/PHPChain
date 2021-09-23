@@ -46,9 +46,9 @@ function input_radio ($name, $value, $checked=FALSE, $style="plain")
 	}
 }
 
-function input_select ($name, $default, $data, $style="plain")
+function input_select ($name, $default, $data, $style="plain", $tip='')
 {
-	$output="<SELECT NAME=\"".$name."\" CLASS=\"".$style."\">\n";
+	$output="<SELECT NAME=\"".$name."\" CLASS=\"".$style."\" title=\"$tip\">\n";
 
 	foreach($data as $value){
 		if ($value[0]==$default) {

@@ -141,12 +141,12 @@ switch($action) {
 			$output.=input_hidden("itemid",$itemid);
 			$output.=input_hidden("action","save");
 			$output.="<TABLE BORDER=\"0\" CELLPADDING=\"2\" CELLSPACING=\"0\">\n";
-			$output.="<TR><TD CLASS=\"plain\">Category: </TD><TD CLASS=\"plain\">".input_select("catid",$catid,$cats,'plain focus')."</TD></TR>\n";
-			$output.="<TR><TD CLASS=\"plain\">Site: </TD><TD CLASS=\"plain\">".input_text("site",30,255,$site)."</TD></TR>\n";
-			$output.="<TR><TD CLASS=\"plain\">URL: </TD><TD CLASS=\"plain\">".input_text("url",30,255,$url)."</TD></TR>\n";
-			$output.="<TR><TD CLASS=\"plain\">Login: </TD><TD CLASS=\"plain\">".input_text("login",30,255,$login)."</TD></TR>\n";
-			$output.="<TR><TD CLASS=\"plain\">Password: </TD><TD CLASS=\"plain\">".input_text("password",30,255,$password)."</TD></TR>\n";
-			$output.="<TR><TD CLASS=\"plain w3-center\"  COLSPAN=\"2\">".submit("Save entry",'','Save changes',"w3-border w3-hover-pale-green")."</TD></TR>\n";
+			$output.="<TR><TD CLASS=\"plain\">Category: </TD><TD CLASS=\"plain\">".input_select("catid",$catid,$cats,'plain','Select the category for this entry')."</TD></TR>\n";
+			$output.="<TR><TD CLASS=\"plain\"><span class=error>*</span>Site: </TD><TD CLASS=\"plain focus\">".input_text("site",30,255,$site,'', 'required: the sight name to identify this entry')."</TD></TR>\n";
+			$output.="<TR><TD CLASS=\"plain\">URL: </TD><TD CLASS=\"plain\">".input_text("url",30,255,$url,'','the URL for this site')."</TD></TR>\n";
+			$output.="<TR><TD CLASS=\"plain\">Login: </TD><TD CLASS=\"plain\">".input_text("login",30,255,$login,'', 'The username for this entry')."</TD></TR>\n";
+			$output.="<TR><TD CLASS=\"plain\">Password: </TD><TD CLASS=\"plain\">".input_text("password",30,255,$password,'password', 'The password for this entry')."</TD></TR>\n";
+			$output.="<TR><TD CLASS=\"plain w3-center\"  COLSPAN=\"2\">".submit("Save entry",'','Save/update this entry',"w3-border w3-hover-pale-green")."</TD></TR>\n";
 			$output.="</TABLE>\n";
 			$output.=form_end();
 		}
@@ -160,6 +160,12 @@ switch($action) {
 		$site=sanigorp("site");
 		$origsite=$site;
 		$url=sanigorp("url");
+
+		if (strlen($site)==0){
+			set_error('Error: Can not create password entry: Specifiy a sight');
+			header("Location: ".$_SERVER["PHP_SELF"] . "?action=edit&catid=". $catid . "&csrftok=".get_csrf());
+			die();
+		}
 
 		if (strpos($url,"http://")===FALSE && strpos($url,"https://")===FALSE) $url="https://".$url;
 

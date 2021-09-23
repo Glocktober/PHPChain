@@ -24,6 +24,12 @@ if (isset($action)) {
 
 			$catid=get_post("catid");
 			$title=get_post("title");
+
+			if (strlen($title)==0){
+				set_error("Error: Could not create or update: a category name is required.");
+				header("Location: ".$_SERVER["PHP_SELF"]);
+				die();				
+			}
 			if ($catid==0) {
 				$query="insert into cat values (NULL, \"$userid\", \"$title\")";
 			} else {
@@ -102,7 +108,7 @@ if (isset($action)) {
 	$output.=form_begin($_SERVER["PHP_SELF"],"POST");
 	$output.=input_hidden("action","edit");
 	$output.=input_hidden("catid","0");
-	$output.=submit("New category", '', "Create a new category","w3-border w3-hover-pale-green");
+	$output.=submit("Add another category", '', "Create a new category","w3-border w3-hover-pale-green");
 	$output.=form_end();
 	$output.='</td></tr>';
 	$output.="</TABLE>\n<P>\n";

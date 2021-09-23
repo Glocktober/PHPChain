@@ -22,7 +22,7 @@
 .catitem a{
     text-decoration: none;
 }
-td.password {
+input.password, td.password {
 	background-color: #f1f1f1;
 	text-align: left;
 	font-family: Source Sans Pro, Arial, Verdana;

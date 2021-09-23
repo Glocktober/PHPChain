@@ -25,7 +25,7 @@ $document_title = $site_name;
 </HEAD>
 <BODY CLASS="main">
 <div class=w3-container>
-<TABLE BORDER="0" CELLPADDING="0" CELLSPACING="0" WIDTH="100%" id="toptable" class="w3-table w3-bordered w3-border w3-card-4">
+<TABLE BORDER="0" CELLPADDING="0" CELLSPACING="0" WIDTH="100%" id="toptable" class="w3-table w3-bordered w3-borer">
 <TR class="w3-container w3-teal">
 <TD COLSPAN="2" CLASS="titlebar" onClick="javascript:document.location='index.php'" style="padding-left:5%;">
 <span style=";"> <?php echo $document_title ?></span> <SPAN style="margin-right:5%;float:right;"><i>phpchain</i> password vault version <?php echo C_VERSION; ?></A> </SPAN>
