@@ -57,13 +57,16 @@ if (!empty($newkey)&&!empty($newkey2)) {
 		}
 		$id=sql_insert_id($db);
 
-		$result=sql_query($db, "select id, iv, catid, login, password, site, url from logins where userid = \"$userid\"");
+		$result=sql_query($db, "select id, iv, catid, login, password, site, url, noteid, created, modified from logins where userid = \"$userid\"");
 
 		while ($row=sql_fetch_assoc($result)) {
 			$login=trim(decrypt($key,base64_decode($row["login"]),base64_decode($row["iv"])));
 			$password=trim(decrypt($key,base64_decode($row["password"]),base64_decode($row["iv"])));
 			$site=trim(decrypt($key,base64_decode($row["site"]),base64_decode($row["iv"])));
 			$url=trim(decrypt($key,base64_decode($row["url"]),base64_decode($row["iv"])));
+			$noteid = $row['noteid'];
+			$created = $row ['created'];
+			$modified = $row['modified'];
 			$catid=$row["catid"];
 
 			$iv=make_iv();
@@ -72,7 +75,7 @@ if (!empty($newkey)&&!empty($newkey2)) {
 			$site=base64_encode(encrypt($newkey,$site,$iv));
 			$url=base64_encode(encrypt($newkey,$url,$iv));
 			$iv=base64_encode($iv);
-			sql_query($db, "insert into logins values (NULL, \"$iv\", \"$id\", \"$catid\", \"$login\", \"$password\", \"$site\", \"$url\")");
+			sql_query($db, "insert into logins values (NULL, \"$iv\", \"$id\", \"$catid\", \"$login\", \"$password\", \"$site\", \"$url\",\"$noteid\", \"$created\",\"$modified\" )");
 			# At this point, too late to backout on an error - should use a transaction here.
 		}
 

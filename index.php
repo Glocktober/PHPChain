@@ -7,8 +7,6 @@ include ("inc/form.php");
 sql_conn();
 $auth = is_authed();
 
-$time_format = "%H:%M:%S %d-%b-%Y";
-
 $login = "";
 if (array_key_exists('login',$_SESSION)) $login = $_SESSION['login'];
 
