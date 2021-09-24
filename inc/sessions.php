@@ -81,4 +81,14 @@ function status_message(){
     }
 }
 
+function error_out($msg, $loc="index.php"){
+    set_error($msg);
+    header("Location: $loc");
+    die();
+}
+
+if (isset($reqauth) and $reqauth and ! is_authed()){
+    error_out("Operation requires authentication. Please login.",'login.php');
+}
+
 ?>

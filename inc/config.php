@@ -33,6 +33,7 @@ $sqlite_db_path = env_get('sqlite_db_path','/var/www/db/phpchain.db');
 $login_lockout_failures = env_get('login_lockout_failures',5);
 $login_lockout_window = env_get('login_lockout_window',10);
 $allow_new_accounts = env_get('allow_new_accounts',true);
+$auth_for_new_accounts = env_get('auth_for_new_accounts',false);
 
 # Required min password length
 $min_password_length = env_get('min_password_length',8);

@@ -10,10 +10,11 @@ function getmenu($userid,$catid=NULL)
 
 	while ($row=sql_fetch_assoc($result)) {
 		if ($row["id"]==$catid) {
-			$menu.='<li class="boldx w3-pale-blue w3-padding-small w3-hover-pale-blue catselitem">'.$row["title"]."</li>";
+			$menu.='<li class="boldx w3-pale-blue w3-padding-small w3-hover-pale-blue catitem">';
+			$menu.="<A CLASS=\"cat\" HREF=\"cat.php?action=view&catid=".$row["id"]."\">".$row["title"]."</A></li>";
 		} else {
 			$menu.='<li class="w3-hover-pale-blue w3-padding-small catitem">';
-			$menu.="<A CLASS=\"cat\" HREF=\"cat.php?catid=".$row["id"]."\">".$row["title"]."</A></li>\n";
+			$menu.="<A CLASS=\"cat\" HREF=\"cat.php?action=view&catid=".$row["id"]."\">".$row["title"]."</A></li>";
 		}
 	}
 	

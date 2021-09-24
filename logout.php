@@ -1,4 +1,6 @@
 <?php
+$page='logout';
+$reqauth=true;
 include ("inc/config.php");
 include("inc/form.php");
 

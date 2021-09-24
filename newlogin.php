@@ -1,8 +1,13 @@
 <?php
+$page="newlogin";
+$reqauth=false;
 include ("inc/config.php");
 include ("inc/crypt.php");
 include ("inc/form.php");
- 
+
+if (!$allow_new_accounts) error_out("Error: <B>New accounts are disabled</b>: contact your administrator.");
+if ($auth_for_new_accounts AND !is_authed())  error_out("Error: <b>Authentication required</b> to create an account");
+
 $login = get_post('login');
 $key = get_post('key');
 $key2 = get_post('key2');

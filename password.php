@@ -1,4 +1,6 @@
 <?php
+$page='password';
+$reqauth=true;
 include ("inc/config.php");
 include ("inc/form.php");
 include ("inc/crypt.php");
@@ -98,8 +100,9 @@ if (!$complete) {
 	$output.="<TABLE BORDER=\"0\" CELLPADDING=\"2\" CELLSPACING=\"0\">\n";
 	$output.="<TR><TD CLASS=\"plain\">New Password: </TD><TD CLASS=\"plain\">".input_passwd("newkey",20,255,'','plain focus')."</TD></TR>\n";
 	$output.="<TR><TD CLASS=\"plain\">Verify new password: &nbsp;&nbsp;</TD><TD CLASS=\"plain\">".input_passwd("newkey2",20,255)."</TD></TR>\n";
-	$output.="<TR><TD CLASS='plain'>&nbsp;</TD></TR>";
-	$output.="<TR><TD CLASS=\"w3-center\" COLSPAN=\"2\" ALIGN=\"RIGHT\">".submit("Change password",'',"Change password, reencrypting all entries","w3-border w3-hover-pale-green")."</TD></TR>\n";
+	
+	$output.="<TR><td></td><TD CLASS=\"w3-center\" COLSPAN=\"2\" ALIGN=\"RIGHT\"><a class='butbut w3-button w3-border w3-hover-pale-green' href=\"index.php\" title='Make No Changes'>Back</a>&nbsp;&nbsp;";
+	$output.=submit("Save",'',"Change password, reencrypting all entries","w3-border w3-hover-pale-green")."</TD></TR>\n";
 	$output.="</TABLE>\n";
 	$output.=form_end();
 } 

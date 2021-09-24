@@ -1,4 +1,6 @@
 <?php
+$page='settings';
+$reqauth=true;
 include ("inc/config.php");
 include ("inc/form.php");
 
@@ -74,16 +76,18 @@ if (isset($action)) {
 				$row=sql_fetch_assoc($result);
 				$title=$row["title"];
 			}
-
-			$output.="<P CLASS=\"plain\">\n";
-			$output.="Edit category:\n";
-			$output.="<P CLASS=\"plain\">\n";
+$output.="<table class=''><tr><td width='20%';>";
+			$output.="<span CLASS='plain right'>Edit category:</span>";
+			$output.='</td><td>';
 			$output.=form_begin($_SERVER["PHP_SELF"],"POST","settings");
 			$output.=input_hidden("action","save");
 			$output.=input_hidden("catid",$catid);
 			$output.=input_text("title",30,255,$title,'plain focus',"The title for this category");
+$output.="</td></tr><tr><td></td><td>";
+$output.="<a class='butbut w3-button w3-border w3-hover-pale-green w3-center' href=\"settings.php\" title='Make No Changes'>Back</a>&nbsp;";
 			$output.=submit("Save", '',"Save this category",'w3-hover-pale-green w3-border');
 			$output.=form_end();
+$output.="</td></tr></table>";
 
 			if ($title) $msg = "Editing catagory \"$title\"";
 			else $msg = "Creating new category";

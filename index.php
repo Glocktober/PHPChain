@@ -1,4 +1,6 @@
 <?php
+$page="index";
+$requth=false;
 include ("inc/config.php");
 include ("inc/form.php");
 

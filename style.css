@@ -5,6 +5,9 @@
 	border-width: 0px;
 	background-color: transparent;
 }
+a.butbut{
+	font-size:12px;
+}
 .butspan{
 
 }
@@ -38,11 +41,10 @@
 input.password, td.password {
 	background-color: #f1f1f1;
 	text-align: left;
-	font-family: Source Sans Pro, Arial, Verdana;
-	font-size: 15px;
 	color: #f1f1f1;
+	border-style:unset;
 }
-.password:hover {
+input.password:focus, .password:hover {
 	background-color: #484848;
 	color: white;
 
@@ -90,4 +92,7 @@ td.row a{
 }
 .boldx{
 	font-weight: bold;
+}
+.locked{
+	
 }

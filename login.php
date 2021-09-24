@@ -1,4 +1,6 @@
 <?php
+$page="logon";
+$reqauth=false;
 include ("inc/config.php");
 include ("inc/form.php");
 include ("inc/crypt.php");

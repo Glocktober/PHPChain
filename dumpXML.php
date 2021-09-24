@@ -1,4 +1,6 @@
 <?php
+$page="dumpXML";
+$reqauth=true;
 include("inc/config.php");
 include("inc/crypt.php");
 define ('C_VERSION','1.5');

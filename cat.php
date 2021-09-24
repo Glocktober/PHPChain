@@ -1,9 +1,10 @@
 <?php
+$page="cat";
+$reqauth=true;
 include ("inc/config.php");
 include ("inc/form.php");
 include ("inc/crypt.php");
 
-$page="cat";
 
 sql_conn();
 
@@ -20,10 +21,10 @@ $authed_login = $_SESSION['login'];
 
 $action=gorp("action");
 
-if (empty($action)) $action="view";
+if (empty($action)) $action="";
 $output="";
 
-if ($action != "view") check_csrf();
+if ($action and $action != "view") check_csrf();
 switch($action) {
 	case "delete":
 		$catid=sanigorp("catid");
@@ -140,19 +141,37 @@ switch($action) {
 			die();
 		} else {
 			$cats=restoarray($result);
-
+			$backurl = (isset($catid) and !is_null($catid)) ? "cat.php?action=view&catid=$catid" : "index.php";
+			
 			$output.=form_begin($_SERVER["PHP_SELF"],"POST");
 			$output.=input_hidden("itemid",$itemid);
 			$output.=input_hidden("action","save");
-			$output.="<TABLE BORDER=\"0\" CELLPADDING=\"2\" CELLSPACING=\"0\">\n";
-			$output.="<TR><TD CLASS=\"plain\">Category: </TD><TD CLASS=\"plain\">".input_select("catid",$catid,$cats,'plain','Select the category for this entry')."</TD></TR>\n";
-			$output.="<TR><TD CLASS=\"plain\"><span class=error>*</span>Site: </TD><TD CLASS=\"plain focus\">".input_text("site",30,255,$site,'', 'required: the sight name to identify this entry')."</TD></TR>\n";
-			$output.="<TR><TD CLASS=\"plain\">URL: </TD><TD CLASS=\"plain\">".input_text("url",30,255,$url,'','the URL for this site')."</TD></TR>\n";
-			$output.="<TR><TD CLASS=\"plain\">Login: </TD><TD CLASS=\"plain\">".input_text("login",30,255,$login,'', 'The username for this entry')."</TD></TR>\n";
-			$output.="<TR><TD CLASS=\"plain\">Password: </TD><TD CLASS=\"plain\">".input_text("password",30,255,$password,'password', 'The password for this entry')."</TD></TR>\n";
-			$output.="<TR><TD CLASS=\"plain w3-center\"  COLSPAN=\"2\">".submit("Save entry",'','Save/update this entry',"w3-border w3-hover-pale-green")."</TD></TR>\n";
-			$output.="</TABLE>\n";
+			$output.="<TABLE BORDER=\"0\" CELLPADDING=\"2\" CELLSPACING=\"0\">";
+			$output.="<TR><TD CLASS=\"plain\">Category: </TD><TD CLASS=\"plain\">".input_select("catid",$catid,$cats,'plain locked','Select the category for this entry')."</TD></TR>\n";
+			$output.="<TR><TD CLASS=\"plain\"><span class=error>*</span>Site: </TD><TD CLASS=\"plain\">".input_text("site",30,255,$site,'locked', 'required: the sight name to identify this entry')."</TD></TR>\n";
+			$output.="<TR><TD CLASS=\"plain\">URL: </TD><TD CLASS=\"plain\">".input_text("url",30,255,$url,'locked','the URL for this site')."</TD></TR>\n";
+			$output.="<TR><TD CLASS=\"plain\">Login: </TD><TD CLASS=\"plain\">".input_text("login",30,255,$login,'locked', 'The username for this entry')."</TD></TR>\n";
+			$output.="<TR><TD CLASS=\"plain\">Password: </TD><TD CLASS=\"plain\">".input_text("password",30,255,$password,'locked password', 'The password for this entry')."</TD></TR>\n";
+			$output.="<TR class=w3-center><TD CLASS=\"plain w3-center\"  COLSPAN=\"2\">&nbsp;&nbsp;<a class='butbut w3-button w3-border w3-hover-pale-green' href=\"$backurl\" title='Make No Changes'>Back</a>&nbsp;";
+			$output.="<a class='butbut w3-button w3-border w3-hover-pale-green' onclick='doable(false);', type=button title='Enable editing'>Edit</a>&nbsp;";
+			$output.=submit("Save",'','Save Changes',"w3-border w3-hover-pale-red locked")."</TD></TR>\n";
+			$output.="</TABLE>";
 			$output.=form_end();
+			$output.="<script>";
+			$output.="
+			doable = function(flag){
+				console.log('flag',flag);
+				const lck = document.getElementsByClassName('locked');
+				const n = lck.length;
+				for (let i=0;i<n;i++ ) { 
+					lck.item(i).disabled = flag;
+				}
+			}
+			/*tid = setTimeout(doable,0,true);
+			*/
+			doable(true);
+			";
+			$output.="</script>";
 		}
 	break;
 
@@ -189,9 +208,14 @@ switch($action) {
 		if (!sql_query($db,$query)) set_error("Error: saving entry \"<b>$origsite</b>\": ".sql_error($db));
 		else set_status("Entry \"<b>$origsite</b>\" has been updated");
 
-		header("Location: cat.php?catid=".$catid);
+		header("Location: cat.php?action=view&catid=".$catid);
 		die();
 	break;
+
+	default:
+		$output.="<table width='fit-content' ><tr><td>";
+		$output.="<p>Select a category from the left column, or create a new category.</p></td></tr>";
+		$output.="<tr><td class=w3-center><a class='w3-btn w3-border w3-hover-pale-green butbut' href='settings.php' title='Manage categories'>Manage Categories</a></td></tr></table>";
 }
 
 include ("inc/header.php");

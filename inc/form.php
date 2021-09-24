@@ -1,7 +1,7 @@
 <?php
-function form_begin ($action, $method, $id="", $enctype="")
+function form_begin ($action, $method, $id="", $enctype="", $class='')
 {
-	$formstart = "<FORM ACTION=\"$action\" METHOD=\"$method\" ENCTYPE=\"$enctype\" ID=\"".$id."\">\n";
+	$formstart = "<FORM ACTION=\"$action\" METHOD=\"$method\" ENCTYPE=\"$enctype\" ID=\"".$id."\" class=\"$class\">\n";
 	$formstart .= input_hidden('csrftok',get_csrf());
 	return $formstart;
 }
