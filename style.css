@@ -8,10 +8,13 @@
 .butspan{
 
 }
-.material-icons{
+.infoicon{
+	color:lightskyblue;
+}
+.editicon{
 	color:grey;
 }
-.material-icons:hover{
+.editicon:hover{
 	color: red;
 }
 .iconoffs{

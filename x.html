@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    
+    <div>
+        <form id='fff' action="savenote.php" method=post>
+            <input type="hidden" name="id" value=100>
+            <input type="hidden" name="csrftok" value=123>
+            
+            <textarea name="area" id="area" cols="30" disabled 
+            onclick="enableit()"rows="10">
+            </textarea>
+            <button type="button" onclick="enableit();">edit</button>
+            <button type="button">cancel</button>
+            <button id='save' type="submit" disabled >save</button>
+        </form>
+    </div>
+</body>
+<script>
+enableit = function(){
+    const ta = document.getElementById('area');
+    ta.disabled = false;
+    event.stopImmediatePropagation();
+    const fm = document.getElementById('fff');
+    const sv = document.getElementById('save');
+    save.disabled = false;
+
+    console.log('enabled it');
+}
+
+</script>
+</html>

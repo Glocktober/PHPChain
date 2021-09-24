@@ -17,6 +17,7 @@ if (!$auth) {
 $userid = $_SESSION['id'];
 $key = $_SESSION['key'];
 $authed_login = $_SESSION['login'];
+$now = time();
 
 $action=gorp("action");
 
@@ -40,7 +41,7 @@ switch($action) {
 	case "view":
 		$catid=sanigorp("catid");
 
-		$result=sql_query($db,"select id, iv, login, password, site, url from logins where userid = \"$userid\" and catid = \"$catid\"");
+		$result=sql_query($db,"select id, iv, login, password, site, url, noteid, modified from logins where userid = \"$userid\" and catid = \"$catid\"");
 
 		if (sql_num_rows($result)==0) {
 			# category has no entries, at least for this user
@@ -76,28 +77,33 @@ switch($action) {
 				$password=trim(decrypt($key,base64_decode($row["password"]),base64_decode($row["iv"])));
 				$site=trim(decrypt($key,base64_decode($row["site"]),base64_decode($row["iv"])));
 				$url=trim(decrypt($key,base64_decode($row["url"]),base64_decode($row["iv"])));
-				$resarray[]=array("id"=>$row["id"], "login"=>$login, "password"=>$password, "site"=>$site, "url"=>$url);
+				$resarray[]=array("id"=>$row["id"], "login"=>$login, "password"=>$password, "site"=>$site, 
+							"url"=>$url,"noteid" => $row["noteid"], "modified" => $row["modified"] );
 				$sortarray[]=$site;
 			}
 
 			array_multisort($sortarray, SORT_ASC, $resarray);
 
 			foreach ($resarray as $val) {
+
+				$mod_time = 'Modified: '.strftime($time_format, $val['modified']);
+
 				if (strlen($val["url"])>1) $outsite="<A HREF=\"".$val["url"]."\" TARGET=\"_blank\" title=\"Click to open URL\">".$val["site"]."</A>";
 				else $outsite=$val["site"];
+				
 				$output.="<TR  class='w3-hover-light-grey trow'>";
-					$output.="<TD CLASS=\"row \" title=\"Site URL ".$val["url"]."\" >".$outsite."</TD>\n";
+					$output.="<TD CLASS=\"row \" title=\"$mod_time\" >".$outsite."</TD>\n";
 					$output.="<TD CLASS=\"row  login copyclick\" title=\"Click to copy login\">".$val["login"]."</TD>\n";
 					$output.="<TD  CLASS=\"row  password copyclick\" title=\"Click to copy password\">".$val["password"]."</TD>\n";
 					$output.="<TD CLASS=\"sea\">";
-					$output.=icon_button('<i style="font-size:20px" class="material-icons">&#xe254;</i>',$_SERVER["PHP_SELF"]."?action=edit&itemid=".$val["id"]."&csrftok=".get_csrf(), "Edit this password entry");
-					$output.=icon_button('<i style="font-size:20px" class="material-icons">&#xe872;</i>',$_SERVER["PHP_SELF"]."?action=delete&itemid=".$val["id"]."&catid=".$catid."&csrftok=".get_csrf(),"Delete this password entry");
+					$output.=icon_button('<i style="font-size:20px" class="material-icons editicon">&#xe254;</i>',$_SERVER["PHP_SELF"]."?action=edit&itemid=".$val["id"]."&csrftok=".get_csrf(), "Edit this password entry");
+					$output.=icon_button('<i style="font-size:20px" class="material-icons editicon">&#xe872;</i>',$_SERVER["PHP_SELF"]."?action=delete&itemid=".$val["id"]."&catid=".$catid."&csrftok=".get_csrf(),"Delete this password entry");
+					$output.="<i class='material-icons iconoffs infoicon' title=\"$mod_time\">&#xe88e;</i>";
+					$output.=icon_button('<i style="font-size:20px" class="material-icons editicon">&#xe745;</i>',"notes.php?action=view&itemid=".$val["id"]."&catid=".$catid."&noteid=".$val['noteid']."&csrftok=".get_csrf(),"Manage notes for this entry");
 				$output.="</TR>";
 			}
 			$output.="<tr><td COLSPAN=4 width=100% class=w3-center>";
-			$output.=action_button('Create a New Password Entry',
-			"cat.php?action=edit&catid=".$catid."&csrftok=".get_csrf(),
-			"Add a new entry to this category", "w3-border w3-hover-pale-green");
+			$output.=action_button('Create a New Password Entry',"cat.php?action=edit&catid=".$catid."&csrftok=".get_csrf(),"Add a new entry to this category", "w3-border w3-hover-pale-green");
 			$output.="</tr></TABLE>";
 		}
 	break;
@@ -182,9 +188,9 @@ switch($action) {
 		$iv=base64_encode($iv);
 
 		if ($itemid==0) {
-			$query="insert into logins values (NULL, \"$iv\", \"$userid\", \"$catid\", \"$login\", \"$password\", \"$site\", \"$url\")";
+			$query="insert into logins values (NULL, \"$iv\", \"$userid\", \"$catid\", \"$login\", \"$password\", \"$site\", \"$url\", \"0\", $now, $now)";
 		} else {
-			$query="update logins set iv = \"$iv\", catid=\"$catid\", login=\"$login\", password=\"$password\", site = \"$site\", url = \"$url\" where id = \"$itemid\" and userid=\"$userid\"";
+			$query="update logins set iv = \"$iv\", catid=\"$catid\", login=\"$login\", password=\"$password\", site = \"$site\", url = \"$url\", modified = $now where id = \"$itemid\" and userid=\"$userid\"";
 		}
 		if (!sql_query($db,$query)) set_error("Error: saving entry \"<b>$origsite</b>\": ".sql_error($db));
 		else set_status("Entry \"<b>$origsite</b>\" has been updated");

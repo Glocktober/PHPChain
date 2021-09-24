@@ -49,6 +49,8 @@ $stat_log = env_get('log_status_messages',false);
 # site name
 $site_name = $_SERVER['SERVER_NAME'];
 
+$time_format = "%H:%M:%S %d-%b-%Y";
+
 # local config
 $local_config_file = env_get('local_config_file','local/config.php');
 if (file_exists($local_config_file) AND is_readable($local_config_file)){
