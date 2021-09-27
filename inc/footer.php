@@ -11,12 +11,14 @@ copyTd2Clipboard = function(e){
 }
 
 setClipboard = function(txt){
-	console.log("sc called with " + txt);
-	inp.value = txt;
-	inp.select();
-	document.execCommand("copy");
-	inp.value = "";
-	inp.blur();
+
+	navigator.clipboard.writeText(txt)
+	.then( ()=>{
+		console.log(`copied ${txt} to clipboard`)
+	})
+	.catch((error) =>{
+		console.log(`copy to clipboard failed: ${error}`)
+	} )
 }
 
 setUp = function(){
