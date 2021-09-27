@@ -1,4 +1,6 @@
 <?php
+$page="notes";
+$reqauth="true";
 include ("inc/config.php");
 include ("inc/form.php");
 include ("inc/crypt.php");

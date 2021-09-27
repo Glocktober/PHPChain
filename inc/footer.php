@@ -1,7 +1,7 @@
-</TD>
-</TR>
-</TABLE>
+</div> <!-- end detail content -->
+</div> <!-- end main table  -->
 <input type="text" id="blind" class="blind">
+</div>
 </div>
 <script>
 var inp = document.getElementById("blind");

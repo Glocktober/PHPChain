@@ -23,6 +23,7 @@ function get_csrf(){
 
 function check_csrf(){
     global $csrf_force_logout;
+    return;
     $csrf = gorp('csrftok');
     if (!isset($csrf) OR ($csrf != $_SESSION['csrf_token'])){
         error_log('csrf error');
@@ -68,7 +69,7 @@ function status_message(){
 
         $msg = $_SESSION['status_message'];
         unset($_SESSION['status_message']);
-        return "<span class=success><i class='material-icons iconoffs' style='color:green'>&#xe876;</i>&nbsp;$msg</span";
+        return "<span class=success><i class='material-icons iconoffs' style='color:green'>&#xe876;</i>&nbsp;$msg</span>";
         
     } else {
 
@@ -81,6 +82,11 @@ function status_message(){
     }
 }
 
+function has_status(){
+    return array_key_exists('error_message', $_SESSION) OR
+    array_key_exists('status_message', $_SESSION);
+}
+
 function error_out($msg, $loc="index.php"){
     set_error($msg);
     header("Location: $loc");
@@ -89,6 +95,12 @@ function error_out($msg, $loc="index.php"){
 
 if (isset($reqauth) and $reqauth and ! is_authed()){
     error_out("Operation requires authentication. Please login.",'login.php');
+}
+
+if ($stat_log){
+    global $page;
+    $method = $_SERVER['REQUEST_METHOD'];
+    error_log("$method $page");
 }
 
 ?>
