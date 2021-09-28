@@ -69,14 +69,14 @@ $backurl = (isset($catid) and !is_null($catid)) ? "catview.php?catid=$catid" : "
     <div class="w3-bar w3-center w3-margin-top">
     <a class='butbut w3-btn w3-border w3-hover-pale-green focus' href="<?php echo $backurl;?>" title='Make No Changes'>Back</a>&nbsp;
 <?php if ($noteid) { ?>
-    <a class='butbut w3-button w3-border w3-hover-pale-green' onclick='doable(false);', type=button title='Enable editing'>Edit</a>&nbsp;
+    <a class='butbut w3-button w3-border w3-hover-pale-green' onclick='doenable(false);', type=button title='Enable editing'>Edit</a>&nbsp;
 <?php } ?>
     <button type="submit" title='Save changes' class="butbut w3-btn w3-border w3-hover-pale-red locked" >Save</button>
 </div>
 </form>
 </div>
 <script>
-doable = function(flag){
+doenable = function(flag){
     console.log('doable');
     const lck = document.getElementsByClassName('locked');
     const n = lck.length;
@@ -85,7 +85,7 @@ doable = function(flag){
     }
     document.getElementById("area").focus();
 }
-<?php if ($noteid) { ?> doable(true) <?php } ?>
+<?php if ($noteid) { ?> doenable(true) <?php } ?>
 </script>
 
 <?php
