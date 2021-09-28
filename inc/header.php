@@ -69,7 +69,7 @@ if ($auth) {
 	$catid=gorp('catid');
 	echo getmenu($_SESSION["id"],$catid);
 
-	echo action_button('New Entry',"entedit.php?itemid=0&catid=$catid","Add new password entry", "w3-hover-pale-green w3-pale-grey  w3-border w3-block");
+	echo action_button('<i class="material-icons addicon iconoffs">add</i>New Entry',"entedit.php?itemid=0&catid=$catid","Add new password entry", "w3-hover-pale-green w3-pale-grey w3-tiny w3-block");
 }
 ?>
 </div> <!-- end navigation menu content -->

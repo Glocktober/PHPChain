@@ -63,13 +63,13 @@ function status_message(){
         unset($_SESSION['error_message']);
         if (array_key_exists('status_message',$_SESSION)) 
             unset($_SESSION['status_message']);
-        return "<span class=errorbar ><i class='material-icons iconoffs' style='color:red'>&#xe000;</i>&nbsp;$msg</span>";
+        return "<span class=errorbar ><i class='material-icons iconoffs' style='color:red'>error</i>&nbsp;$msg</span>";
 
     } elseif (array_key_exists('status_message', $_SESSION)){
 
         $msg = $_SESSION['status_message'];
         unset($_SESSION['status_message']);
-        return "<span class=success><i class='material-icons iconoffs' style='color:green'>&#xe876;</i>&nbsp;$msg</span>";
+        return "<span class=success><i class='material-icons iconoffs' style='color:green'>check_circle</i>&nbsp;$msg</span>";
         
     } else {
 
@@ -77,7 +77,7 @@ function status_message(){
         if (array_key_exists('login',$_SESSION)) $login = $_SESSION['login'];
 
         if (is_authed()) 
-            return "<span class=info><i class='material-icons iconoffs' style='color:lightskyblue'>&#xe88e;</i>&nbsp;Current User: \"<b>$login</b>\"</span>";
+            return "<span class=info><i class='material-icons iconoffs' style='color:lightskyblue'>info</i>&nbsp;Current User: \"<b>$login</b>\"</span>";
         else  return "<span class=error><b></b></span>";
     }
 }

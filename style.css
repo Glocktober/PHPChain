@@ -4,9 +4,6 @@
 	padding-left: 2em;
 	padding-right: 2em;
 }
-.menubar{
-
-}
 .butform{
     display: inline-block;
 }
@@ -18,13 +15,10 @@
 td button.butbut, a.butbut{
 	font-size:12px;
 }
-.infoicon{
-	color:lightskyblue;
-}
-i.posticon{
+/* i.posticon{
 	font-size: 1.2em;
 	color: darkslategrey;
-}
+} */
 i.isgrey{
 	color:dimgray;
 }
@@ -48,6 +42,21 @@ i.editicon{
 i.editicon:hover{
 	color: red;
 }
+i.saveicon{
+	color:green;
+}
+i.saveicon:hover{
+	color:red;
+}
+i.saveicon:disabled{
+	color:lightslategray;
+}
+i.backicon{
+	color:blue;
+}
+i.backicon:hover{
+	color:orangered;
+}
 i.addicon{
 	color:brown;
 }
@@ -66,12 +75,12 @@ i.addicon:hover{
 	font-size: 1em;
 	;
 }
-.left{
+/* .left{
     float: left;
-}
-.right{
+} */
+/* .right{
     float: right;
-}
+} */
 #catedittab{
 	padding-right: 1em;
 	padding-top: 1em;
@@ -107,13 +116,13 @@ input.password:focus, .password:hover {
 	color: white;
 
 }
-.blind{
+/* .blind{
 	background-color:transparent;
 	color: transparent;
 	font-size: 0.01em;
 	border-width: 0px;
 	border-color:transparent;
-}
+} */
 .success {
 	color: green;
 }
@@ -129,7 +138,7 @@ input.password:focus, .password:hover {
 	width: 100%;
 	text-align: center;
 	display: inline-block;
-	margin: 1em;
+	margin: 0.5em;
 }
 .errorbar{
 	font-size: 1.1em;
@@ -146,9 +155,6 @@ i .material-design{
 	color:green;
 	width: 100%;
 	text-align: center;
-}
-.ghostwhite{
-	background-color:antiquewhite;
 }
 td.row a{
 	text-decoration: none;
@@ -199,9 +205,6 @@ a.cat{
 	float:none;
 	margin: auto;
 }
-.catsea{
-	width: 100%;
-}
 .div50{
 	width:50%;
 	margin: auto;
@@ -209,6 +212,7 @@ a.cat{
 	padding-bottom:0.2em;
 	padding-top:0.2em;
 }
+
 span.success i ,
 span.errorbar i,
 span.info i{
@@ -219,4 +223,26 @@ span.info i{
 }
 #passtable td:nth-child(1){
 	text-align: right;
+}
+.seafilter{
+	margin-top:1em;
+	margin-bottom:1em;
+	display: inline;
+	width:100%;
+}
+.labform{
+	text-align: right;
+	float:left;
+	width: 12em;
+	margin-right:2em;
+	display: block;
+	font-weight: bold;
+}
+.labform +input, 
+.labform +select{
+	float:left;
+	font-size:1.2em;
+}
+.fullw{
+	width: 100%;
 }

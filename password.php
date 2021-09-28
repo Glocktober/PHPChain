@@ -5,28 +5,45 @@ include ("inc/config.php");
 include ("inc/form.php");
 include ("inc/crypt.php");
 
-$page="password";
-
 sql_conn();
 
+$auth = is_authed();
 
-if ($is_get) set_status("Updating Password for \"<b>$loginname</b>\": Passwords must be at least $min_password_length long");
-$output='';
-$output.=form_begin('passwordsave.php',"POST");
-$output.=input_hidden("action","save");
-$output.="<TABLE BORDER=\"0\" CELLPADDING=\"2\" CELLSPACING=\"0\">\n";
-$output.="<TR><TD CLASS=\"plain\">New Password: </TD><TD CLASS=\"plain\">".input_passwd("newkey",20,255,'','plain focus')."</TD></TR>\n";
-$output.="<TR><TD CLASS=\"plain\">Verify new password: &nbsp;&nbsp;</TD><TD CLASS=\"plain\">".input_passwd("newkey2",20,255)."</TD></TR>\n";
+$loginname = $_SESSION['login'];
 
-$output.="<TR><td></td><TD CLASS=\"w3-center\" COLSPAN=\"2\" ALIGN=\"RIGHT\"><a class='butbut w3-button w3-border w3-hover-pale-green' href=\"index.php\" title='Make No Changes'>Back</a>&nbsp;&nbsp;";
-$output.=submit("Save",'',"Change password, reencrypting all entries","w3-border w3-hover-pale-green")."</TD></TR>\n";
-$output.="</TABLE>\n";
-$output.=form_end();
-
+if (!has_status()) set_status("Changing password for '<b>$loginname</b>'");
 
 include ("inc/header.php");
 
-echo $output;
-
+?>
+<div class=" w3-padding-16 ">
+<div class="w3-card w3-margin div50">
+    <div class="">
+        <form id='pwd' action="passwordsave.php" method="post">
+            <input type="hidden" name="csrftok" value=<?php echo get_csrf() ?>>
+    </div>
+<div class=" w3-center">
+<p class="txtgrey "><i class='material-icons iconoffs isgray'>person</i>
+        Changing password for: "<b><?php echo $loginname ?></p>
+</div>
+    <div class='w3-center w3-margin'>
+        <label for="oldpassword">&nbsp;Current Password:</label>
+        <input type="password" size=20 maxlength=255 minlength=<?php echo $min_password_length ?> name="currentpassword" id="oldpassword" class='plain focus' required >
+    </div>
+    <div class='w3-center w3-margin'>
+        <label for="newkey">&nbsp;New Password:</label>
+        <input type="password" size=20 maxlength=255 minlength=<?php echo $min_password_length ?> name="newkey" id="newkey" class='plain focus' required >
+    </div>
+    <div class='w3-center w3-margin'>
+        <label for="newkey2">Verify password:</label>	
+        <input type="password" size=20 maxlength=255 minlength=<?php echo $min_password_length ?> name="newkey2" id="newkey2" class='plain' required >
+    </div>
+    <div class='w3-margin w3-center w3-bar'>
+    <a class='butbut w3-button w3-hover-pale-green w3-round' href="index.php" title='Make No Changes'><i class='material-icons backicon iconoffs'>chevron_left</i>Back</a>
+        <button type="submit" class='w3-button w3-hover-pale-green'><i class='material-icons addicon iconoffs'>add</i> Change Password</button>
+    </div>
+</form>
+</div>
+<?php
 include ("inc/footer.php");
 ?>

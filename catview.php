@@ -54,13 +54,13 @@ include ("inc/header.php");
 ?>
 
 <div id="catview" class="w3-card w3-round">
-<div class="div50">
-    <input oninput="w3.filterHTML('#cattable', '.trow', this.value)" placeholder='Search entries...' class='w3-block' title='Filter content'>
+<div class="div50" >
+    <input oninput="w3.filterHTML('#cattable', '.trow', this.value)" placeholder='Search entries...' class='w3-block w3-margin-top seafilter' title='Filter content'>
 </div>
 <TABLE BORDER="0" CELLPADDING="2" CELLSPACING="1" id=cattable class="w3-table w3-small w3-bordered">
 <TR class='w3-pale-blue'>
-<TD CLASS="header" WIDTH="25%" onclick="w3.sortHTML('#cattable','.trow', 'td:nth-child(1)')" title='Click to sort..'>Site <i style='font-size:15px' class='material-icons'>&#xe164;</i></TD>
-<TD CLASS="header" WIDTH="15%" onclick="w3.sortHTML('#cattable','.trow', 'td:nth-child(2)')" title='Click to sort..'>Login <i style='font-size:15px' class='material-icons'>&#xe164;</i></TD>
+<TD CLASS="header" WIDTH="25%" onclick="w3.sortHTML('#cattable','.trow', 'td:nth-child(1)')" title='Click to sort..'>Site <i style='font-size:15px' class='material-icons'>sort</i></TD>
+<TD CLASS="header" WIDTH="15%" onclick="w3.sortHTML('#cattable','.trow', 'td:nth-child(2)')" title='Click to sort..'>Login <i style='font-size:15px' class='material-icons'>sort</i></TD>
 <TD CLASS="header" WIDTH="25%">Password</TD>
 <TD CLASS="header" WIDTH="fit-content">Actions</TD>
 </TR>
@@ -71,9 +71,9 @@ foreach ($resarray as $val) {
 
     $mod_time = 'Modified: '.strftime($time_format, $val['modified']);
     $noteid = $val['noteid'];
-    $noteclass = $noteid ? 'isgreen':'isgrey';
+    $noteclass = $noteid ? 'isgreen': 'isgrey';
     $notetip = $noteid ? 'View existing note' : 'Create a note';
-    $noteicon = $noteid ? $glyph_note: $glyph_addnote ;
+    $noteicon = $noteid ? 'edit_note': 'note_add' ;
 
     if (strlen($val["url"])>1) $outsite="<A HREF=\"".$val["url"]."\" TARGET=\"_blank\" title=\"Click to open URL\">".$val["site"]."</A>";
     else $outsite=$val["site"];
@@ -87,12 +87,12 @@ foreach ($resarray as $val) {
 ?>
 <TR  class='w3-hover-light-grey trow'>
 <TD CLASS="row" ><?php echo $outsite ?></TD>
-<TD CLASS="row  login copyclick" title="Click to copy login"><?php echo $login ?></TD>
-<TD  CLASS="row  password copyclick" title="Click to copy password"><?php echo $password ?></TD>
+<TD CLASS="row  login" title="Click to copy login"><span class=copyclick><?php echo $login ?></span></TD>
+<TD  CLASS="row  password" title="Click to copy password"><span class=copyclick><?php echo $password ?></span></TD>
 <TD CLASS="sea">
 <?php 
-echo icon_post($glyph_edit, '',"edi$itemid", 'entedit.php', $valmap, 'editicon','Edit this entry');
-echo icon_post($glyph_delete, '', "del$itemid", 'entdelete.php', $valmap, 'delicon','Delete this entry');
+echo icon_post('edit', '',"edi$itemid", 'entedit.php', $valmap, 'editicon','Edit this entry');
+echo icon_post('delete', '', "del$itemid", 'entdelete.php', $valmap, 'delicon','Delete this entry');
 echo icon_post($noteicon, '', "note$itemid", 'noteedit.php', $valmap, $noteclass,$notetip);
 ?>
 </td><td>
@@ -102,7 +102,7 @@ echo icon_post($noteicon, '', "note$itemid", 'noteedit.php', $valmap, $noteclass
 ?>
 <tr>
 <td COLSPAN=3 width=100% class=w3-center>
-        <a class='butbut w3-btn w3-hover-pale-green w3-border' href="entedit.php?catid=<?php echo $catid ?>" title="Add a new password entry"><i class='material-icons posticon'><?php echo $glyph_add?></i> New password</button>
+        <a class='butbut w3-btn w3-hover-pale-green' href="entedit.php?catid=<?php echo $catid ?>" title="Add a new password entry"><i class='material-icons addicon iconoffs'>add</i> New password</button>
 </td>   
 
 </tr></TABLE>

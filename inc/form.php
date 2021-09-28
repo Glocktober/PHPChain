@@ -134,8 +134,8 @@ function icon_post($glyph, $descr='',$elid='', $url='', $valmap=[], $class='', $
     return $ret.="</form>";
 }
 
-function icon_get($glyph,$desc='', $url='' ,$valmap=[], $class='', $tip=''){
-	$icon = "<i class='material-icons posticon'>$glyph</i>";
+function icon_get($glyph,$desc='', $url='' ,$valmap=[], $class='', $tip='',$iconclass=''){
+	$icon = "<i class='material-icons $iconclass'>$glyph</i>";
 	$qs='';
 	foreach ($valmap as $k=>$v){
 		$qs.="&$k=$v";
@@ -146,7 +146,8 @@ function icon_get($glyph,$desc='', $url='' ,$valmap=[], $class='', $tip=''){
 }
 
 $glyph_back = '&#xe166;';
-$glyph_edit = '&#xe254;';
+// $glyph_edit = '&#xe254;';
+$glyph_edit = 'edit';
 $glyph_delete = '&#xe872;';
 $glyph_notes = '&#xe166;';
 $glyph_add = '&#xe03b';
@@ -157,7 +158,11 @@ $glyph_addnote = '&#xe89c;';
 $glyph_info = '&#xe876;';
 $glyph_error ='&#xe000;';
 $glyph_sort = '&#xe164;';
-
+$glyph_search = '&#xe8b6;';
+$glyph_copy = '&#xe14d;';
+$glyph_folder = '&#xe2c7;';
+$glyph_lock = '&#xe897;';
+$glyph_unlock = '&#xe898;';
 
 
 ?>

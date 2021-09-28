@@ -15,42 +15,38 @@ $catid=sanigorp("catid");
 
 if ($catid==0) {
     $title="";
-    if (!has_status()) set_status("Adding a new category");
+    $mast = 'Adding a new category';
 } else {
     $result=sql_query($db,"select title from cat where id = \"$catid\" and userid = \"$userid\"");
     $row=sql_fetch_assoc($result);
     $title=$row["title"];
-    if (!has_status()) set_status("Rename category '$title'");
+    $mast = "Category \"$title\"";
 }
+if (!has_status()) set_status($mast);
 
 include("inc/header.php");
 ?>
-<div>
-<table class='formtable w3-card w3-round w3-margin w3-padding-16' width=80% >
-    <tr>
-        <td class=w3-center>
-    <span CLASS='plain w3-medium'>Edit category:</span>
-        </td>
-        <td>
-        <form action="catsave.php" method=POST class="w3-center" >
-            <input type="hidden" name="catid" value=<?php echo $catid ?> >
-            <input type="text" name="title" required maxlength=255 size=30 id="" 
-                value="<?php echo $title; ?>"
-                placeholder="Enter category title"
-                title="Category title" class="plain focus">
-            </td>
-    </tr><tr><td>&nbsp;</td><td></td></tr><tr>
-            <td class="w3-center" colspan=2 >
-                <div class="w3-center w3-bar">
-                    <?php echo icon_get($glyph_back, 'Back', 'catlist.php', [], 'butbut w3-border w3-hover-pale-green','Return'); ?>
-                    <button type="submit" class='butbut w3-btn w3-hover-pale-red w3-border' title="Save this category"><i class='material-icons posticon'><?php echo $glyph_save?></i>&nbsp;Save</button>
-                </div>
-            </td>   
-        </tr>
-    </form>
-</table>
+<div class="w3-card">
+<div class=" w3-padding-16 ">
+    
+<div class='w3-center w3-padding-16 fullw' >
+    <form action="catsave.php" method=POST class="w3-center" >
+    <input type="hidden" name="catid" value=<?php echo $catid ?> >
+    <span  class="w3-center txtgrey" ><?php echo $mast?></span>
 </div>
-
+<div class='w3-center fullw' >
+<label for="title">Title</label>
+<input type="text" name="title" required maxlength=255 size=30 id="title" 
+    value="<?php echo $title; ?>"
+    placeholder="Enter category title"
+    title="Category title" class="plain focus">
+</div>
+<div class="w3-center w3-bar w3-margin-top">
+    <?php echo icon_get('chevron_left', 'Back', 'catlist.php', [], 'butbut w3-hover-pale-green','Return','backicon iconoffs'); ?>
+    <button type="submit" class='butbut w3-btn w3-hover-pale-red ' title="Save this category"><i class='material-icons saveicon iconoffs'>check_circle</i>&nbsp;Save</button>
+</form>
+</div>
+</div>
 <?php 
 include ("inc/footer.php");
 ?>
