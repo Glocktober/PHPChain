@@ -20,10 +20,11 @@ td button.butbut, a.butbut{
 	color: darkslategrey;
 } */
 i.isgrey{
-	color:dimgray;
+	color:gainsboro;
 }
 i.isgrey:hover{
-	color:indianred}
+	color:indianred;
+}
 i.isgreen{
 	color: lightseagreen;
 }
@@ -31,7 +32,7 @@ i.isgreen{
 	padding-right:0.5em;
 }
 i.delicon{
-	color: darkslategrey;
+	color: burlywood;
 }
 i.delicon:hover{
 	color:indianred;
@@ -242,7 +243,21 @@ span.info i{
 .labform +select{
 	float:left;
 	font-size:1.2em;
+	font-family: monospace;
+	font-style: initial;
 }
 .fullw{
 	width: 100%;
+}
+.cardpanel{
+	width:fit-content;
+	padding-right:5em;
+	margin: 3em;
+}
+textarea {
+	font-family: monospace;
+	padding: 1em;
+}
+textarea:disabled{
+	background-color: cornsilk;
 }

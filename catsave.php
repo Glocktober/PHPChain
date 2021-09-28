@@ -32,6 +32,6 @@ else{
     $catid = sql_insert_id($db);
     set_status("New category '$title'");
 }
-error_log("**************");
-header("Location: catview.php?catid=$catid");
+
+header("Location: catlist.php?catid=$catid");
 ?>

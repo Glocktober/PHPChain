@@ -9,6 +9,7 @@ include ("inc/crypt.php");
 
 sql_conn();
 
+$max_note_size = 2048;
 $userid = $_SESSION['id'];
 $key = $_SESSION['key'];
 $authed_login = $_SESSION['login'];
@@ -18,7 +19,6 @@ $catid=sanigorp("catid");
 $itemid=sanigorp("itemid");
 $noteid=sanigorp("noteid");
 $catidx = $catid;
-
 
 $query = "select userid, noteid from logins where id=$itemid and catid=$catid";
 if(!$result=sql_query($db,$query)){
@@ -61,13 +61,10 @@ $backurl = (isset($catid) and !is_null($catid)) ? "catview.php?catid=$catid" : "
     <input type="hidden" name="noteid" value=<?php echo $noteid; ?> >
     <input type="hidden" name="csrftok" value=<?php echo get_csrf();?> >
     
-    <textarea name="notes" id="area" cols="30" 
-    title="click edit to update text" class="w3-block locked"
-    rows="10">
-        <?php 
-        echo $notedata; 
-        ?>
-    </textarea>
+    <textarea name="notes" id="area" cols="30" autocomplete="on" maxlength="<?php echo $max_note_size?>"
+        title="click edit to update text" class="w3-block locked" spellcheck="true"
+        placeholder="You can keep notes about this password entry here.  These are not encrypted."
+        rows="10"><?php echo $notedata; ?></textarea>
     
     <div class="w3-bar w3-center w3-margin-top">
     <a class='butbut w3-btn w3-border w3-hover-pale-green focus' href="<?php echo $backurl;?>" title='Make No Changes'>Back</a>&nbsp;
@@ -78,20 +75,6 @@ $backurl = (isset($catid) and !is_null($catid)) ? "catview.php?catid=$catid" : "
 </div>
 </form>
 </div>
-<script>
-// enableit = function(){
-//     const ta = document.getElementById('locked');
-//     ta.disabled = false;
-//     ta.title = 'Update text and press save to keep changes';
-//     ta.focus();
-//     event.stopImmediatePropagation();
-//     const sv = document.getElementById('save');
-//     save.disabled = false;
-
-//     console.log('enabled it');
-// }
-
-</script>
 <script>
 doable = function(flag){
     console.log('doable');

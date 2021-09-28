@@ -26,7 +26,7 @@ if (!has_status()) set_status($mast);
 
 include("inc/header.php");
 ?>
-<div class="w3-card">
+<div class="w3-card cardpanel">
 <div class=" w3-padding-16 ">
     
 <div class='w3-center w3-padding-16 fullw' >
@@ -35,7 +35,7 @@ include("inc/header.php");
     <span  class="w3-center txtgrey" ><?php echo $mast?></span>
 </div>
 <div class='w3-center fullw' >
-<label for="title">Title</label>
+<label class="plain labform" for="title">Category Title:</label>
 <input type="text" name="title" required maxlength=255 size=30 id="title" 
     value="<?php echo $title; ?>"
     placeholder="Enter category title"

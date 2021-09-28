@@ -19,7 +19,7 @@ $itemid=sanigorp("itemid");
 $notedata = "";
 		
 if ($itemid!=0) {
-    if (!has_status()) set_status("Editing password entry");
+    if (!has_status()) set_status("View/Edit password entry");
     //Get existing data and decrypt it first.
     $result=sql_query($db,"select id, iv, catid, login, password, site, url, noteid, modified from logins where id = \"$itemid\" and userid=\"$userid\"");
     if (sql_num_rows($result)==1) {
@@ -68,7 +68,7 @@ include ("inc/header.php");
 # header.php hammers $catid:
 $catid=sanigorp("catid");
 ?>
-<div class="w3-card">
+<div class="w3-card cardpanel">
 <div class=" w3-padding-16 ">
 
 <div class='w3-center fullw' >
@@ -110,12 +110,15 @@ $catid=sanigorp("catid");
             value="<?php echo $password;?>" 
             class='locked password' title='Enter the password' >
 </div><br>
-<div class='w3-center w3-margin w3-bar' >   
+<div class='w3-margin w3-bar' >   
+    <p class="plain labform">&nbsp;</p>
+    <div style="">
     <a class='butbut w3-button w3-hover-pale-green w3-round' href="<?php echo $backurl;?>" title='Make No Changes'><i class='material-icons backicon iconoffs'>chevron_left</i>Back</a>
 <?php if ($itemid) { ?>
     <a class='butbut w3-button w3-hover-pale-green w3-round' onclick='enableedit();', type=button title='Enable editing'><i class='material-icons editicon iconoffs'>edit</i>Edit</a>            
 <?php } ?>
     <button type="submit" title='Save changes' class="butbut w3-btn w3-hover-pale-red w3-round locked" ><i class='material-icons saveicon iconoffs'>check_circle</i>Save</button>
+    </div>
 </div>
 </div>
 </div>
