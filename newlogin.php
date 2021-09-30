@@ -5,79 +5,57 @@ include ("inc/config.php");
 include ("inc/crypt.php");
 include ("inc/form.php");
 
-if (!$allow_new_accounts) error_out("Error: <B>New accounts are disabled</b>: contact your administrator.");
-if ($auth_for_new_accounts AND !is_authed())  error_out("Error: <b>Authentication required</b> to create an account");
+# policy checks
+if (!$allow_new_accounts) 
+	error_out("Error: ($page) <B>New accounts are disabled</b>: contact your administrator.", 'index.php');
 
-$login = get_post('login');
-$key = get_post('key');
-$key2 = get_post('key2');
-
-$output="";
-$error="";
-
-if ($is_get) set_status('Creating a New Login');
-
-if ($allow_new_accounts and isset($login)) {
-
-	check_csrf();
-
-	sql_conn();
-
-	// check values
-	if (strlen($key)<$min_password_length) $error ="Error: Password must be at least $min_password_length characters long";
-	elseif ($key!=$key2) $error="Error: The passwords you have entered do not match";
-	
-	if (empty($error)){
-		$result=sql_query($db,"select id from user where name = \"$login\"");
-		if (sql_num_rows($result)!=0) {
-			$error="Error: Login \"$login\" already exists. Please choose another";
-		}
-	}
-
-	if (empty($error)) {
-		$iv=make_iv();
-		$key=md5($key);
-		$teststring=base64_encode(encrypt($key,maketeststring(),$iv));
-		$iv=base64_encode($iv);
-
-		if (!sql_query($db,"insert into user values (NULL, \"$login\", \"$teststring\", \"$iv\")")){
-			set_error("Error: database error adding $login: ".sql_error($db));
-
-			header("Location: ".$_SERVER["PHP_SELF"]);
-			die();
-		}
-		$id=sql_insert_id($db);
-
-		$_SESSION['login'] = $login;
-		$_SESSION['isauth'] = FALSE;
-		
-		set_status("The account \"$login\" has been created - please login");
-		header ("Location: login.php");
-		die();
-	}
-}
-
-if (!empty($error))  set_error($error);
-if ($allow_new_accounts){
-
-	$output.="<P CLASS=\"plain\">Password must be at least $min_password_length characters long";
-	$output.="<P>";
-	$output.=form_begin($_SERVER["PHP_SELF"],"POST");
-	$output.="<TABLE BORDER=\"0\" CELLPADDING=\"2\" CELLSPACING=\"0\">\n";
-	$output.="<TR><TD CLASS=\"plain\">New Login: </TD><TD CLASS=\"plain\">".input_text("login",20,255,$login, 'plain focus')."</TD></TR>\n";
-	$output.="<TR><TD CLASS=\"plain\">Password: </TD><TD CLASS=\"plain\">".input_passwd("key",20,255)."</TD></TR>\n";
-	$output.="<TR><TD CLASS=\"plain\">Verify password: &nbsp;&nbsp;</TD><TD CLASS=\"plain\">".input_passwd("key2",20,255)."</TD></TR>\n";
-	$output.="<TR><TD CLASS=\"w3-center\" COLSPAN=\"2\" ALIGN=\"RIGHT\">".submit("Create login",'',"Create the account","w3-border w3-hover-pale-green")."</TD></TR>\n";
-	$output.="</TABLE>\n";
-	$output.=form_end();
-} else{
-	$output.="<h2 class=info >New account creation has been disabled.</h2>";
-}
+if ($auth_for_new_accounts AND !is_authed())  
+	error_out("Error: ($page) <b>Authentication required</b> to create an account", 'index.php');
 
 include("inc/header.php");
+?>
+<div class="w3-card">
+<div class=" w3-padding-16 ">
 
-echo $output;
+<div class='w3-center fullw' >
+<p class="txtgrey "><i class='material-icons iconoffs isgreen'>manage_accounts</i> Creating a new account</p>
+<p>Password must be at least <?php echo $min_password_length?> characters long</p>
+</div><br>
 
+<div class='' >
+    <form action="newloginsave.php" method="POST">
+    <input type="hidden" name="csrftok" value=<?php echo get_csrf() ?> >
+</div>
+
+<div class='w3-center w3-margin full2' >
+    <label CLASS="plain labform" for='login'><span class=error>*</span>Login name:</label>
+    <input type="text" required name="login" size="30" maxlen="255"
+        value="" id='login'autocomplete="off" spellcheck="false"
+        placeholder="Enter a user name..."
+        class='focus' title='Select a unique account name' >
+</div><br>
+
+<div class='w3-center w3-margin' >
+    <label CLASS="plain labform" for="pass"><span class=error>*</span>Password:</label>
+    <input id="pass" type="password" name="key" size="30" maxlen="255"
+        value="" autocomplete="off" spellcheck="false"
+        placeholder="Enter the password..."
+        class='password' title='Enter a secure password' >
+</div><br>
+<div class='w3-center w3-margin' >
+    <label CLASS="plain labform" for="key2"><span class=error>*</span>Verify Password:</label>
+    <input id="key2" type="password" name="key2" size="30" maxlen="255"
+        value="" min autocomplete="off" spellcheck="false"
+        placeholder="Repeat password...."
+        class='password' title='Verify the password' >
+</div><br>
+
+<div class='w3-margin w3-center w3-bar'>
+    <a class='butbut w3-button w3-hover-pale-green w3-round' href="index.php" title='Cancel...'><i class='material-icons backicon iconoffs'>chevron_left</i>Back</a>
+	<button type="submit" class='w3-button w3-hover-pale-green'><i class='material-icons addicon iconoffs'>person_add</i> Create</button>
+</div>
+</form>
+</div>
+<?php
 include("inc/footer.php");
-
 ?>

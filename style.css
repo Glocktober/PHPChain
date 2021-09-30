@@ -1,36 +1,106 @@
+.titlebar{
+	padding-top: 1em;
+	padding-bottom: 1em;
+	padding-left: 2em;
+	padding-right: 2em;
+}
 .butform{
     display: inline-block;
 }
 .butbut{
 	border-width: 0px;
 	background-color: transparent;
+	margin:auto;
 }
-a.butbut{
+td button.butbut, a.butbut{
 	font-size:12px;
 }
-.butspan{
-
+i.isgrey{
+	color:gainsboro;
 }
-.material-icons{
-	color:grey;
+i.isgrey:hover{
+	color:indianred;
 }
-.material-icons:hover{
+i.isgreen{
+	color: lightseagreen;
+}
+.iconform{
+	padding-right:0.5em;
+}
+menuicon{
+	font-size: 2em;
+}
+i.delicon{
+	color: burlywood;
+}
+i.delicon:hover{
+	color:indianred;
+}
+i.editicon{
+	color:deepskyblue;
+}
+i.editicon:hover{
 	color: red;
+}
+#padlock{
+	color:red;
+}
+i.saveicon{
+	color:green;
+}
+i.saveicon:hover{
+	color:red;
+}
+i.saveicon:disabled{
+	color:lightslategray;
+}
+i.backicon{
+	color:blue;
+}
+i.backicon:hover{
+	color:orangered;
+}
+i.addicon{
+	color:brown;
+}
+i.addicon:hover{
+	color: green;
+}
+.isgreen.editicon:hover{
+	color: red;
+}
+.isgrey.editicon:hover{
+	color:dodgerblue;
 }
 .iconoffs{
 	position: relative;
-	top: 3px;
-	font-size: 20px
+	top: .25em;
+	font-size: 1em;
 	;
 }
-.left{
+/* .left{
     float: left;
-}
-.right{
+} */
+/* .right{
     float: right;
+} */
+#catedittab{
+	padding-right: 1em;
+	padding-top: 1em;
 }
-.fullw{
-    width: 100%;
+#catedittab tr td input:disabled,
+#catedittab tr td select:disabled
+{
+	background-color:lightgrey;
+	color: black;
+}
+#catedittab tr td input.password:disabled{
+	background-color: lightgray;
+	color: lightgray;
+}
+#catedittab tr td input.password:disabled:hover{
+	background-color: lightgray;
+	color: black;
 }
 .catitem{
     border-bottom: 1px solid #ddd;
@@ -49,13 +119,13 @@ input.password:focus, .password:hover {
 	color: white;
 
 }
-.blind{
+/* .blind{
 	background-color:transparent;
 	color: transparent;
 	font-size: 0.01em;
 	border-width: 0px;
 	border-color:transparent;
-}
+} */
 .success {
 	color: green;
 }
@@ -70,13 +140,17 @@ input.password:focus, .password:hover {
 	color: navy;
 	width: 100%;
 	text-align: center;
+	display: inline-block;
+	margin: 0.5em;
 }
 .errorbar{
 	font-size: 1.1em;
 	color:red;
-	background-color:azure;
 	width: 100%;
 	text-align: center;
+}
+i .material-design{
+	font-size: 40px;
 }
 .statusbar{
 	font-size: 1.1em;
@@ -84,15 +158,110 @@ input.password:focus, .password:hover {
 	width: 100%;
 	text-align: center;
 }
-.ghostwhite{
-	background-color:antiquewhite;
-}
 td.row a{
 	text-decoration: none;
 }
 .boldx{
 	font-weight: bold;
 }
-.locked{
+div.hide {
+	display:none;
+}
+a.cat{
+	width:100%;
+	display: block;
+}
+.txtgrey{
+	color: grey;
+}
+#toppane{
+	width:100%;
+	height:fit-content;
+	display: inline-block;
+	/* padding-left: 0.5em; */
+	padding-right: 0.5em;
+
+}
+#navpane, .navpane{
+    float: left;
+    text-align: left;
+    width: 20%;
+	padding: 0.5em;
+	word-break: break-all;
+}
+#detailpane, .detailpane{
+    float: right;
+    width: 77%;
+    margin-bottom: 1em;
+	margin-top: 1em;
+}
+#catview{
+	word-break: break-all;
+}
+#categorytable tr td a{
+	display: block;
 	
+}
+.tabpane{
+	width:90%;
+	float:none;
+	margin: auto;
+}
+.div50{
+	width:50%;
+	margin: auto;
+	float: none;
+	padding-bottom:0.2em;
+	padding-top:0.2em;
+}
+span.success i ,
+span.errorbar i,
+span.info i{
+	font-size: 1em;
+}
+#passtable{
+	padding-left: 1em;
+}
+#passtable td:nth-child(1){
+	text-align: right;
+}
+.seafilter{
+	margin-top:1em;
+	margin-bottom:1em;
+	display: inline;
+	width:100%;
+}
+.labform{
+	text-align: right;
+	float:left;
+	width: 12em;
+	margin-right:2em;
+	display: block;
+	font-weight: bold;
+}
+.labform +input, 
+.labform +select{
+	float:left;
+	font-size:1.2em;
+	font-family: monospace;
+	font-style: initial;
+}
+.fullw{
+	width: 100%;
+}
+.cardpanel{
+	width:fit-content;
+	padding-right:5em;
+	margin: 3em;
+}
+textarea {
+	font-family: monospace;
+	padding: 1em;
+}
+textarea:disabled{
+	background-color: cornsilk;
+}
+#titlebar p{
+	margin-top:8px;
+	/* margin-left:4em; */
 }

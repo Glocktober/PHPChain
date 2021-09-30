@@ -21,9 +21,9 @@ function get_csrf(){
     return $_SESSION['csrf_token'];
 }
 
-function check_csrf(){
+function check_csrf($dest='index.php'){
     global $csrf_force_logout;
-    $csrf = gorp('csrftok');
+    $csrf = get_post('csrftok');
     if (!isset($csrf) OR ($csrf != $_SESSION['csrf_token'])){
         error_log('csrf error');
         if ($csrf_force_logout){
@@ -32,7 +32,8 @@ function check_csrf(){
             die();
         } else {
             set_error("CSRF Error - operation not performed");
-            Header("Location: ".$_SERVER['PHP_SELF']);
+            return;
+            Header("Location: $dest");
             die();
         }
     }
@@ -62,13 +63,13 @@ function status_message(){
         unset($_SESSION['error_message']);
         if (array_key_exists('status_message',$_SESSION)) 
             unset($_SESSION['status_message']);
-        return "<span class=errorbar ><i class='material-icons iconoffs' style='color:red'>&#xe000;</i>&nbsp;$msg</span>";
+        return "<span class=errorbar ><i class='material-icons iconoffs' style='color:red'>error</i>&nbsp;$msg</span>";
 
     } elseif (array_key_exists('status_message', $_SESSION)){
 
         $msg = $_SESSION['status_message'];
         unset($_SESSION['status_message']);
-        return "<span class=success><i class='material-icons iconoffs' style='color:green'>&#xe876;</i>&nbsp;$msg</span";
+        return "<span class=success><i class='material-icons iconoffs' style='color:green'>check_circle</i>&nbsp;$msg</span>";
         
     } else {
 
@@ -76,9 +77,14 @@ function status_message(){
         if (array_key_exists('login',$_SESSION)) $login = $_SESSION['login'];
 
         if (is_authed()) 
-            return "<span class=info><i class='material-icons iconoffs' style='color:lightskyblue'>&#xe88e;</i>&nbsp;Current User: \"<b>$login</b>\"</span>";
+            return "<span class=info><i class='material-icons iconoffs' style='color:lightskyblue'>info</i>&nbsp;Current User: \"<b>$login</b>\"</span>";
         else  return "<span class=error><b></b></span>";
     }
+}
+
+function has_status(){
+    return array_key_exists('error_message', $_SESSION) OR
+    array_key_exists('status_message', $_SESSION);
 }
 
 function error_out($msg, $loc="index.php"){
@@ -89,6 +95,12 @@ function error_out($msg, $loc="index.php"){
 
 if (isset($reqauth) and $reqauth and ! is_authed()){
     error_out("Operation requires authentication. Please login.",'login.php');
+}
+
+if ($stat_log){
+    global $page;
+    $method = $_SERVER['REQUEST_METHOD'];
+    error_log("$method $page");
 }
 
 ?>

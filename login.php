@@ -3,89 +3,59 @@ $page="logon";
 $reqauth=false;
 include ("inc/config.php");
 include ("inc/form.php");
-include ("inc/crypt.php");
 
-$login = get_post("login");
-$key = get_post("key");
+$login = array_key_exists('login',$_SESSION) ? $_SESSION['login']: '';
+if (empty($login) and array_key_exists('chainlogin', $_COOKIE)) 
+    $login=$_COOKIE['chainlogin'];
 
-if (empty($login) AND array_key_exists('login',$_SESSION)) $login = $_SESSION['login'];
-
-if (empty($key)) unset ($key);
-
-if (!array_key_exists("HTTP_X_FORWARDED_FOR", $_SERVER)) {
-	$ip=$_SERVER["REMOTE_ADDR"];
-} else {
-	$ip=$_SERVER["HTTP_X_FORWARDED_FOR"];
-}
-// ip validation
-if (filter_var($ip,FILTER_VALIDATE_IP)===false) $ip="0.0.0.0";
-
-$output="";
-$error="";
-
-$now = time();
-
-if (isset($login)&&isset($key)) {
-
-	check_csrf();
-	// Do DB login, redirect to welcome page.
-	$db = sql_conn();
-
-	// Check for $login_lockout_failures failed login attempts in the last $login_lockout_window minutes.
-	$result=sql_query($db,
-		"select count(name) from loginlog where date > " . ($now-($login_lockout_window*60)) ." and ip = \"$ip\" and outcome = 0");
-	
-	$row=sql_fetch_row($result);
-	if ($row[0]< $login_lockout_failures) {
-		$result=sql_query($db,"select id, teststring, iv from user where name = \"$login\"");
-		if (sql_num_rows($result)==1) {
-			$row=sql_fetch_assoc($result);
-			$key=md5($key);
-			if (testteststring(trim(decrypt($key,base64_decode($row["teststring"]),base64_decode($row["iv"]))))) {
-				// Login log
-				sql_query($db,"insert into loginlog values (\"$login\", \"$ip\", \"$now\",1)");
-				# going to skip reporting errors as the db may be in RO mode
-				$id=$row["id"];
-				$_SESSION['login'] = $login;
-				$_SESSION['id'] = $id;
-				$_SESSION['key'] = $key;
-				$_SESSION['isauth'] = TRUE;
-				session_regenerate_id(TRUE);
-
-				set_status("\"<b>$login</b>\" - has successfully logged on");
-				header ("Location: index.php");
-				die();
-			} else {
-				$error="Error: Incorrect credentials";
-			}
-		} else {
-			$error="Error: Incorrect credentials";
-		}
-	} else {
-		$error="Error: Too many failed login attempts. Disabled for $login_lockout_window minutes.";
-	}
-}
-
-if (!empty($error)) {
-	# Failed login attempt
-	sql_query($db, "insert into loginlog values (\"$login\", \"$ip\", \"$now\",0)");
-	set_error($error);
-}
-
-$output.=form_begin($_SERVER["PHP_SELF"],"POST");
-$output.="<TABLE BORDER=\"0\" CELLPADDING=\"2\" CELLSPACING=\"0\">\n";
-// $output.="<TR><TD CLASS=\"plain\" COLSPAN=\"2\">".$error."</TD></TR>\n";
-$output.="<TR><TD CLASS=\"plain\" COLSPAN=\"2\">&nbsp;&nbsp;</TD></TR>\n";
-$output.="<TR><TD CLASS=\"plain\">Login: </TD><TD CLASS=\"plain\">".input_text("login",30,255,$login,"plain focus")."</TD></TR>\n";
-$output.="<TR><TD CLASS=\"plain\">Password: </TD><TD CLASS=\"plain\">".input_passwd("key",30,255)."</TD></TR>\n";
-$output.="<TR><TD CLASS=\"w3-center\" COLSPAN=\"2\" ALIGN=\"RIGHT\">".submit("Login",'',"login to existing account","w3-border w3-hover-pale-green")."</TD></TR>\n";
-$output.="</TABLE>\n";
-$output.=form_end();
-
-include("inc/header.php");
-
-echo $output;
-
-include("inc/footer.php");
-
+include ("inc/header.php");
 ?>
+<!-- login form  -->
+<div class="w3-card">
+<div class=" w3-padding-16 ">
+
+<div class='w3-center fullw' >
+<p class="txtgrey "><i class='material-icons iconoffs isgreen'>person</i> Login to phpchain</p>
+</div><br>
+
+<div class='' >
+    <form id="login" action="loginexec.php" method="POST">
+    <input type="hidden" name="csrftok" value=<?php echo get_csrf() ?> >
+</div>
+
+<div class='w3-center w3-margin full' >
+    <label CLASS="plain labform" for='login'><span class=error>*</span>Login name:</label>
+    <input type="text" required name="login" size="30" maxlen="255"
+        value="<?php echo $login?>" id='login'autocomplete="off" spellcheck="false"
+        placeholder="Enter your user name..."
+        class='focus' title='Your account name' >
+</div><br>
+
+<div class='w3-center w3-margin' >
+    <label CLASS="plain labform" for="pass"><span class=error>*</span>Password:</label>
+    <input id="pass" type="password" name="key" size="30" maxlen="255"
+        value="" autocomplete="off" spellcheck="false"
+        placeholder="Enter your password..."
+        class='password' title='Your account password' >
+</div><br>
+
+<div class='w3-bar w3-margin-top'>
+<div class="labform">&nbsp;</div>
+<div>
+	<a class='butbut w3-button w3-hover-pale-green w3-round' href="index.php" title='Cancel...'><i class='material-icons backicon iconoffs'>chevron_left</i>Back</a>
+	<button type="submit" class='w3-button w3-hover-pale-green'><i class='material-icons addicon iconoffs'>login</i> Login</button>
+</div>
+</div>
+</form>
+</div>
+<script>
+setTimeout(
+	()=>{
+		window.location.reload();
+	}, 8*60*1000
+)
+</script>
+<?php
+include("inc/footer.php");
+?>
+

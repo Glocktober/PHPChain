@@ -9,9 +9,9 @@ header("Pragma: no-cache");
 if (!isset($auth)){
 	$auth = is_authed();
 }
-$login = "";
+$auth_login = "";
 if ($auth){
-	$login=$_SESSION['login'];
+	$auth_login=$_SESSION['login'];
 }
 $document_title = $site_name;
 ?>
@@ -21,60 +21,116 @@ $document_title = $site_name;
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <LINK REL=StyleSheet HREF="style.css" TYPE="text/css">
-<TITLE><?php echo $document_title; ?> phpchain</TITLE>
-</HEAD>
-<BODY CLASS="main">
-<div class=w3-container>
-<TABLE BORDER="0" CELLPADDING="0" CELLSPACING="0" WIDTH="100%" id="toptable" class="w3-table w3-bordered w3-borer">
-<TR class="w3-container w3-teal">
-<TD COLSPAN="2" CLASS="titlebar" onClick="javascript:document.location='index.php'" style="padding-left:5%;">
-<span style=";"> <?php echo $document_title ?></span> <SPAN style="margin-right:5%;float:right;"><i>phpchain</i> password vault version <?php echo C_VERSION; ?></A> </SPAN>
 <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
 <script src="https://www.w3schools.com/lib/w3.js"></script>
 <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-</TD>
-</TR>
-<TR class="w3-white">
-<TD COLSPAN="2" CLASS="menubar" WIDTH="100%" >
-		<div class="w3-bar">
+<TITLE><?php echo $document_title; ?> phpchain</TITLE>
+</HEAD>
+<BODY CLASS="main">
+<!-- outer structure - div-->
+<div class="">
+<!-- header bar -->
 <?php
 if ($auth){
-?>
-<form action="settings.php" method="POST" class='butform w3-left w3-ripple' ><button class="w3-btn w3-medium w3-hover-pale-blue butbut" title="add/edit/remove categories"><span class="butspan">Edit Categories</span></button></form>
-<form action="password.php" method="POST" class='butform w3-left w3-ripple' ><button class="w3-btn w3-medium w3-hover-pale-blue butbut" title="Change your PHPchain login password"><span class="butspan">Change Password</span></button></form>
-<form action="logout.php" method="POST" class='butform w3-right w3-ripple' ><button class="w3-btn w3-medium w3-hover-pale-red butbut" title="log out of PHPchain"><span class="butspan">Logout</span></button></form>
-<form action="javascript:void(0);" method="POST" class='butform w3-right' disabled><button class="w3-btn w3-medium butbut" title="Current PHPchain account"><span class="butspan">User: <?php echo $login ;?></span></button></form>
-<?php	
-} else {
-?>
-<form action="newlogin.php" method="POST" class='butform w3-left w3-ripple' ><button class="w3-btn w3-medium w3-hover-blue butbut" title="Create a PHPchain account"><span class="butspan">New Login</span></button></form>
-<form action="login.php" method="POST" class='butform w3-right w3-ripple' ><button class="w3-btn w3-medium w3-hover-green butbut" title="Login with your PHPchain account"><span class="butspan">Login</span></button></form>
+	?>  <!-- Authenticated  -->
+<div id="titlebar" class="w3-bar w3-teal" >
+
+<form action="logout.php" method="POST" class='w3-right butform' >
+	<button class="w3-button w3-bar-item w3-hover-teal" title="log out of PHPchain"><i class='material-icons  menuicon iconoffs'>logout</i><span class="">&nbsp;Logout</span></button></form>
+
+<!-- drop-down menu  -->
+<div class="w3-left w3-dropdown-hover">
+	<button class="w3-button w3-bar-item w3-teal" title="Menu"><i class='material-icons  menuicon iconoffs'>menu</i></button>
+<div class="w3-dropdown-content w3-bar-block w3-teal">
+
+	<button class="w3-button w3-bar-item w3-tal w3-hover-teal" title="Menu"><i class='material-icons  menuicon iconoffs'>menu</i></button>
+	<form action="logout.php" method="POST" class='butform w3-block' >
+		<button class="w3-button w3-bar-item w3-hover-pale-blue" title="log out of PHPchain"><i class='material-icons  menuicon iconoffs'>logout</i><span class="">&nbsp;Logout</span></button></form>
+	<form action="catlist.php" method="POST" class='butform w3-block' >
+		<button class="w3-button w3-bar-item w3-hover-pale-blue" title="add/edit/remove categories"><i class='material-icons  menuicon iconoffs'>create_new_folder</i><span class="">&nbsp;Manage Categories</span></button></form>
+	<form action="password.php" method="POST" class='butform w3-block' >
+		<button class="w3-button w3-bar-item w3-hover-pale-blue" title="Change your PHPchain login password"><i class='material-icons  menuicon iconoffs'>key</i><span class="">&nbsp;Change Password</span></button></form>
+<?php if ($allow_new_accounts){?>
+	<form action="newlogin.php" method="POST" class=' w3-block' >
+		<button class="w3-btn w3-bar-item w3-medium w3-hover-blue butbut" title="Create a PHPchain account"><i class='material-icons  menuicon iconoffs'>person_add</i>&nbsp;<span class="">Add a New Login</span></button></form>
+<?php } ?>
+</div></div>
+
+<!-- other menu bar display  -->
+<p class="w3-bar-item w3-right ">&nbsp;<?php echo $document_title ?> &nbsp;</p>
+<p class="w3-hover-teal w3-bar-item w3-left" title="Current user account"><i class="material-icons w3-left menuicon" >person</i>&nbsp; <?php echo $auth_login ;?></p>
+<i class='material-icons w3-bar-item menuicon iconoffs' onclick="javascript:document.location='index.php'" title="home">home</i>
+
+
+<?php	} else { 
+	if (!has_status()) set_error('You are not logged in...');
+	?>
+	<!-- Not authenticated -->
+<div id="titlebar" class="w3-bar w3-teal" onclick="javascript:document.location='index.php'">
+<?php if ($allow_new_accounts and !$auth_for_new_accounts){?>
+	<form action="newlogin.php" method="POST" class='butform  w3-ripple' >
+		<button class="w3-btn w3-bar-item w3-large w3-hover-green butbut" title="Create a PHPchain account"><i class='material-icons  menuicon iconoffs'>person_add</i>&nbsp;<span class="">New Login</span></button></form>
+<?php } ?>
+<form action="login.php" method="POST" class='butform w3-left w3-ripple' >
+		<button class="w3-btn w3-bar-item w3-large w3-hover-green butbut" title="Login with your PHPchain account"><i class='material-icons  menuicon iconoffs'>login</i><span class="">&nbsp;Login</span></button></form>
+
 <?php
 }
 ?>
+<!-- info menu  -->
+<div class="w3-riht w3-dropdown-hover">
+	<button class="w3-btn w3-bar-item w3-teal w3-large" title="Info"><i class='material-icons  menuicon iconoffs'>info</i>&nbsp;</button>
+<div class="w3-dropdown-content w3-bar-block w3-teal">
+	<button class="w3-btn w3-bar-item w3-teal w3-hover-teal w3-large" title="Info"><i class='material-icons  menuicon iconoffs'>info</i>&nbsp;</button>
+	<button class="w3-btn w3-bar-item w3-right w3-hover-teal" title="PHPchain version">Version <?php echo C_VERSION; ?></button>
+</div></div>
+</div> <!-- menu bar -->
 </div>
-</TD>
-</TR>
-<tr class="w3-hover-pale-yellow"><td  COLSPAN="2" width="100%" class=messagebar><div class="w3-medium w3-center"><?php echo status_message() ?></div></td></tr>
-<TR>
-<TD WIDTH="120" style="vertical-align: top">
-<TABLE  CELLPADDING="0" CELLSPACING="0" WIDTH="100%" id=menutable > 
-	<!-- menu wrapper table -->
-<TR><TD WIDTH="100%" CLASS="cats">&nbsp;</TD></TR>
+
+<!-- status bar  -->
+<div class="messagebar w3-bar" id='messagebar'>
+		<?php echo status_message() ?>
+</div>
+<!-- main table  -->
+<div id="toppane" class="toppane w3-container w3-border-top">
 <?php
+if (!isset($nomenu)){
+?>
+<!-- Nav plane and detail plane -->
+<div id="navpane">
+<!-- navigation menu list  -->
+<?php 
 if ($auth) {
 	include ("inc/listmenu.php");
 	$catid=NULL;
-	if (isset($page) and ($page=="cat")) {
+	if (isset($page) and ($page=="catview")) {
 		$catid=gorp("catid");
 	}	
+	$catid=gorp('catid');
 	echo getmenu($_SESSION["id"],$catid);
 
-	echo action_button('New Entry',"cat.php?action=edit&itemid=0&catid=$catid","Add new password entry", "w3-hover-pale-green w3-pale-grey w3-border w3-block");
+	$catid=gorp('catid');
+	if ($catid) {
+?>
+<div class="w3-block w3-center">
+<form action="entedit.php" id="newbut">
+<input type="hidden" form="newbut" name="csrftok" value="<?php echo get_csrf()?>" >
+<input type="hidden" form="newbut" name="catid" value="<?php echo $catid?>" >
+<input type="hidden" form="newbut" name="itemid" value="0" >
+<a href="javascript: void(0)" onclick="document.getElementById('newbut').submit()" 
+	title="Add a new password entry"
+    class='butbut w3-button w3-hover-pale-green'><i class='material-icons addicon iconoffs'>add</i> New Entry</a>
+</form>
+</div>
+<?php
+	}
 }
 ?>
-</TD></TR></TABLE> <!-- End menu wrapping table -->
+</div> <!-- end navigation menu content -->
+<div id="detailpane">
+<?php 
+} else {?>
+<div id="singlepane" class="w3-container div50">
 
-</TD>
-<TD WIDTH="100%" CLASS="main">
-<!-- Here is the center content -->
+<?php }?>
+<!-- Here is the detail content -->

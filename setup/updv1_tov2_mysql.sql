@@ -1,0 +1,8 @@
+ALTER TABLE `logins` ADD COLUMN (`noteid` INT(11) DEFAULT 0);
+ALTER TABLE `logins` ADD COLUMN (`created` INT(11) DEFAULT 0);
+ALTER TABLE `logins` ADD COLUMN (`modified` INT(11) DEFAULT 0);
+CREATE TABLE `notes` (
+	`id` INT(11) NOT NULL AUTO_INCREMENT,
+	`note` TEXT(2048) NOT NULL,
+	PRIMARY KEY (`id`)
+);
