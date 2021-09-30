@@ -37,7 +37,7 @@ include("inc/header.php");
 <div class='w3-center fullw' >
 <label class="plain labform" for="title">Category Title:</label>
 <input type="text" name="title" required maxlength=255 size=30 id="title" 
-    value="<?php echo $title; ?>"
+    value="<?php echo $title; ?>" spellcheck="false" autocomplete="off"
     placeholder="Enter category title"
     title="Category title" class="plain focus">
 </div>

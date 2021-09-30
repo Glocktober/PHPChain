@@ -15,10 +15,6 @@
 td button.butbut, a.butbut{
 	font-size:12px;
 }
-/* i.posticon{
-	font-size: 1.2em;
-	color: darkslategrey;
-} */
 i.isgrey{
 	color:gainsboro;
 }
@@ -31,6 +27,9 @@ i.isgreen{
 .iconform{
 	padding-right:0.5em;
 }
+menuicon{
+	font-size: 2em;
+}
 i.delicon{
 	color: burlywood;
 }
@@ -42,6 +41,9 @@ i.editicon{
 }
 i.editicon:hover{
 	color: red;
+}
+#padlock{
+	color:red;
 }
 i.saveicon{
 	color:green;
@@ -144,7 +146,6 @@ input.password:focus, .password:hover {
 .errorbar{
 	font-size: 1.1em;
 	color:red;
-	background-color:azure;
 	width: 100%;
 	text-align: center;
 }
@@ -213,7 +214,6 @@ a.cat{
 	padding-bottom:0.2em;
 	padding-top:0.2em;
 }
-
 span.success i ,
 span.errorbar i,
 span.info i{
@@ -260,4 +260,8 @@ textarea {
 }
 textarea:disabled{
 	background-color: cornsilk;
+}
+#titlebar p{
+	margin-top:8px;
+	/* margin-left:4em; */
 }

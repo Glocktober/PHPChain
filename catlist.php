@@ -17,17 +17,17 @@ if (!$result=sql_query($db,"select id, title from cat where userid = '$userid' o
     error_out("Error: ($page) retrieving categories: ".sql_error($db));
 
 include ("inc/header.php");
-
 ?>
 
 <div id="tabplane" class="tabplane w3-card" >
     <div class="div50">
-        <input class='catsea seafilter' oninput="w3.filterHTML('#categorytable', '.trow', this.value)" placeholder='Search categories...'>
+        <input class="catsea seafilter" oninput="w3.filterHTML('#categorytable', '.trow', this.value)" 
+            spellcheck="false" placeholder='Search categories...'>
     </div>
-<TABLE class='w3-table w3-padding w3-bordered w3-small' BORDER="0" CELLPADDING="2" CELLSPACING="1" id=categorytable >
-<TR class=w3-pale-blue >
-<TD CLASS="header"  id=catcolumn >Category</TD>
-<TD CLASS="header" dth=10em id=actioncolumn>Action</TD>
+<TABLE class="w3-table w3-bordered w3-small"  id="categorytable" >
+<TR class="w3-pale-blue" >
+<TD CLASS=""  id="catcolumn" >Category</TD>
+<TD CLASS=""  id="actioncolumn">Action</TD>
 </TR>
 
 <?php
@@ -36,20 +36,24 @@ while($row=sql_fetch_assoc($result)){
     $title=$row["title"];
     $catid=$row['id'];
     $valmap=['title'=>$title, 'catid'=>$catid];
-    echo "<TR class='trow w3-hover-light-grey' ><TD CLASS=\"row sea\"><a href='catview.php?catid=$catid' title='view password entries in this category'>$title</a></TD>";
-    echo "<TD CLASS='row '>";
-    echo icon_post('edit','',"ed$catid", 'catedit.php', $valmap, 'editicon', "Edit title");
-    echo icon_post('delete','',"del$catid", "catdelete.php", $valmap, 'delicon',"Delete category");
-    echo "</TD></TR>";
-}
-
-echo "<tr><td colspan=1 class='w3-center'>";
-echo form_begin('catedit.php',"POST");
-echo input_hidden("action","edit").input_hidden("catid","0");
-echo "<button type=submit class='w3-button w3-hover-pale-green w3-small addbutton' title='Add a new category'><i class='material-icons addicon iconoffs'>add</i> New category</button>";
-echo form_end();
-echo '</td></tr>';
+    $href = "catview.php?catid=$catid"
 ?>
+<TR class='trow w3-hover-light-grey' >
+<TD CLASS="row sea">
+    <a href=<?php echo $href?> title='view password entries in this category'><?php echo $title ?></a></TD><TD CLASS='row '>
+    <?php echo icon_post('edit','',"ed$catid", 'catedit.php', $valmap, 'editicon', "Edit title"); ?>
+    <?php echo icon_post('delete','',"del$catid", "catdelete.php", $valmap, 'delicon',"Delete category");?>
+</TD></TR>
+<?php
+}
+?>
+<tr><td colspan=1 class="w3-center">
+<form action="catedit.php" method="post">
+<input type="hidden" name="csrf" value=<?php echo get_csrf()?>>
+<input type="hidden" name="catid" value="0">
+<button type=submit class='w3-button w3-hover-pale-green w3-small addbutton' title='Add a new category'><i class='material-icons addicon iconoffs'>add</i> New Category</button>
+</form>
+</td></tr>
 </TABLE>
 </div>
 <?php

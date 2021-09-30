@@ -1,11 +1,12 @@
 <?php
-
 $page="newloginsave";
 $reqauth=false; # handle this later in policy checks
 
 include ("inc/config.php");
 include ("inc/form.php");
 include ("inc/crypt.php");
+
+check_csrf();
 
 # Policy check
 if (!$allow_new_accounts) 

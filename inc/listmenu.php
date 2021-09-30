@@ -2,8 +2,8 @@
 function getmenu($userid,$catid=NULL)
 {
 	$menu='';
-	$menu="<input class='catsea w3-small' oninput=\"w3.filterHTML('#catlist', 'li', this.value)\" placeholder='Filter...'>";
-	$menu.='<ul id="catlist" class="w3-small w3-ul">';
+	$menu="<input class='seafilter fullw' oninput=\"w3.filterHTML('#catlist', 'li', this.value)\" placeholder='Filter categories...'>";
+	$menu.='<ul id="catlist" class="w3-smal w3-ul">';
 	
 	$db = sql_conn();
 	$result=sql_query($db,"select id, title from cat where userid = '$userid' order by title");

@@ -7,6 +7,8 @@ include ("inc/config.php");
 include ("inc/form.php");
 include ("inc/crypt.php");
 
+check_csrf();
+
 sql_conn();
 
 $userid = $_SESSION['id'];
@@ -14,8 +16,8 @@ $key = $_SESSION['key'];
 $authed_login = $_SESSION['login'];
 $now = time();
 
-$catid=sanigorp("catid");
-$itemid=sanigorp("itemid");
+$catid=get_post("catid");
+$itemid=get_post("itemid");
 $notedata = "";
 		
 if ($itemid!=0) {
@@ -60,6 +62,10 @@ if (sql_num_rows($result)==0) {
 } 
 $cats=restoarray($result);
 
+$noteclass = $noteid ? '': 'locked';
+$notetip = $noteid ? 'View existing note' : 'Create a note';
+$noteicon = $noteid ? 'edit_note': 'note_add' ;
+
 $mod_time = strftime($time_format, $modified);
 $backurl = (isset($catid) and !is_null($catid)) ? "catview.php?catid=$catid" : "catindex.php";
 
@@ -77,56 +83,78 @@ $catid=sanigorp("catid");
     <?php }  else { ?> <span class="txtgrey " ><i>Creating a New Password entry <?php } ?>
 </div><br>
 
-<div class='' >
-    <form action="entsave.php" method="POST">
+<div class='' ><!-- Hidden fields  -->
+<form action="entsave.php" method="POST">
         <input type="hidden" name="itemid" value=<?php echo $itemid ?> >
         <input type="hidden" name="noteid" value=<?php echo $noteid ?> >
+        <input type="hidden" name="csrftok" value=<?php echo get_csrf() ?> >
 </div>
+
 <div class='w3-center w3-margin-left fullw' >
     <label CLASS="plain labform" >Category:</label>
     <?php echo input_select("catid",$catid,$cats,'plain locked','Select the category for this entry'); ?>
 </div><br>
+
 <div class='w3-center w3-margin full2' >
     <label CLASS="plain labform"><span class=error>*</span>Site:</label>
-        <input type="text" required name="site" size="30" maxlen="255"
-        value="<?php echo $site;?>" 
+    <input type="text" required name="site" size="30" maxlen="255"
+        value="<?php echo $site;?>" autocomplete="off" spellcheck="false"
+        placeholder="Enter a site name..."
         class='locked focus' title='Identify this entry (required)' >
 </div><br>
 <div class='w3-center w3-margin fullw' >
     <label CLASS="plain labform">URL:</label>
     <input type="text" name="url" size="30" maxlen="255"
-            value="<?php echo $url;?>" 
-            class='locked' title='URL for this site' >
+        value="<?php echo $url;?>" autocomplete="off" spellcheck="false"
+        placeholder="Url for this site..."
+        class='locked' title='URL for this site' >
 </div><br>
 <div class='w3-center w3-margin' >
     <label CLASS="plain labform" for="login">Login:</label>
     <input id="login" type="text" name="login" size="30" maxlen="255"
-        value="<?php echo $login;?>" 
+        value="<?php echo $login;?>" autocomplete="off" spellcheck="false"
+        placeholder="Enter the login..."
         class='locked' title='Account login' >
 </div><br>
 <div class='w3-center w3-margin' >
     <label CLASS="plain labform" for="pass">Password:</label>
     <input id="pass" type="text" name="password" size="30" maxlen="255"
-            value="<?php echo $password;?>" 
-            class='locked password' title='Enter the password' >
+        value="<?php echo $password;?>" autocomplete="off" spellcheck="false"
+        placeholder="Enter the password..."
+        class='locked password' title='Enter the password' >
 </div><br>
 <div class='w3-margin w3-bar' >   
     <p class="plain labform">&nbsp;</p>
     <div style="">
-    <a class='butbut w3-button w3-hover-pale-green w3-round' href="<?php echo $backurl;?>" title='Make No Changes'><i class='material-icons backicon iconoffs'>chevron_left</i>Back</a>
+    <a class='butbut w3-button w3-bar-item w3-hover-pale-green w3-round' href="<?php echo $backurl;?>" title='Make No Changes'><i class='material-icons backicon iconoffs'>chevron_left</i>Back</a>
 <?php if ($itemid) { ?>
-    <a class='butbut w3-button w3-hover-pale-green w3-round' onclick='enableedit();', type=button title='Enable editing'><i class='material-icons editicon iconoffs'>edit</i>Edit</a>            
+    <a class='butbut w3-button w3-bar-item w3-hover-pale-green w3-round' onclick='enableedit();', type=button title='Enable editing'><i id='padlock' class='material-icons lockicon iconoffs'>lock</i></a>            
 <?php } ?>
-    <button type="submit" title='Save changes' class="butbut w3-btn w3-hover-pale-red w3-round locked" ><i class='material-icons saveicon iconoffs'>check_circle</i>Save</button>
-    </div>
+    <button type="submit" title='Save changes' class="butbut w3-button w3-bar-item w3-hover-pale-red w3-round locked" ><i class='material-icons saveicon iconoffs'>check_circle</i>Save</button>
+</form>
+<?php 
+      
+?>
+<form id="noteedit" action="noteedit.php" method="POST">
+    <input type="hidden" form="noteedit" name="noteid" value=<?php echo $noteid?>>
+    <input type="hidden" form="noteedit" name="itemid" value=<?php echo $itemid?>>
+    <input type="hidden" form="noteedit" name="catid" value=<?php echo $catid?>>
+    <input type="hidden" form="noteedit" name="site" value=<?php echo $site?>>
+    <input type="hidden" form="noteedit" name="csrftok" value=<?php echo get_csrf()?>>
+    <button type="submit" form="noteedit" title="<?php echo $notetip?>" class="w3-button w3-bar-item w3-hover-pale-green w3-round <?php echo $noteclass?>">
+    <i id="" class="material-icons isgreen editicon iconoffs"><?php echo $noteicon?></i>
+    </button>
+</form>
+  
+</div>
+
 </div>
 </div>
 </div>
 <script>
 const noteid = <?php echo $noteid;?>;
-console.log('noteid is', noteid);
-doable = function(flag){
-    console.log('doable');
+doenable = function(flag){
+    console.log(`doable ${flag}`);
     const lck = document.getElementsByClassName('locked');
     const n = lck.length;
     for (let i=0;i<n;i++ ) { 
@@ -134,14 +162,14 @@ doable = function(flag){
     }
     document.getElementsByClassName("focus")[0].focus();
 }
-enableedit = ()=>{
-    doable(false);
-    document.getElementById('noteside').style.display = 'block';
+enableedit = ()=>{ 
+    doenable(false);
+    pdlck = document.getElementById('padlock')
+    pdlck.innerText='lock_open';
+    pdlck.style.color='green';
 }
-<?php if ($itemid) { ?> doable(true); <?php } ?>
-if (noteid) { 
-    document.getElementById('noteside').style['display']='block';
-}
+<?php if ($itemid) { ?> doenable(true); <?php } ?>
+
 </script>
 <?php
 include ("inc/footer.php");

@@ -7,6 +7,8 @@ include ("inc/config.php");
 include ("inc/form.php");
 include ("inc/crypt.php");
 
+check_csrf();
+
 sql_conn();
 
 $userid = $_SESSION['id'];

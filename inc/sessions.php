@@ -21,10 +21,9 @@ function get_csrf(){
     return $_SESSION['csrf_token'];
 }
 
-function check_csrf(){
+function check_csrf($dest='index.php'){
     global $csrf_force_logout;
-    return;
-    $csrf = gorp('csrftok');
+    $csrf = get_post('csrftok');
     if (!isset($csrf) OR ($csrf != $_SESSION['csrf_token'])){
         error_log('csrf error');
         if ($csrf_force_logout){
@@ -33,7 +32,8 @@ function check_csrf(){
             die();
         } else {
             set_error("CSRF Error - operation not performed");
-            Header("Location: ".$_SERVER['PHP_SELF']);
+            return;
+            Header("Location: $dest");
             die();
         }
     }

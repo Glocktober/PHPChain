@@ -1,11 +1,13 @@
 <?php
 
-$page="catsave";
+$page="notesave";
 $reqauth=true;
 
 include ("inc/config.php");
 include ("inc/form.php");
 include ("inc/crypt.php");
+
+check_csrf();
 
 sql_conn();
 
@@ -18,6 +20,7 @@ $itemid = get_post('itemid');
 $notedata = get_post('notes');
 $catid = get_post('catid');
 $noteid = get_post('noteid');
+$site = get_post('site');
 
 if ($itemid==0) $noteid=0;
 
@@ -43,7 +46,7 @@ if (!empty($notedata)){
         if (!$result=sql_query($db, $query)){
             set_error("Error: ($page) updating logins noteid: ". sql_error($db));
         }
-        set_status("Notes have been updated");
+        set_status("Notes updated for \"$site\"");
     }
 }
 header("Location: catview.php?catid=$catid");

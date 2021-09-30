@@ -27,36 +27,76 @@ $document_title = $site_name;
 <TITLE><?php echo $document_title; ?> phpchain</TITLE>
 </HEAD>
 <BODY CLASS="main">
-<!-- outer structure - card within container -->
-<div class="w3-container">
-	<div class="w3-card">
+<!-- outer structure - div-->
+<div class="">
 <!-- header bar -->
-<div class="w3-teal titlebar" onClick="javascript:document.location='index.php'">
-<span > <?php echo $document_title ?></span> <SPAN style="float:right;"><i>phpchain</i> password vault version <?php echo C_VERSION; ?></A> </SPAN>
-</div>
-<!-- menu-bar -->
-<div class='menubar w3-bar w3-small'>
 <?php
 if ($auth){
-?>
-<form action="catlist.php" method="POST" class='butform w3-left w3-ripple' ><button class="w3-btn w3-medium w3-hover-pale-blue butbut" title="add/edit/remove categories"><span class="butspan">Categories</span></button></form>
-<form action="password.php" method="POST" class='butform w3-left w3-ripple' ><button class="w3-btn w3-medium w3-hover-pale-blue butbut" title="Change your PHPchain login password"><span class="butspan">Change Password</span></button></form>
-<form action="logout.php" method="POST" class='butform w3-right w3-ripple' ><button class="w3-btn w3-medium w3-hover-pale-red butbut" title="log out of PHPchain"><span class="butspan">Logout</span></button></form>
-<form action="javascript:void(0);" method="POST" class='butform w3-right' disabled><button class="w3-btn w3-medium butbut" title="Current PHPchain account"><span class="butspan">User: <?php echo $auth_login ;?></span></button></form>
-<?php	
-} else {
-?>
-<form action="newlogin.php" method="POST" class='butform w3-left w3-ripple' ><button class="w3-btn w3-medium w3-hover-blue butbut" title="Create a PHPchain account"><span class="butspan">New Login</span></button></form>
-<form action="login.php" method="POST" class='butform w3-right w3-ripple' ><button class="w3-btn w3-medium w3-hover-green butbut" title="Login with your PHPchain account"><span class="butspan">Login</span></button></form>
+	?>  <!-- Authenticated  -->
+<div id="titlebar" class="w3-bar w3-teal" >
+
+<form action="logout.php" method="POST" class='w3-right butform' >
+	<button class="w3-button w3-bar-item w3-hover-teal" title="log out of PHPchain"><i class='material-icons  menuicon iconoffs'>logout</i><span class="">&nbsp;Logout</span></button></form>
+
+<!-- drop-down menu  -->
+<div class="w3-left w3-dropdown-hover">
+	<button class="w3-button w3-bar-item w3-teal" title="Menu"><i class='material-icons  menuicon iconoffs'>menu</i></button>
+<div class="w3-dropdown-content w3-bar-block w3-teal">
+
+	<button class="w3-button w3-bar-item w3-tal w3-hover-teal" title="Menu"><i class='material-icons  menuicon iconoffs'>menu</i></button>
+	<form action="logout.php" method="POST" class='butform w3-block' >
+		<button class="w3-button w3-bar-item w3-hover-pale-blue" title="log out of PHPchain"><i class='material-icons  menuicon iconoffs'>logout</i><span class="">&nbsp;Logout</span></button></form>
+	<form action="catlist.php" method="POST" class='butform w3-block' >
+		<button class="w3-button w3-bar-item w3-hover-pale-blue" title="add/edit/remove categories"><i class='material-icons  menuicon iconoffs'>create_new_folder</i><span class="">&nbsp;Manage Categories</span></button></form>
+	<form action="password.php" method="POST" class='butform w3-block' >
+		<button class="w3-button w3-bar-item w3-hover-pale-blue" title="Change your PHPchain login password"><i class='material-icons  menuicon iconoffs'>key</i><span class="">&nbsp;Change Password</span></button></form>
+<?php if ($allow_new_accounts){?>
+	<form action="newlogin.php" method="POST" class=' w3-block' >
+		<button class="w3-btn w3-bar-item w3-medium w3-hover-blue butbut" title="Create a PHPchain account"><i class='material-icons  menuicon iconoffs'>person_add</i>&nbsp;<span class="">Add a New Login</span></button></form>
+<?php } ?>
+</div></div>
+
+<!-- other menu bar display  -->
+<p class="w3-bar-item w3-right ">&nbsp;<?php echo $document_title ?> &nbsp;</p>
+<p class="w3-hover-teal w3-bar-item w3-left" title="Current user account"><i class="material-icons w3-left menuicon" >person</i>&nbsp; <?php echo $auth_login ;?></p>
+<i class='material-icons w3-bar-item menuicon iconoffs' onclick="javascript:document.location='index.php'" title="home">home</i>
+
+
+<?php	} else { 
+	if (!has_status()) set_error('You are not logged in...');
+	?>
+	<!-- Not authenticated -->
+<div id="titlebar" class="w3-bar w3-teal" onclick="javascript:document.location='index.php'">
+<?php if ($allow_new_accounts and !$auth_for_new_accounts){?>
+	<form action="newlogin.php" method="POST" class='butform  w3-ripple' >
+		<button class="w3-btn w3-bar-item w3-large w3-hover-green butbut" title="Create a PHPchain account"><i class='material-icons  menuicon iconoffs'>person_add</i>&nbsp;<span class="">New Login</span></button></form>
+<?php } ?>
+<form action="login.php" method="POST" class='butform w3-left w3-ripple' >
+		<button class="w3-btn w3-bar-item w3-large w3-hover-green butbut" title="Login with your PHPchain account"><i class='material-icons  menuicon iconoffs'>login</i><span class="">&nbsp;Login</span></button></form>
+
 <?php
 }
 ?>
+<!-- info menu  -->
+<div class="w3-riht w3-dropdown-hover">
+	<button class="w3-btn w3-bar-item w3-teal w3-large" title="Info"><i class='material-icons  menuicon iconoffs'>info</i>&nbsp;</button>
+<div class="w3-dropdown-content w3-bar-block w3-teal">
+	<button class="w3-btn w3-bar-item w3-teal w3-hover-teal w3-large" title="Info"><i class='material-icons  menuicon iconoffs'>info</i>&nbsp;</button>
+	<button class="w3-btn w3-bar-item w3-right w3-hover-teal" title="PHPchain version">Version <?php echo C_VERSION; ?></button>
+</div></div>
+</div> <!-- menu bar -->
+</div>
+
 <!-- status bar  -->
-<div class="messagebar" id='messagebar'>
+<div class="messagebar w3-bar" id='messagebar'>
 		<?php echo status_message() ?>
 </div>
 <!-- main table  -->
-<div id="toppane" class="toppane w3-border-top">
+<div id="toppane" class="toppane w3-container w3-border-top">
+<?php
+if (!isset($nomenu)){
+?>
+<!-- Nav plane and detail plane -->
 <div id="navpane">
 <!-- navigation menu list  -->
 <?php 
@@ -69,9 +109,28 @@ if ($auth) {
 	$catid=gorp('catid');
 	echo getmenu($_SESSION["id"],$catid);
 
-	echo action_button('<i class="material-icons addicon iconoffs">add</i>New Entry',"entedit.php?itemid=0&catid=$catid","Add new password entry", "w3-hover-pale-green w3-pale-grey w3-tiny w3-block");
+	$catid=gorp('catid');
+	if ($catid) {
+?>
+<div class="w3-block w3-center">
+<form action="entedit.php" id="newbut">
+<input type="hidden" form="newbut" name="csrftok" value="<?php echo get_csrf()?>" >
+<input type="hidden" form="newbut" name="catid" value="<?php echo $catid?>" >
+<input type="hidden" form="newbut" name="itemid" value="0" >
+<a href="javascript: void(0)" onclick="document.getElementById('newbut').submit()" 
+	title="Add a new password entry"
+    class='butbut w3-button w3-hover-pale-green'><i class='material-icons addicon iconoffs'>add</i> New Entry</a>
+</form>
+</div>
+<?php
+	}
 }
 ?>
 </div> <!-- end navigation menu content -->
 <div id="detailpane">
+<?php 
+} else {?>
+<div id="singlepane" class="w3-container div50">
+
+<?php }?>
 <!-- Here is the detail content -->
