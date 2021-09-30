@@ -37,11 +37,11 @@ if ($itemid!=0) {
         error_out("Error: Not authorized for this entry",'catview.php' );
     }
     if ($noteid){
-        if (!$result = sql_query($db, "select note from notes where id = \"$noteid\"")){
-            error_out("Error: Fetching note data for entry '$site'", 'catview.php');
-        }
-        $row = sql_fetch_assoc($result);
-        $notedata = $row['note'];
+    //     if (!$result = sql_query($db, "select note from notes where id = \"$noteid\"")){
+    //         error_out("Error: Fetching note data for entry '$site'", 'catview.php');
+    //     }
+    //     $row = sql_fetch_assoc($result);
+    //     $notedata = $row['note'];
     }
 } else {
     if (!has_status()) set_status("Creating new password entry");
@@ -66,7 +66,7 @@ $noteclass = $noteid ? '': 'locked';
 $notetip = $noteid ? 'View existing note' : 'Create a note';
 $noteicon = $noteid ? 'edit_note': 'note_add' ;
 
-$mod_time = strftime($time_format, $modified);
+$mod_time = $modified ? strftime($time_format, $modified) : "(the epoch)";
 $backurl = (isset($catid) and !is_null($catid)) ? "catview.php?catid=$catid" : "catindex.php";
 
 include ("inc/header.php");

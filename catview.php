@@ -74,8 +74,8 @@ $catid = $catidx;
 <?php
 
 foreach ($resarray as $val) {
-
-    $mod_time = 'Modified: '.strftime($time_format, $val['modified']);
+    $modified = $val['modified'];
+    $mod_time = 'Last modified: '. ($modified? strftime($time_format, $modified): "(the epoch)");
     $noteid = $val['noteid'];
     $noteclass = $noteid ? 'isgreen': 'isgrey';
     $notetip = $noteid ? 'View existing note' : 'Create a note';
@@ -94,14 +94,14 @@ foreach ($resarray as $val) {
 
 ?>
 <TR  class='w3-hover-light-grey trow'>
-<TD CLASS="row" ><?php echo $outsite ?></TD>
+<TD CLASS="row" title="<?php echo $mod_time?>"><?php echo $outsite ?></TD>
 <TD CLASS="row  login" title="Click to copy login"><span class=copyclick><?php echo $login ?></span></TD>
 <TD  CLASS="row  password" title="Click to copy password"><span class=copyclick><?php echo $password ?></span></TD>
 <TD CLASS="sea">
 <?php 
-echo icon_post('edit', '',"edi$itemid", 'entedit.php', $valmap, 'editicon','Edit this entry');
-echo icon_post('delete', '', "del$itemid", 'entdelete.php', $valmap, 'delicon','Delete this entry');
-echo icon_post($noteicon, '', "note$itemid", 'noteedit.php', $valmap, $noteclass,$notetip);
+echo icon_post('edit', '',"edi$itemid", 'entedit.php', $valmap, 'editicon', 'Edit this entry');
+echo icon_post('delete', '', "del$itemid", 'entdelete.php', $valmap, 'delicon', 'Delete this entry');
+echo icon_post($noteicon, '', "note$itemid", 'noteedit.php', $valmap, $noteclass, $notetip);
 ?>
 </td><td>
 </td></TR>
