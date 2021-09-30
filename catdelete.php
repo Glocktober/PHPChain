@@ -18,8 +18,7 @@ if (!$result=sql_query($db,"select count(catid) from logins where userid=\"$user
     error_out("Error: ($page) checking for empty category: ".sql_error($db), 'catlist.php');
 
 $row=sql_fetch_row($result);
-error_log("fetch");
-error_log(var_dump($row));
+
 if ($row[0]>0) {
     error_out('Error: Unable to delete. Remove all login entries from category first',
             "catlist.php");

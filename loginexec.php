@@ -26,8 +26,6 @@ $now = time();
 sql_conn();
 
 if (isset($login) and isset($key)) {
-	error_log("** $login **  $key **");
-
 	// Check for $login_lockout_failures failed login attempts in the last $login_lockout_window minutes.
 	$result=sql_query($db,
 		"select count(name) from loginlog where date > " . ($now-($login_lockout_window*60)) ." and ip = \"$ip\" and outcome = 0");

@@ -22,7 +22,6 @@ else
     $query= "insert into cat values(NULL, '$userid', '$title')";
 
 if (!$result=sql_query($db, $query)){
-    error_log($query);
     error_out("Error: ($page) database error: ".sql_error($db), "catedit.php?catid=$catid");
 }
 

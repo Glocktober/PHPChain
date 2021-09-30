@@ -34,7 +34,7 @@ $bpassword=base64_encode(encrypt($key,$password,$iv));
 $bsite=base64_encode(encrypt($key,$site,$iv));
 $burl=base64_encode(encrypt($key,$url,$iv));
 $biv=base64_encode($iv);
-error_log("$password ===> $bpassword");
+
 if ($itemid==0) $noteid=0;
 
 $notedata = substr($notedata, 0, 4096);
