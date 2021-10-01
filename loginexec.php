@@ -24,6 +24,8 @@ if (filter_var($ip,FILTER_VALIDATE_IP)===false) $ip="0.0.0.0";
 $error="";
 $now = time();
 sql_conn();
+error_log("Ffff $login");
+if (isset($login)) setcookie('chainlogin',$login,0,'/;SameSite=strict','',true,true);
 
 if (isset($login) and isset($key)) {
 	// Check for $login_lockout_failures failed login attempts in the last $login_lockout_window minutes.

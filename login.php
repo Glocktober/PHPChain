@@ -4,9 +4,9 @@ $reqauth=false;
 include ("inc/config.php");
 include ("inc/form.php");
 
-$login = array_key_exists('login',$_SESSION) ? $_SESSION['login']: '';
-if (empty($login) and array_key_exists('chainlogin', $_COOKIE)) 
-    $login=$_COOKIE['chainlogin'];
+// $login = array_key_exists('login',$_SESSION) ? $_SESSION['login']: '';
+$login = array_key_exists('chainlogin', $_COOKIE) ? 
+    $login=$_COOKIE['chainlogin']: '';
 
 include ("inc/header.php");
 ?>
