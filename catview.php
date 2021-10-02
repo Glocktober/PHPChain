@@ -211,22 +211,13 @@ foreach ($resarray as $val) {
     </div>
 </div>
 <script>
-flashel = function(el){
-	const origcolor = el.style.background;
-	el.style.background = "crimson";
-	setTimeout(() => {
-		el.style.background = "yellow";
-	}, 150);
-	setTimeout(() => {
-		el.style.background = origcolor;
-	}, 200);
-}
 copyclip = function(el){
 	const bg = el;
 	const clip = bg.children[0].innerText;
     flashel(bg);
 	navigator.clipboard.writeText(clip);
 }
+
 inpclip = function(el){
     const clip = el.value;
     flashel(el);

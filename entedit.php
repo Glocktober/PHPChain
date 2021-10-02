@@ -166,16 +166,6 @@ foreach($cats as $k => $v){
 </div>
 </div>
 <script>
-flashel = function(el){
-	const origcolor = el.style.background;
-	el.style.background = "crimson";
-	setTimeout(() => {
-		el.style.background = "yellow";
-	}, 150);
-	setTimeout(() => {
-		el.style.background = origcolor;
-	}, 200);
-}
 const noteid = <?php echo $noteid;?>;
 doenable = function(flag){
     const lck = document.getElementsByClassName('locked');
