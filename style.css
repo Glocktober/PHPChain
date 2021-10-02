@@ -30,7 +30,7 @@ i.isgreen:hover{
 .iconform{
 	padding-right:0.5em;
 }
-menuicon{
+.menuicon{
 	font-size: 2em;
 }
 i.delicon{
@@ -81,12 +81,9 @@ i.addicon:hover{
 	font-size: 1em;
 	;
 }
-/* .left{
-    float: left;
-} */
-/* .right{
-    float: right;
-} */
+.italic{
+	font-style: italic;
+}
 #catedittab{
 	padding-right: 1em;
 	padding-top: 1em;

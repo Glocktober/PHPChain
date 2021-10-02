@@ -169,7 +169,7 @@ foreach ($resarray as $val) {
       class="w3-button w3-display-topright w3-hover-pale-blue">&times;</span>
             <h3 class="w3-center">Password Entry Detail</h3>
         </div>
-        <h4 id='dispmodif' class="w3-center">placeholder</h4>
+        <h4 id='dispmodif' class="w3-center w3-text-grey italic">placeholder</h4>
         <form action="" id="dispform" class="">
         <div class='w3-center w3-margin' >
             <label CLASS="plain labform" for="dispsite">Site:</label>
@@ -179,7 +179,7 @@ foreach ($resarray as $val) {
                 class='' title='Click to copy site name' >
         </div><br>
         <div class='w3-center w3-margin' >
-            <label CLASS="plain labform" for="dispurl">Site:</label>
+            <label CLASS="plain labform" for="dispurl">Site URL:</label>
             <input id="dispurl" type="text" name="url" size="30" maxlen="255"
                 value="" autocomplete="off" spellcheck="false"
                 placeholder="None..." readonly onmouseup="inpclip(this)";
@@ -199,6 +199,10 @@ foreach ($resarray as $val) {
             placeholder="None..." readonly onmouseup="inpclip(this)";
             class='password' title='Click to copy password' > 
         </div><br>
+        <div class="w3-center w3-small">
+            <p class="w3-text-grey"> <i class="w3-small material-icons">content_copy</i>
+                <i>Click on a field to copy the contents to your clipboard</i></p>
+        </div>
         <div class="w3-margin">
             <div id='dispbar' class="w3-center" data=''>
                 <button type="button" class="w3-large w3-hover-pale-green w3-button" onclick="document.getElementById('dispmod').style.display='none'">
