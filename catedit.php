@@ -34,15 +34,16 @@ include("inc/header.php");
     <input type="hidden" name="catid" value=<?php echo $catid ?> >
     <span  class="w3-center txtgrey" ><?php echo $mast?></span>
 </div>
-<div class='w3-center fullw' >
+<div class='w3-center fullw ' >
 <label class="plain labform" for="title">Category Title:</label>
 <input type="text" name="title" required maxlength=255 size=30 id="title" 
     value="<?php echo $title; ?>" spellcheck="false" autocomplete="off"
     placeholder="Enter category title"
     title="Category title" class="plain focus">
 </div>
-<div class="w3-center w3-bar w3-margin-top">
-    <?php echo icon_get('chevron_left', 'Back', 'catlist.php', [], 'butbut w3-hover-pale-green','Return','backicon iconoffs'); ?>
+<div class="w3-center w3-bar w3-padding-16">
+    <a href="catlist.php" class="w3-btn  w3-hover-pale-green">
+        <i class="material-icons iconoffs backicon">chevron_left</i> Back</a>
     <button type="submit" class='butbut w3-btn w3-hover-pale-red ' title="Save this category"><i class='material-icons saveicon iconoffs'>check_circle</i>&nbsp;Save</button>
 </form>
 </div>

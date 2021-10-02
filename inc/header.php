@@ -36,7 +36,7 @@ if ($auth){
 <div id="titlebar" class="w3-bar w3-teal" >
 
 <form action="logout.php" method="POST" class='w3-right butform' >
-	<button class="w3-button w3-bar-item w3-hover-teal" title="log out of PHPchain"><i class='material-icons  menuicon iconoffs'>logout</i><span class="">&nbsp;Logout</span></button></form>
+	<button class="w3-button w3-bar-item iconoffs w3-hover-pale-blue" title="log out of PHPchain"><i class='material-icons  menuicon iconoffs'>logout</i><span class="">&nbsp;Logout</span></button></form>
 
 <!-- drop-down menu  -->
 <div class="w3-left w3-dropdown-hover">
@@ -52,7 +52,7 @@ if ($auth){
 		<button class="w3-button w3-bar-item w3-hover-pale-blue" title="Change your PHPchain login password"><i class='material-icons  menuicon iconoffs'>key</i><span class="">&nbsp;Change Password</span></button></form>
 <?php if ($allow_new_accounts){?>
 	<form action="newlogin.php" method="POST" class=' w3-block' >
-		<button class="w3-btn w3-bar-item w3-medium w3-hover-blue butbut" title="Create a PHPchain account"><i class='material-icons  menuicon iconoffs'>person_add</i>&nbsp;<span class="">Add a New Login</span></button></form>
+		<button class="w3-btn w3-bar-item w3-medium w3-hover-pale-blue butbut" title="Create a PHPchain account"><i class='material-icons  menuicon iconoffs'>person_add</i>&nbsp;<span class="">Add a New Login</span></button></form>
 <?php } ?>
 </div></div>
 
@@ -102,10 +102,10 @@ if (!isset($nomenu)){
 <?php 
 if ($auth) {
 	include ("inc/listmenu.php");
-	$catid=NULL;
-	if (isset($page) and ($page=="catview")) {
-		$catid=gorp("catid");
-	}	
+	// $catid=NULL;
+	// if (isset($page) and ($page=="catview")) {
+	// 	$catid=gorp("catid");
+	// }	
 	$catid=gorp('catid');
 	echo getmenu($_SESSION["id"],$catid);
 

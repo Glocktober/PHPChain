@@ -1,5 +1,5 @@
 <?php
-$page="newloginsave";
+$page="newloginexec";
 $reqauth=false; # handle this later in policy checks
 
 include ("inc/config.php");
@@ -44,6 +44,6 @@ if (!sql_query($db,"insert into user values (NULL, \"$login\", \"$teststring\", 
 
 $_SESSION['login'] = $login;
 $_SESSION['isauth'] = FALSE;
-
+setcookie('chainlogin',$login,0,'/;SameSite=strict','',true,true);
 set_status("The account \"$login\" has been created - please login");
 header ("Location: login.php");

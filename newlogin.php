@@ -23,7 +23,7 @@ include("inc/header.php");
 </div><br>
 
 <div class='' >
-    <form action="newloginsave.php" method="POST">
+    <form action="newloginexec.php" method="POST">
     <input type="hidden" name="csrftok" value=<?php echo get_csrf() ?> >
 </div>
 
@@ -50,9 +50,9 @@ include("inc/header.php");
         class='password' title='Verify the password' >
 </div><br>
 
-<div class='w3-margin w3-center w3-bar'>
-    <a class='butbut w3-button w3-hover-pale-green w3-round' href="index.php" title='Cancel...'><i class='material-icons backicon iconoffs'>chevron_left</i>Back</a>
-	<button type="submit" class='w3-button w3-hover-pale-green'><i class='material-icons addicon iconoffs'>person_add</i> Create</button>
+<div class='w3-margin w3-center'>
+    <a class='w3-btn w3-hover-pale-green w3-round' href="index.php" title='Cancel...'><i class='material-icons backicon iconoffs'>chevron_left</i>Back</a>
+	<button type="submit" class='w3-btn w3-hover-pale-green'><i class='material-icons addicon iconoffs'>person_add</i> Create</button>
 </div>
 </form>
 </div>

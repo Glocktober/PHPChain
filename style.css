@@ -19,10 +19,13 @@ i.isgrey{
 	color:gainsboro;
 }
 i.isgrey:hover{
-	color:indianred;
+	color:darkgreen;
 }
 i.isgreen{
 	color: lightseagreen;
+}
+i.isgreen:hover{
+	color:coral;
 }
 .iconform{
 	padding-right:0.5em;
@@ -198,6 +201,25 @@ a.cat{
 #catview{
 	word-break: break-all;
 }
+#catview{
+	padding:0.5em;
+}
+#tabplane{
+	margin: 1em;
+	padding:2em;
+	width:50em;
+
+}
+#catview div span,
+#tabplane div button{
+	top: 0.7em;
+	margin-right: 2em;
+	margin-left: 2em;
+}
+#catview div input,
+#tabplane div input{
+	width: 50%;
+}
 #categorytable tr td a{
 	display: block;
 	
@@ -249,7 +271,7 @@ span.info i{
 .fullw{
 	width: 100%;
 }
-.cardpanel{
+#cardpanel{
 	width:fit-content;
 	padding-right:5em;
 	margin: 3em;
@@ -264,4 +286,24 @@ textarea:disabled{
 #titlebar p{
 	margin-top:8px;
 	/* margin-left:4em; */
+}
+#delvermodal{
+	width:50%;
+}
+#dispbar button,
+#delbar button {
+	font-size: 1.4em;
+	margin: 1em;
+}
+#dispbar :nth-child(1) i,
+#delbar :nth-child(1) i{
+	color: green;
+}
+#dispbar :nth-child(2) i,
+#delbar :nth-child(2) i{
+	color: red;
+}
+input::placeholder{
+	color:indianred;
+	opacity: 0.5;
 }

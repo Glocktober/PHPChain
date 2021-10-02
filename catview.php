@@ -57,19 +57,29 @@ array_multisort($sortarray, SORT_ASC, $resarray);
 
 include ("inc/header.php");
 $catid = $catidx;
+$newvaljs = json_encode([
+    'itemid'=>0, 
+    'catid'=>$catid, 
+    'noteid'=> 0,
+    'site'=>'', 
+    'csrftok'=>get_csrf()
+]);
 ?>
 
 <div id="catview" class="w3-card w3-round">
-<div class="div50" >
-    <input oninput="w3.filterHTML('#cattable', '.trow', this.value)" placeholder='Filter entries...' class='w3-block  seafilter' title='Filter content'>
+<div class="w3-bar" data='<?php echo $newvaljs?>'>
+<span class="w3-btn w3-bar-item w3-left iconoffs w3-hover-pale-green" onclick="onpush(this,'entedit.php')"><i class='material-icons addicon iconoffs'
+    >add</i> New Entry</span>
+    <input oninput="w3.filterHTML('#cattable', '.trow', this.value)" placeholder='Filter entries...' 
+        class='w3-border w3-bar-item  seafilter focus' title='Filter content'>
 </div>
-<TABLE  id=cattable class="w3-table w3-small w3-bordered">
-<TR class='w3-pale-blue'>
-<TD CLASS="header" WIDTH="25%" onclick="w3.sortHTML('#cattable','.trow', 'td:nth-child(1)')" title='Click to sort..'>Site <i style='font-size:15px' class='material-icons'>sort</i></TD>
-<TD CLASS="header" WIDTH="15%" onclick="w3.sortHTML('#cattable','.trow', 'td:nth-child(2)')" title='Click to sort..'>Login <i style='font-size:15px' class='material-icons'>sort</i></TD>
-<TD CLASS="header" WIDTH="25%">Password</TD>
-<TD CLASS="header" WIDTH="fit-content">Actions</TD>
-</TR>
+<table  id=cattable width="100%" class="w3-table w3-small w3-bordered">
+<tr class='w3-pale-blue'>
+<td class="header" width="30%" onclick="w3.sortHTML('#cattable','.trow', 'td:nth-child(1)')" title='Click to sort..'>Site <i style='font-size:15px' class='material-icons'>sort</i></td>
+<td class="header" width="25%" onclick="w3.sortHTML('#cattable','.trow', 'td:nth-child(2)')" title='Click to sort..'>Login <i style='font-size:15px' class='material-icons'>sort</i></td>
+<td class="header" width="25%">Password <i style='font-size:15px' class="material-icons">key</i> </td>
+<td class="header" width="20%">Actions</td>
+</tr>
 
 <?php
 
@@ -81,6 +91,7 @@ foreach ($resarray as $val) {
     $notetip = $noteid ? 'View existing note' : 'Create a note';
     $noteicon = $noteid ? 'edit_note': 'note_add' ;
     $site = $val['site'];
+    $url = $val['url'];
 
     if (strlen($val["url"])>1) $outsite="<A HREF=\"".$val["url"]."\" TARGET=\"_blank\" title=\"Click to open URL\">".$val["site"]."</A>";
     else $outsite=$val["site"];
@@ -88,38 +99,179 @@ foreach ($resarray as $val) {
     $login = $val['login'];
     $password = $val['password'];
     $itemid = $val['id'];
+    $site = htmlspecialchars($site);
+    $valjs = json_encode([
+        'itemid'=>$itemid, 
+        'catid'=>$catid, 
+        'noteid'=> $val['noteid'],
+        'site'=>$site, 
+        'csrftok'=>get_csrf()
+    ]);
 
-    $valmap = ['itemid'=>$itemid, 'catid'=>$catid, 'noteid'=> $val['noteid'],
-                'site'=>$site, 'csrftok'=>get_csrf()];
+    $dispjs = json_encode([
+        'site' => $site,
+        'modtime' =>$mod_time,
+        'password'=>$password,
+        'login'=>$login,
+        'url'=>$url,
+    ])
 
 ?>
-<TR  class='w3-hover-light-grey trow'>
-<TD CLASS="row" title="<?php echo $mod_time?>"><?php echo $outsite ?></TD>
-<TD CLASS="row  login" title="Click to copy login"><span class=copyclick><?php echo $login ?></span></TD>
-<TD  CLASS="row  password" title="Click to copy password"><span class=copyclick><?php echo $password ?></span></TD>
-<TD CLASS="sea">
-<?php 
-echo icon_post('edit', '',"edi$itemid", 'entedit.php', $valmap, 'editicon', 'Edit this entry');
-echo icon_post('delete', '', "del$itemid", 'entdelete.php', $valmap, 'delicon', 'Delete this entry');
-echo icon_post($noteicon, '', "note$itemid", 'noteedit.php', $valmap, $noteclass, $notetip);
-?>
+<TR class='w3-hover-light-grey trow'>
+<td class="row" title="<?php echo $mod_time?>"><?php echo $outsite ?></td>
+<td class="row  login" title="Click to copy login" onclick="copyclip(this)"><span class="w3-block"><?php echo $login ?></span></td>
+<td class="row  password" title="Click to copy password" onclick="copyclip(this)"><span class="w3-block"><?php echo $password ?></span></td>
+<td class="sea" data='<?php echo $valjs?>' disp='<?php echo $dispjs?>'>
+
+<i class="material-icons editicon" onclick="editpush(this,'entedit.php')" title="Details">zoom_in</i>
+<i class="material-icons editicon" onclick="onpush(this,'entedit.php')" title="Edit this entry">edit</i>
+<i class="material-icons <?php echo $noteclass?>" onclick="onpush(this,'noteedit.php')" title="<?php echo $notetip?>"><?php echo $noteicon?></i>
+<i class="material-icons delicon" onclick="delpush(this,'entdelete.php','<?php echo $site?>')" title="Delete this entry">delete</i>
+
 </td><td>
-</td></TR>
-<?php 
-}
-?>
-<tr><td colspan=3 width=100% class=w3-center>
-<form action="entedit.php" id="newbut">
-<input type="hidden" form="newbut" name="csrftok" value="<?php echo get_csrf()?>" >
-<input type="hidden" form="newbut" name="catid" value="<?php echo $catid?>" >
-<input type="hidden" form="newbut" name="itemid" value="0" >
-<a href="javascript: void(0)" onclick="document.getElementById('newbut').submit()" 
-    title="Add a new password entry" class='butbut w3-button w3-hover-pale-green'>
-    <i class='material-icons addicon iconoffs'>add</i> New Entry</a>
-</form>
 </td></tr>
-</TABLE>
+<?php 
+}?>
+</table>
+<!-- Hidden constructed form for posts   -->
+<div class="w3-hide">
+    <form action="#" id="datform" method="POST">
+    <input type="text" name="itemid" >
+    <input type="text" name="catid" >
+    <input type="text" name="noteid" >
+    <input type="text" name="csrftok" >
+    <input type="text" name="site" >
+</form>
+</div>
+<!-- Modal delete verification  -->
+<div class="w3-modal" id="delver">
+    <div class="w3-modal-content" id="delvermodal">
+        <div class="w3-bar w3-teal w3-center">
+            
+            <h3 class="w3-center">Confirm delete!</h3>
+        </div>
+        <div class="w3-margin">
+            <h4 id='delvertit' class="w3-center">placeholder</h4>
+            <div id='delbar' class="w3-center" data=''>
+                <button class="w3-large w3-hover-pale-green w3-button" onclick="document.getElementById('delver').style.display='none'">
+                <i class="material-icons iconoffs">cancel</i> Cancel</button>
+                <button class="w3-large w3-hover-pale-red w3-button" onclick="onpush(this,'entdelete.php')">
+                <i class="material-icons iconoffs">delete</i> Delete</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Modal detailed display -->
+<div class="w3-modal" id="dispmod">
+    <div class="w3-modal-content" id="dispdialog">
+        <div class="w3-bar w3-teal w3-center">    
+        <span onclick="document.getElementById('dispmod').style.display='none'"
+      class="w3-button w3-display-topright w3-hover-pale-blue">&times;</span>
+            <h3 class="w3-center">Password Entry Detail</h3>
+        </div>
+        <h4 id='dispmodif' class="w3-center">placeholder</h4>
+        <form action="" id="dispform" class="">
+        <div class='w3-center w3-margin' >
+            <label CLASS="plain labform" for="dispsite">Site:</label>
+            <input id="dispsite" type="text" name="login" size="30" maxlen="255"
+                value="" autocomplete="off" spellcheck="false"
+                placeholder="None..." readonly onmouseup="inpclip(this)";
+                class='' title='Click to copy site name' >
+        </div><br>
+        <div class='w3-center w3-margin' >
+            <label CLASS="plain labform" for="dispurl">Site:</label>
+            <input id="dispurl" type="text" name="url" size="30" maxlen="255"
+                value="" autocomplete="off" spellcheck="false"
+                placeholder="None..." readonly onmouseup="inpclip(this)";
+                class='' title='Click to copy URL' >
+        </div><br>
+        <div class='w3-center w3-margin' >
+            <label CLASS="plain labform" for="displogin">Login:</label>
+            <input id="displogin" type="text" name="login" size="30" maxlen="255"
+                value="" autocomplete="off" spellcheck="false"
+                placeholder="None..." readonly onmouseup="inpclip(this)";
+                class='' title='Click to copy login' >
+        </div><br>
+        <div class='w3-center w3-margin' >
+            <label CLASS="plain labform" for="disppassword">Password:</label>
+            <input id="disppassword" type="text" name="password" size="30" maxlen="255"
+            value="w3-left" autocomplete="off" spellcheck="false"
+            placeholder="None..." readonly onmouseup="inpclip(this)";
+            class='password' title='Click to copy password' > 
+        </div><br>
+        <div class="w3-margin">
+            <div id='dispbar' class="w3-center" data=''>
+                <button type="button" class="w3-large w3-hover-pale-green w3-button" onclick="document.getElementById('dispmod').style.display='none'">
+                <i class="material-icons iconoffs">close</i> Close</button>
+                <button type="button" class="w3-large w3-hover-pale-red w3-button" onclick="onpush(this,'entedit.php')">
+                <i class="material-icons iconoffs">edit</i> Edit...</button>
+            </div>
+        </div>
+        </form>
+    </div>
+</div>
+<script>
+flashel = function(el){
+	const origcolor = el.style.background;
+	el.style.background = "crimson";
+	setTimeout(() => {
+		el.style.background = "yellow";
+	}, 150);
+	setTimeout(() => {
+		el.style.background = origcolor;
+	}, 200);
+}
+copyclip = function(el){
+	const bg = el;
+	const clip = bg.children[0].innerText;
+    flashel(bg);
+	navigator.clipboard.writeText(clip);
+}
+inpclip = function(el){
+    const clip = el.value;
+    flashel(el);
+    navigator.clipboard.writeText(clip);
+}
 
+onpush = function(el,act){
+    const jdat = JSON.parse(el.parentElement.getAttribute('data'))
+    const fm = document.getElementById('datform')
+    const chil = fm.children
+
+    fm.action = act 
+    for (k in jdat){
+        chil[k].value = jdat[k];
+    }
+    console.log(act);
+    fm.submit();
+}
+
+delpush = function(el,act,site){
+    document.getElementById('delvertit').innerHTML = `Deleting password entry<br><b><i>"${site}"</i></b>`;
+    const jdat = el.parentElement.getAttribute('data');
+    document.getElementById('delbar').setAttribute('data',jdat);
+    document.getElementById('delver').style.display = 'block';
+}
+
+editpush = function(el,act){
+    const jdat = el.parentElement.getAttribute('data');
+    const ddat = JSON.parse(el.parentElement.getAttribute('disp'));
+    const df = document.getElementById('dispform');
+    const chil = df.children;
+    const modmes = ddat['modtime'];
+    delete ddat['modtime'];
+    document.getElementById('dispmodif').innerHTML = modmes;
+    document.getElementById('dispbar').setAttribute('data',jdat);
+
+    for (k in ddat){
+        try{
+            document.getElementById('disp'+k).value = ddat[k];
+        } catch(e){ }
+    }
+    document.getElementById('dispmod').style.display = 'block';
+}
+</script>
 <?php
+
 include ("inc/footer.php");
 ?>

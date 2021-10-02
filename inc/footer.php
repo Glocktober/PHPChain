@@ -5,18 +5,10 @@
 </div>
 <script>
 
-copyTd2Clipboard = function(e){
-	navigator.clipboard.writeText(this.innerText);
-}
-
-setUp = function(){
-	const tds = document.getElementsByClassName("copyclick");
-	for (var i in tds)  tds[i].onclick = copyTd2Clipboard;
+setTimeout(() => {
 	const foc = document.getElementsByClassName("focus");
 	if (foc) foc[0].focus();
-}
-setUp();
-
+}, 0);
 </script>
 </BODY>
 </HTML>

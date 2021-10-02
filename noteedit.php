@@ -122,12 +122,6 @@ enableedit = ()=>{
 
 if (noteid) { doenable(true)}
 else doenable(false)
-
-xyzzy = ()=>{
-    delf = document.getElementById('delf');
-    console.log('sf');
-    delf.submit();
-}
 </script>
 
 <?php

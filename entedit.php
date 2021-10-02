@@ -15,7 +15,7 @@ $userid = $_SESSION['id'];
 $key = $_SESSION['key'];
 $authed_login = $_SESSION['login'];
 $now = time();
-
+$cats = [];
 $catid=get_post("catid");
 $itemid=get_post("itemid");
 $notedata = "";
@@ -54,13 +54,16 @@ if ($itemid!=0) {
     $modified=0;
 }
 
-// Get categories.
+# Get list of categories.
 $result=sql_query($db,"select id, title from cat where userid = \"$userid\" order by title");
 if (sql_num_rows($result)==0) {
     error_out("No categories exist for \"<b>$authed_login</b>\" - Create a category first",
         "catedit.php");
-} 
-$cats=restoarray($result);
+}
+
+while($row=sql_fetch_assoc($result)){
+    $cats[$row['id']] = $row['title']; 
+}
 
 $noteclass = $noteid ? '': 'locked';
 $notetip = $noteid ? 'View existing note' : 'Create a note';
@@ -74,7 +77,7 @@ include ("inc/header.php");
 # header.php hammers $catid:
 $catid=sanigorp("catid");
 ?>
-<div class="w3-card cardpanel">
+<div class="w3-card" id="cardpanel">
 <div class=" w3-padding-16 ">
 
 <div class='w3-center fullw' >
@@ -91,11 +94,22 @@ $catid=sanigorp("catid");
 </div>
 
 <div class='w3-center w3-margin-left fullw' >
-    <label CLASS="plain labform" >Category:</label>
-    <?php echo input_select("catid",$catid,$cats,'plain locked','Select the category for this entry'); ?>
+    <label CLASS="plain labform" ><span class=error>*</span>Category:</label>
+<!-- Build select options widget  -->
+<select name="catid" class="plain locked" title="Select the category for this entry">
+<?php
+foreach($cats as $k => $v){
+    if ($k==$catid) {
+        echo "<option selected value='$k'>$v</option>";
+    } else {
+        echo "<option value='$k'>$v</option>";
+    }
+}
+?>
+</select>
 </div><br>
 
-<div class='w3-center w3-margin full2' >
+<div class='w3-center w3-margin fullw' >
     <label CLASS="plain labform"><span class=error>*</span>Site:</label>
     <input type="text" required name="site" size="30" maxlen="255"
         value="<?php echo $site;?>" autocomplete="off" spellcheck="false"
@@ -152,9 +166,18 @@ $catid=sanigorp("catid");
 </div>
 </div>
 <script>
+flashel = function(el){
+	const origcolor = el.style.background;
+	el.style.background = "crimson";
+	setTimeout(() => {
+		el.style.background = "yellow";
+	}, 150);
+	setTimeout(() => {
+		el.style.background = origcolor;
+	}, 200);
+}
 const noteid = <?php echo $noteid;?>;
 doenable = function(flag){
-    console.log(`doable ${flag}`);
     const lck = document.getElementsByClassName('locked');
     const n = lck.length;
     for (let i=0;i<n;i++ ) { 
@@ -163,6 +186,8 @@ doenable = function(flag){
     document.getElementsByClassName("focus")[0].focus();
 }
 enableedit = ()=>{ 
+    const cpan = document.getElementById('cardpanel');
+    flashel(cpan);
     doenable(false);
     pdlck = document.getElementById('padlock')
     pdlck.innerText='lock_open';
