@@ -29,7 +29,7 @@ $document_title = $site_name;
 <BODY CLASS="main">
 <!-- outer structure - div-->
 <div class="">
-<!-- header bar -->
+<!-- menu bar -->
 <?php
 if ($auth){
 	?>  <!-- Authenticated  -->
@@ -89,13 +89,13 @@ if ($auth){
 	<button class="w3-btn w3-bar-item w3-teal w3-hover-teal w3-large" title="Info"><i class='material-icons  menuicon iconoffs'>info</i>&nbsp;</button>
 	<button class="w3-btn w3-bar-item w3-right w3-hover-teal" title="PHPchain version">Version <?php echo C_VERSION; ?></button>
 </div></div>
-</div> <!-- menu bar -->
+</div> <!-- end of menu bar -->
 </div>
 
 <!-- status bar  -->
 <div class="messagebar w3-bar" id='messagebar'>
 		<?php echo status_message() ?>
-</div>
+</div> <!-- end of status bar  -->
 <!-- main table  -->
 <div id="toppane" class="toppane w3-container w3-border-top">
 <?php

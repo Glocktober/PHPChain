@@ -1,8 +1,9 @@
 </div> <!-- end detail content -->
 </div> <!-- end main table  -->
 </div>
-</div>
+</div><!-- end of outer structure div  -->
 <script>
+// Copy text from the first child (a span) of a TD
 copyclip = function(el){
 	const bg = el;
 	const clip = bg.children[0].innerText;
@@ -10,21 +11,24 @@ copyclip = function(el){
 	navigator.clipboard.writeText(clip);
 }
 
+// Copy text from input to clipboard
 inpclip = function(el){
     const clip = el.value;
     flashel(el);
     navigator.clipboard.writeText(clip);
 }
 
+// Flash a message
 flashmes = function(mess){
 	const mesbar = document.getElementById('messagebar');
 	const curmes = mesbar.innerHTML;
-	mesbar.innerHTML = `<span class=success><i class="material-icons w3-large iconoffs">info</i>&nbsp;&nbsp;${mess}</success>`;
+	mesbar.innerHTML = `<span class=success><i class="material-icons iconoffs">info</i>&nbsp;&nbsp;${mess}</success>`;
 	setTimeout(() => {
 		mesbar.innerHTML = curmes;
-	}, 1500);
+	}, 2000);
 }
 
+// Flash an element and announce it was copied to the clipboard
 flashel = function(el){
 	const origcolor = el.style.background;
 	flashmes('Copied To Clipboard');
@@ -36,11 +40,13 @@ flashel = function(el){
 		el.style.background = origcolor;
 	}, 250);
 }
+
 // Set focus on element with class of "focus"
 setTimeout(() => {
 	const foc = document.getElementsByClassName("focus");
 	if (foc) foc[0].focus();
 }, 0);
+
 // clear filters
 clearFilters = function(){
 	const els = document.getElementsByClassName('seafilter');
