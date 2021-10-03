@@ -22,7 +22,7 @@ if ($auth) {
 
 ?>
 <div id='index' class="w3-container" style="width:70%;">
-<P CLASS="intro">The contents of each Category can be viewed by clicking the name on the left. If you have no categories, you will need to create some from the &quot;settings&quot; link in the menu above.</n>
+<P CLASS="intro">The contents of each Folder can be viewed by clicking the name on the left. If you have no Folders, you will need to create some from the &quot;settings&quot; link in the menu above.</n>
 <?php
 	$result=sql_query($db,"select  date, ip, outcome from loginlog where name = \"$login\" order by loginlog.date desc limit 11");
 	if (sql_num_rows($result)>0) {

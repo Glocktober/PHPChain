@@ -7,8 +7,6 @@ include ("inc/config.php");
 include ("inc/form.php");
 include ("inc/crypt.php");
 
-check_csrf();
-
 sql_conn();
 
 $userid = $_SESSION['id'];
@@ -19,11 +17,15 @@ $cats = [];
 $catid=get_post("catid");
 $itemid=get_post("itemid");
 $notedata = "";
-		
+
+if ($itemid) check_csrf();
+elseif (sanigorp('catid'))
+    $catid=sanigorp('catid');
+
 if ($itemid!=0) {
     if (!has_status()) set_status("View/Edit password entry");
     //Get existing data and decrypt it first.
-    $result=sql_query($db,"select id, iv, catid, login, password, site, url, noteid, modified from logins where id = \"$itemid\" and userid=\"$userid\"");
+    $result=sql_query($db,"select id, iv, catid, login, password, site, url, noteid, modified from logins where id = '$itemid' and userid='$userid'");
     if (sql_num_rows($result)==1) {
         $row=sql_fetch_assoc($result);
         $catid=$row["catid"];
@@ -55,9 +57,9 @@ if ($itemid!=0) {
 }
 
 # Get list of categories.
-$result=sql_query($db,"select id, title from cat where userid = \"$userid\" order by title");
+$result=sql_query($db,"select id, title from cat where userid = '$userid' order by title");
 if (sql_num_rows($result)==0) {
-    error_out("No categories exist for \"<b>$authed_login</b>\" - Create a category first",
+    error_out("No Folders exist for \"<b>$authed_login</b>\" - Create a Folder",
         "catedit.php");
 }
 
@@ -78,12 +80,13 @@ include ("inc/header.php");
 $catid=sanigorp("catid");
 ?>
 <div class="w3-card" id="cardpanel">
-<div class=" w3-padding-16 ">
+<div class=" w3-padding-16 " onclick="lockedclick(this)">
 
 <div class='w3-center fullw' >
     <?php if ($itemid) { ?>
-    <span class="txtgrey "><i>last updated: <?php echo $mod_time; ?></span>
-    <?php }  else { ?> <span class="txtgrey " ><i>Creating a New Password entry <?php } ?>
+        <span class="txtgrey "><i class="material-icons iconoffs">key</i>&nbsp;<i>last updated: <?php echo $mod_time; ?></span>
+    <?php }  else { ?> 
+        <span class="txtgrey " ><i class="material-icons iconoffs">key</i>&nbsp;<i>Creating a New Password entry <?php } ?>
 </div><br>
 
 <div class='' ><!-- Hidden fields  -->
@@ -94,9 +97,9 @@ $catid=sanigorp("catid");
 </div>
 
 <div class='w3-center w3-margin-left fullw' >
-    <label CLASS="plain labform" ><span class=error>*</span>Category:</label>
+    <label CLASS="plain labform" ><span class=error>*</span> Folder:</label>
 <!-- Build select options widget  -->
-<select name="catid" class="plain locked" title="Select the category for this entry">
+<select name="catid" class="plain locked" title="Select the Folder for this entry">
 <?php
 foreach($cats as $k => $v){
     if ($k==$catid) {
@@ -110,7 +113,7 @@ foreach($cats as $k => $v){
 </div><br>
 
 <div class='w3-center w3-margin fullw' >
-    <label CLASS="plain labform"><span class=error>*</span>Site:</label>
+    <label CLASS="plain labform"><span class=error>*</span> Site:</label>
     <input type="text" required name="site" size="30" maxlen="255"
         value="<?php echo $site;?>" autocomplete="off" spellcheck="false"
         placeholder="Enter a site name..."
@@ -147,7 +150,7 @@ foreach($cats as $k => $v){
     <button type="submit" title='Save changes' class="butbut w3-button w3-bar-item w3-hover-pale-red w3-round locked" ><i class='material-icons saveicon iconoffs'>check_circle</i>Save</button>
 </form>
 <?php 
-      
+if ($itemid){
 ?>
 <form id="noteedit" action="noteedit.php" method="POST">
     <input type="hidden" form="noteedit" name="noteid" value=<?php echo $noteid?>>
@@ -159,14 +162,17 @@ foreach($cats as $k => $v){
     <i id="" class="material-icons isgreen editicon iconoffs"><?php echo $noteicon?></i>
     </button>
 </form>
-  
+<?php
+}
+?>
 </div>
-
 </div>
 </div>
 </div>
 <script>
 const noteid = <?php echo $noteid;?>;
+var islocked = false;
+
 doenable = function(flag){
     const lck = document.getElementsByClassName('locked');
     const n = lck.length;
@@ -176,6 +182,7 @@ doenable = function(flag){
     document.getElementsByClassName("focus")[0].focus();
 }
 enableedit = ()=>{ 
+    islocked = false;
     const cpan = document.getElementById('cardpanel');
     flashel(cpan);
     doenable(false);
@@ -183,8 +190,15 @@ enableedit = ()=>{
     pdlck.innerText='lock_open';
     pdlck.style.color='green';
 }
-<?php if ($itemid) { ?> doenable(true); <?php } ?>
+<?php if ($itemid) { ?> 
+    doenable(true); 
+    islocked=true;
+    <?php } ?>
 
+lockedclick = function(el){
+    if (islocked)
+        flashmes('Form is locked - unlock to edit');
+}
 </script>
 <?php
 include ("inc/footer.php");

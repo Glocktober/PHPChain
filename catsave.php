@@ -26,10 +26,10 @@ if (!$result=sql_query($db, $query)){
 }
 
 if($catid)
-    set_status("Updated category title '$title'");
+    set_status("Updated Folder title '$title'");
 else{
     $catid = sql_insert_id($db);
-    set_status("New category '$title'");
+    set_status("New Folder '$title'");
 }
 
 header("Location: catlist.php?catid=$catid");

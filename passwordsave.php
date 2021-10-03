@@ -84,7 +84,7 @@ while ($row=sql_fetch_assoc($result)) {
     # At this point, too late to backout on an error - should use a transaction here.
 }
 
-# renumber any categories for this user
+# renumber any folders for this user
 sql_query($db, "update cat set userid = '$id' where userid = '$userid'");
 # delete the old logins
 sql_query($db, "delete from logins where userid = '$userid'");

@@ -44,10 +44,15 @@ if ($auth){
 <div class="w3-dropdown-content w3-bar-block w3-teal">
 
 	<button class="w3-button w3-bar-item w3-tal w3-hover-teal" title="Menu"><i class='material-icons  menuicon iconoffs'>menu</i></button>
+	<button class="w3-button w3-bar-item w3-tal w3-hover-pale-blue" onclick="clearFilters()" title="Clear search filters"><i class='material-icons  menuicon iconoffs'>clear</i>&nbsp;Clear Filters</button>
 	<form action="logout.php" method="POST" class='butform w3-block' >
 		<button class="w3-button w3-bar-item w3-hover-pale-blue" title="log out of PHPchain"><i class='material-icons  menuicon iconoffs'>logout</i><span class="">&nbsp;Logout</span></button></form>
 	<form action="catlist.php" method="POST" class='butform w3-block' >
-		<button class="w3-button w3-bar-item w3-hover-pale-blue" title="add/edit/remove categories"><i class='material-icons  menuicon iconoffs'>create_new_folder</i><span class="">&nbsp;Manage Categories</span></button></form>
+		<button class="w3-button w3-bar-item w3-hover-pale-blue" title="add/edit/remove Folders"><i class='material-icons  menuicon iconoffs'>create_new_folder</i><span class="">&nbsp;Manage Folders</span></button></form>
+	<form action="entedit.php" method="POST" class='butform w3-block' >
+		<input type="hidden" name="csrftok" value=<?php echo get_csrf()?>>
+		<input type="hidden" name="catid" value=<?php echo (isset($catid)? $catid: 0)?>>
+		<button class="w3-button w3-bar-item w3-hover-pale-blue" title="add a password entry"><i class='material-icons  menuicon iconoffs'>add</i><span class="">&nbsp;Add Password Entry</span></button></form>
 	<form action="password.php" method="POST" class='butform w3-block' >
 		<button class="w3-button w3-bar-item w3-hover-pale-blue" title="Change your PHPchain login password"><i class='material-icons  menuicon iconoffs'>key</i><span class="">&nbsp;Change Password</span></button></form>
 <?php if ($allow_new_accounts){?>
@@ -99,33 +104,48 @@ if (!isset($nomenu)){
 <!-- Nav plane and detail plane -->
 <div id="navpane">
 <!-- navigation menu list  -->
-<?php 
+<?php
 if ($auth) {
 	include ("inc/listmenu.php");
-	// $catid=NULL;
-	// if (isset($page) and ($page=="catview")) {
-	// 	$catid=gorp("catid");
-	// }	
 	$catid=gorp('catid');
-	echo getmenu($_SESSION["id"],$catid);
+	$catcount=0;
+	echo "<span class='w3-padding w3-block w3-center w3-pale-blue'>Folders</span>";
+	echo getmenu($_SESSION["id"],$catid, $catcount);
 
+	if (!$catcount){
+?>
+<div class="w3-block">
+	<span class="w3-small error">You have no Folders.</span>
+	<span class="w3-small">Create one or more Folders to group password entries.</span>
+</div>
+<?php 
+	} 
+?>
+	<div class="w3-margin-top w3-center">
+	<span class="w3-small w3-center"><?php echo $catcount?> Folders</span>
+<?php
 	$catid=gorp('catid');
 	if ($catid) {
 ?>
-<div class="w3-block w3-center">
+
 <form action="entedit.php" id="newbut">
 <input type="hidden" form="newbut" name="csrftok" value="<?php echo get_csrf()?>" >
 <input type="hidden" form="newbut" name="catid" value="<?php echo $catid?>" >
 <input type="hidden" form="newbut" name="itemid" value="0" >
 <a href="javascript: void(0)" onclick="document.getElementById('newbut').submit()" 
 	title="Add a new password entry"
-    class='butbut w3-button w3-hover-pale-green'><i class='material-icons addicon iconoffs'>add</i> New Entry</a>
+    class='w3-block w3-button w3-hover-pale-green'><i class='material-icons addicon iconoffs'>add</i> Add Password Entry</a>
 </form>
-</div>
 <?php
 	}
+?>
+	<a class="w3-button w3-block w3-hover-pale-blue" href="catedit.php?catid=0" title="Add a Folder">
+		<i class="material-icons addicon iconoffs">create_new_folder</i>&nbsp;Add Folder</a>
+<?php
 }
 ?>
+<hr>
+</div>
 </div> <!-- end navigation menu content -->
 <div id="detailpane">
 <?php 

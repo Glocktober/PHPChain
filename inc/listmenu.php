@@ -1,12 +1,14 @@
 <?php
-function getmenu($userid,$catid=NULL)
+function getmenu($userid,$catid=NULL,&$count)
 {
 	$menu='';
-	$menu="<input class='seafilter fullw' oninput=\"w3.filterHTML('#catlist', 'li', this.value)\" placeholder='Filter categories...'>";
+	$menu="<input class='seafilter fullw' oninput=\"w3.filterHTML('#catlist', 'li', this.value)\" placeholder='Filter Folders...'>";
 	$menu.='<ul id="catlist" class="w3-smal w3-ul">';
 	
 	$db = sql_conn();
 	$result=sql_query($db,"select id, title from cat where userid = '$userid' order by title");
+	
+	$count = sql_num_rows($result);
 
 	while ($row=sql_fetch_assoc($result)) {
 		$id = $row['id'];

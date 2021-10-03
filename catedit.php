@@ -15,12 +15,12 @@ $catid=sanigorp("catid");
 
 if ($catid==0) {
     $title="";
-    $mast = 'Adding a new category';
+    $mast = 'Adding a new Folder';
 } else {
     $result=sql_query($db,"select title from cat where id = \"$catid\" and userid = \"$userid\"");
     $row=sql_fetch_assoc($result);
     $title=$row["title"];
-    $mast = "Category \"$title\"";
+    $mast = "Folder \"$title\"";
 }
 if (!has_status()) set_status($mast);
 
@@ -35,16 +35,16 @@ include("inc/header.php");
     <span  class="w3-center txtgrey" ><?php echo $mast?></span>
 </div>
 <div class='w3-center fullw ' >
-<label class="plain labform" for="title">Category Title:</label>
+<label class="plain labform" for="title">Folder Title:</label>
 <input type="text" name="title" required maxlength=255 size=30 id="title" 
     value="<?php echo $title; ?>" spellcheck="false" autocomplete="off"
-    placeholder="Enter category title"
-    title="Category title" class="plain focus">
+    placeholder="Enter Folder title"
+    title="Folder title" class="plain focus">
 </div>
 <div class="w3-center w3-bar w3-padding-16">
-    <a href="catlist.php" class="w3-btn  w3-hover-pale-green">
-        <i class="material-icons iconoffs backicon">chevron_left</i> Back</a>
-    <button type="submit" class='butbut w3-btn w3-hover-pale-red ' title="Save this category"><i class='material-icons saveicon iconoffs'>check_circle</i>&nbsp;Save</button>
+    <a href="catlist.php" class="w3-btn  w3-hover-pale-green" title="Cancel">
+        <i class="material-icons iconoffs backicon">cancel</i> Back</a>
+    <button type="submit" class='butbut w3-btn w3-hover-pale-red ' title="Save this Folder"><i class='material-icons saveicon iconoffs'>check_circle</i>&nbsp;Save</button>
 </form>
 </div>
 </div>

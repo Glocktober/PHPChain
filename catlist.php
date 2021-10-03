@@ -11,26 +11,30 @@ sql_conn();
 $userid = $_SESSION['id'];
 $authed_login = $_SESSION['login'];
 
-if (!has_status()) set_status("List of categories");
+if (!has_status()) set_status("List of Folders");
 
 if (!$result=sql_query($db,"select id, title from cat where userid = '$userid' order by title"))
-    error_out("Error: ($page) retrieving categories: ".sql_error($db));
+    error_out("Error: ($page) retrieving folders: ".sql_error($db));
 
 include ("inc/header.php");
 ?>
 
 <div id="tabplane" class="tabplane w3-card" >
-    <div class="w3-bar">
-    <button type=submit form="addcat" class='w3-btn iconoffs w3-bar-item w3-hover-pale-green  addbutton' 
-    title='Add a new category'>
-    <i class='material-icons addicon iconoffs'>add</i> New Category</button>
-        <input class="catsea focus seafilter w3-bar-item w3-border" oninput="w3.filterHTML('#categorytable', '.trow', this.value)" 
-            spellcheck="false" placeholder='Search categories...'>
+<div class="w3-center">
+        <span class="summ"><?php echo "$catcount Folders"?></span>
     </div>
-<table class="w3-table w3-bordered w3-striped" w id="categorytable" >
+    <div class="w3-bar">
+    <button type=submit form="addcat" class='w3-button w3-bar-item w3-hover-pale-blue  addbutton' 
+    title='Add a new Folder'>
+    <i class='material-icons addicon iconoffs'>create_new_folder</i> Add Folder</button>
+        <input class="catsea focus seafilter w3-bar-item w3-border" oninput="w3.filterHTML('#categorytable', '.trow', this.value)" 
+            spellcheck="false" placeholder='Search Folders...'>
+    </div>
+<table class="w3-table w3-bordered" id="categorytable" >
 <tr class="w3-pale-blue" >
-<td class=""  id="catcolumn" onclick="w3.sortHTML('#categorytable','.trow', 'td:nth-child(1)')" title='Click to sort..'>Category <i style='font-size:15px' class='material-icons'>sort</i></td>
-<td class=""  id="actioncolumn">Action</td>
+<td class=""  id="catcolumn" onclick="w3.sortHTML('#categorytable','.trow', 'td:nth-child(1)')" 
+    title='Click to sort..'>&nbsp;&nbsp;Folder <i class='material-icons micon'>sort</i></td>
+<td class="w3-center"  id="actioncolumn" title="Choose an action">Action <i class="material-icons micon">category</i></td>
 </tr>
 
 <?php
@@ -43,19 +47,23 @@ while($row=sql_fetch_assoc($result)){
         'catid'=>$catid,
         'csrftok'=>get_csrf(),
     ]);
-    $href = "catview.php?catid=$catid"
+    $href = "catview.php?catid=$catid";
 ?>
 <tr class='trow w3-hover-light-grey' >
 <td class="row sea" >
-    <a href=<?php echo $href?> title='view password entries in this category'><?php echo $title ?></a></td>
-<td class='row ' data='<?php echo $valjs?>'>
-    <span class="w3-butto w3-hover-pale-green" onclick="onpush(this,'catedit.php')"
-        title="Edit the category title">
+    <a href=<?php echo $href?> title='view password entries in this Folder'><?php echo $title ?></a></td>
+<td class='row w3-center' data='<?php echo $valjs?>'>
+    <span class="w3-hover-pale-green" onclick="onpush(this,'catedit.php')"
+        title="Edit the Folder name">
         <i class="material-icons editicon">edit</i>
     </span>
-    <span class="w3-butto w3-hover-pale-red" onclick="onpush(this,'catdelete.php')"
-        title="Delete this  category">
+    <span class="w3-hover-pale-red" onclick="onpush(this,'catdelete.php')"
+        title="Delete this Folder">
         <i class="material-icons delicon">delete</i>
+    </span>
+    <span >
+        <a class="w3-hover-pale-green ainl" href="entedit.php?catid=<?php echo $catid?>"
+            title="Add a password entry to <?php echo $title?>"><i class="material-icons addicon">add</i></a>
     </span>
 </td></tr>
 <?php
@@ -93,6 +101,10 @@ onpush = function(el,act){
     console.log(act)
     fm.submit()
 }
+
+setTimeout(() => {
+    w3.sortHTML('#categorytable','.trow', 'td:nth-child(1)');
+}, 0);
 </script>
 <?php
 include ("inc/footer.php");

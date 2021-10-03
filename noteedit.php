@@ -65,7 +65,7 @@ $backurl = "catview.php?catid=$catid";
 ?>
 <!-- note view/edit  -->
 <div class="w3-container">
-<div class="w3-card w3-round w3-padding-16">
+<div class="w3-card w3-round w3-padding-16" onclick="lockedclick(this)">
     <div id='statmessage' class="w3-center w3-margin txtgrey"><?php echo $status_message?></div>
 <form id='savf' action="notesave.php" method=post class="w3-container">
     <input type="hidden" form='savf' name="itemid" value=<?php echo $itemid; ?> >
@@ -102,7 +102,9 @@ $backurl = "catview.php?catid=$catid";
 </div>
 </div>
 <script>
+var islocked = false;
 const noteid = <?php echo $noteid;?>;
+
 doenable = function(flag){
     console.log(`doenable ${flag}`);
     const lck = document.getElementsByClassName('locked');
@@ -112,6 +114,7 @@ doenable = function(flag){
     }
 }
 enableedit = ()=>{ 
+    islocked=false;
     doenable(false);
     pdlck = document.getElementById('padlock')
     pdlck.innerText='lock_open';
@@ -120,8 +123,16 @@ enableedit = ()=>{
     document.getElementById("area").focus();
 }
 
-if (noteid) { doenable(true)}
-else doenable(false)
+if (noteid) { 
+    doenable(true);
+    islocked=true;
+}
+else doenable(false);
+
+lockedclick = function(el){
+    if (islocked)
+        flashmes('Form is locked - unlock to edit');
+}
 </script>
 
 <?php

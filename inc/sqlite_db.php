@@ -15,16 +15,6 @@ function sql_log($msg){
 	if ($db_log_queries) error_log($msg);
 }
 
-function restoarray($resdata)
-{
-	$n=0;
-	while ($row=$resdata->fetchArray()){
-		$data[$n]=$row;
-		$n++;
-	}
-	return $data;
-}
-
 function sql_close($db)
 {
 	return $db->close();

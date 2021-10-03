@@ -48,6 +48,7 @@ if (isset($login) and isset($key)) {
 				$_SESSION['key'] = $key;
 				$_SESSION['isauth'] = TRUE;
 				session_regenerate_id(TRUE);
+				
 				setcookie('chainlogin',$login,0,'/;SameSite=strict','',true,true);
 
 				set_status("\"<b>$login</b>\" - has successfully logged on");

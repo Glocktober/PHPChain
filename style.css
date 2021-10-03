@@ -1,3 +1,9 @@
+select{
+	background-color: transparent;
+}
+option{
+	background-color: transparent;
+}
 .titlebar{
 	padding-top: 1em;
 	padding-bottom: 1em;
@@ -33,11 +39,23 @@ i.isgreen:hover{
 .menuicon{
 	font-size: 2em;
 }
+.micon{
+	font-size:15px;
+	position: relative;
+	top:0.3em;
+	left: 0.3em;
+}
 i.delicon{
 	color: burlywood;
 }
 i.delicon:hover{
 	color:indianred;
+}
+i.detailicon{
+	color:olivedrab;
+}
+i.detailicon:hover{
+	color:orangered;
 }
 i.editicon{
 	color:deepskyblue;
@@ -77,7 +95,7 @@ i.addicon:hover{
 }
 .iconoffs{
 	position: relative;
-	top: .25em;
+	top: .2em;
 	font-size: 1em;
 	;
 }
@@ -119,13 +137,6 @@ input.password:focus, .password:hover {
 	color: white;
 
 }
-/* .blind{
-	background-color:transparent;
-	color: transparent;
-	font-size: 0.01em;
-	border-width: 0px;
-	border-color:transparent;
-} */
 .success {
 	color: green;
 }
@@ -203,7 +214,7 @@ a.cat{
 }
 #tabplane{
 	margin: 1em;
-	padding:2em;
+	padding: 0.5em;
 	width:50em;
 
 }
@@ -217,9 +228,8 @@ a.cat{
 #tabplane div input{
 	width: 50%;
 }
-#categorytable tr td a{
+#categorytable tr td:first-child a{
 	display: block;
-	
 }
 .tabpane{
 	width:90%;
@@ -245,7 +255,7 @@ span.info i{
 	text-align: right;
 }
 .seafilter{
-	margin-top:1em;
+	margin-top:0.1em;
 	margin-bottom:1em;
 	display: inline;
 	width:100%;
@@ -282,7 +292,6 @@ textarea:disabled{
 }
 #titlebar p{
 	margin-top:8px;
-	/* margin-left:4em; */
 }
 #delvermodal{
 	width:50%;
@@ -296,11 +305,31 @@ textarea:disabled{
 #delbar :nth-child(1) i{
 	color: green;
 }
-#dispbar :nth-child(2) i,
+#dispbar :nth-child(2) i{
+	color: chocolate;
+}
+#dispbar :nth-child(3) i,
 #delbar :nth-child(2) i{
 	color: red;
 }
 input::placeholder{
 	color:indianred;
 	opacity: 0.5;
+}
+.zup{
+	z-index: 100;
+	position: absolute;
+	height: 10em;
+	width: 100%;
+	top:0px;
+	left:0px;
+	display: none;
+}
+i.w3-large.iconoffs{
+	top: 0.15em;
+}
+.summ{
+	font-size: 1em;
+	font-style:italic;
+	color:grey;
 }
