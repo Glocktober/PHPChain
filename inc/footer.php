@@ -19,19 +19,19 @@ inpclip = function(el){
 }
 
 // Flash a message
-flashmes = function(mess){
+flashmes = function(mess, delay=2000){
 	const mesbar = document.getElementById('messagebar');
 	const curmes = mesbar.innerHTML;
 	mesbar.innerHTML = `<span class=success><i class="material-icons iconoffs">info</i>&nbsp;&nbsp;${mess}</success>`;
 	setTimeout(() => {
 		mesbar.innerHTML = curmes;
-	}, 2000);
+	}, delay);
 }
 
 // Flash an element and announce it was copied to the clipboard
 flashel = function(el){
 	const origcolor = el.style.background;
-	flashmes('Copied To Clipboard');
+	flashmes('Copied To Clipboard', 1200);
 	el.style.background = "crimson";
 	setTimeout(() => {
 		el.style.background = "darkgoldenrod";

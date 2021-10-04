@@ -42,7 +42,6 @@ if ($auth){
 <div class="w3-left w3-dropdown-hover">
 	<button class="w3-button w3-bar-item w3-teal" title="Menu"><i class='material-icons  menuicon iconoffs'>menu</i></button>
 <div class="w3-dropdown-content w3-bar-block w3-teal">
-
 	<button class="w3-button w3-bar-item w3-tal w3-hover-teal" title="Menu"><i class='material-icons  menuicon iconoffs'>menu</i></button>
 	<button class="w3-button w3-bar-item w3-tal w3-hover-pale-blue" onclick="clearFilters()" title="Clear search filters"><i class='material-icons  menuicon iconoffs'>clear</i>&nbsp;Clear Filters</button>
 	<form action="logout.php" method="POST" class='butform w3-block' >
@@ -72,6 +71,7 @@ if ($auth){
 	?>
 	<!-- Not authenticated -->
 <div id="titlebar" class="w3-bar w3-teal" onclick="javascript:document.location='index.php'">
+<p class="w3-bar-item w3-right ">&nbsp;<?php echo $document_title ?> &nbsp;</p>
 <?php if ($allow_new_accounts and !$auth_for_new_accounts){?>
 	<form action="newlogin.php" method="POST" class='butform  w3-ripple' >
 		<button class="w3-btn w3-bar-item w3-large w3-hover-green butbut" title="Create a PHPchain account"><i class='material-icons  menuicon iconoffs'>person_add</i>&nbsp;<span class="">New Login</span></button></form>

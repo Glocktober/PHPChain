@@ -26,7 +26,8 @@ $password=get_post("password");
 $site=get_post("site");
 $url=get_post("url");
 
-if (strpos($url,"http://")===FALSE && strpos($url,"https://")===FALSE) $url="https://".$url;
+# legacy app placed empty http:// fields - just make them empty.
+if ($url == 'http://' or ($url == 'https://')) $url = "";
 
 $iv=make_iv();
 $blogin=base64_encode(encrypt($key,$login,$iv));
@@ -57,7 +58,7 @@ if (!empty($notedata)){
 if ($itemid==0)
     $query="insert into logins values (NULL, '$biv', '$userid', '$catid', '$blogin', '$bpassword', '$bsite', '$burl', '$noteid', $now, $now)";
 else 
-    $query="update logins set iv = '$biv', catid='$catid', login='$blogin', password='$bpassword', site = '$bsite', url = '$url', noteid='$noteid', modified = $now where id = '$itemid' and userid='$userid'";
+    $query="update logins set iv = '$biv', catid='$catid', login='$blogin', password='$bpassword', site = '$bsite', url = '$burl', noteid='$noteid', modified = $now where id = '$itemid' and userid='$userid'";
 
 if (!$result=sql_query($db, $query)){
     error_out("Error: ($page) saving password entry for '$site': ". sql_error($db),

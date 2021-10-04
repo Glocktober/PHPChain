@@ -87,12 +87,17 @@ $newvaljs = json_encode([
 <tr class='w3-pale-green'>
 <td class="header w3-center" width="30%" onclick="w3.sortHTML('#cattable','.trow', 'td:nth-child(1)')" title='Click to sort..'>Site <i class='material-icons micon'>sort</i></td>
 <td class="header w3-center" width="25%" onclick="w3.sortHTML('#cattable','.trow', 'td:nth-child(2)')" title='Click to sort..'>Login <i class='material-icons micon'>sort</i></td>
-<td class="header w3-center" width="25%" title="Hover over the box to reveal the password">Password <i class="material-icons micon">key</i> </td>
+<td class="header w3-center" width="25%" title="Hover over the box to reveal the password">Password <i class="material-icons micon">key</i></td>
 <td class="header w3-center" width="20%" title="Select an action">Actions <i class="material-icons micon">category</i></td>
 </tr>
 
 <?php
-
+function str7_starts_with($haystack, $needle){
+    return strncmp($needle,$haystack,strlen($needle)) == 0;
+}
+function str7_contains($haystack, $needle){
+    return strstr($haystack,$needle) == true;
+}
 foreach ($resarray as $val) {
     $modified = $val['modified'];
     $mod_time = 'Last modified: '. ($modified? strftime($time_format, $modified): "(the epoch)");
@@ -103,8 +108,22 @@ foreach ($resarray as $val) {
     $site = $val['site'];
     $url = $val['url'];
 
-    if (strlen($val["url"])>1) $outsite="<A HREF=\"".$val["url"]."\" TARGET=\"_blank\" title=\"Click to open URL\">".$val["site"]."</A>";
-    else $outsite=$val["site"];
+    if ( empty($url) or $url == 'http://' or $url == 'https://' ){
+        # url is empty or just a scheme
+        $outsite="<a href='#' title='Site name - no url'>$site</a>";
+    } else {
+        # has content, but what kind?
+        $lurl = strtolower($url);
+        if (str7_starts_with($lurl, 'http://') or str7_starts_with($lurl, 'https://'))
+            # real url
+            $outsite="<a href='$url' target='_blank' title='Click to open $url'>$site</a>";
+        elseif (str7_contains($lurl, ' ') or !str7_contains($lurl,'.'))
+            # not a valid URL - has a space or no dots
+            $outsite="<a href='#' title='$url'>$site</p>";
+        else 
+            # close enough to a url - but has no scheme 
+            $outsite = "<a href='https://$url' target='_blank' title='Click to open $url'>$site</a>";
+    }
 
     $login = $val['login'];
     $password = $val['password'];
