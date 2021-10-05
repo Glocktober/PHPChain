@@ -18,7 +18,6 @@ $catid=get_post("catid");
 $itemid=get_post("itemid");
 $notedata = "";
 
-error_log("***** itemid >$itemid<");
 if ($itemid) check_csrf();
 else{
     # This was a GET - only allowed for new items
