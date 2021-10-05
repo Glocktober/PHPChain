@@ -103,4 +103,17 @@ if ($stat_log){
     error_log("$method $page");
 }
 
+function getphpver(){
+    $vers = explode('.', phpversion());
+    return $vers[0]*1000 + $vers[1] * 100 + $vers[2];
+}
+
+function strictcookie($key,$val){
+    if (getphpver() > 7300){
+        setcookie($key, $val, [ 'expires' => 0, 'path' => '/', 'secure' => true, 'httponly' => true, 'samesite' => 'strict']);
+    } else {
+        setcookie($key,$val,0,'/;SameSite=strict','',true,true);
+    }
+}
+
 ?>

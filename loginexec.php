@@ -25,7 +25,7 @@ $error="";
 $now = time();
 sql_conn();
 error_log("Ffff $login");
-if (isset($login)) setcookie('chainlogin',$login,0,'/;SameSite=strict','',true,true);
+if (isset($login)) strictcookie('chainlogin',$login,0);
 
 if (isset($login) and isset($key)) {
 	// Check for $login_lockout_failures failed login attempts in the last $login_lockout_window minutes.
@@ -49,7 +49,7 @@ if (isset($login) and isset($key)) {
 				$_SESSION['isauth'] = TRUE;
 				session_regenerate_id(TRUE);
 				
-				setcookie('chainlogin',$login,0,'/;SameSite=strict','',true,true);
+				strictcookie('chainlogin',$login);
 
 				set_status("\"<b>$login</b>\" - has successfully logged on");
 				header ("Location: index.php");
