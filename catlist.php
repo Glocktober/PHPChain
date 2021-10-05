@@ -13,7 +13,7 @@ $authed_login = $_SESSION['login'];
 
 if (!has_status()) set_status("List of Folders");
 
-if (!$result=sql_query($db,"select id, title from cat where userid = '$userid' order by title"))
+if (!$result=sql_query($db,"select id, title from cat where userid = '$userid'"))
     error_out("Error: ($page) retrieving folders: ".sql_error($db));
 
 include ("inc/header.php");
