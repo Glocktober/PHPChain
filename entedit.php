@@ -18,10 +18,14 @@ $catid=get_post("catid");
 $itemid=get_post("itemid");
 $notedata = "";
 
+error_log("***** itemid >$itemid<");
 if ($itemid) check_csrf();
-elseif (sanigorp('catid'))
-    $catid=sanigorp('catid');
-
+else{
+    # This was a GET - only allowed for new items
+    if (sanigorp('catid'))
+        $catid=sanigorp('catid');
+    $itemid=0;
+}
 if ($itemid!=0) {
     if (!has_status()) set_status("View/Edit password entry");
     //Get existing data and decrypt it first.
