@@ -34,7 +34,7 @@ else{
 
     $row=sql_fetch_assoc($result);
 
-    if (!testteststring(trim(decrypt($testkey,base64_decode($row["teststring"]),base64_decode($row["iv"])))))
+    if (!testteststring(decrypt($testkey,$row["teststring"],base64_decode($row["iv"]))))
         error_out("Error: ($page) Incorrect credentials", $pwform);
 }
 
@@ -46,10 +46,10 @@ $newkey=md5($newkey);
 
 // Create new entry in user table.
 $iv=make_iv();
-$teststring=base64_encode(encrypt($newkey,maketeststring(),$iv));
-$iv=base64_encode($iv);
+$teststring=encrypt($newkey,maketeststring(),$iv);
+$biv=base64_encode($iv);
 
-if (!sql_query($db, "insert into user values (NULL, '$loginname', '$teststring', '$iv')"))
+if (!sql_query($db, "insert into user values (NULL, '$loginname', '$teststring', '$biv')"))
     error_out("Error: ($page )changing password - password not changed: ".sql_error($db), 'password.php');
 
 # get the new userid
@@ -60,10 +60,11 @@ if (!$result=sql_query($db, "select id, iv, catid, login, password, site, url, n
 
 while ($row=sql_fetch_assoc($result)) {
     # decrypt with the old key
-    $login=trim(decrypt($key,base64_decode($row["login"]),base64_decode($row["iv"])));
-    $password=trim(decrypt($key,base64_decode($row["password"]),base64_decode($row["iv"])));
-    $site=trim(decrypt($key,base64_decode($row["site"]),base64_decode($row["iv"])));
-    $url=trim(decrypt($key,base64_decode($row["url"]),base64_decode($row["iv"])));
+    $iv = base64_decode($row["iv"]);
+    $login=decrypt($key,$row["login"],$iv);
+    $password=decrypt($key,$row["password"],$iv);
+    $site=decrypt($key,$row["site"],$iv);
+    $url=decrypt($key,$row["url"],$iv);
     $noteid = $row['noteid'];
     $created = $row ['created'];
     $modified = $row['modified'];
@@ -71,14 +72,14 @@ while ($row=sql_fetch_assoc($result)) {
 
     # encrypt with the new key
     $iv=make_iv();
-    $login=base64_encode(encrypt($newkey,$login,$iv));
-    $password=base64_encode(encrypt($newkey,$password,$iv));
-    $site=base64_encode(encrypt($newkey,$site,$iv));
-    $url=base64_encode(encrypt($newkey,$url,$iv));
-    $iv=base64_encode($iv);
+    $login=encrypt($newkey,$login,$iv);
+    $password=encrypt($newkey,$password,$iv);
+    $site=encrypt($newkey,$site,$iv);
+    $url=encrypt($newkey,$url,$iv);
+    $biv = base64_encode($iv);
 
     # insert reencrypted row as a new row
-    if (!$result2=sql_query($db, "insert into logins values (NULL, '$iv', '$id', '$catid', '$login', '$password', '$site', '$url','$noteid', '$created','$modified' )"))
+    if (!$result2=sql_query($db, "insert into logins values (NULL, '$biv', '$id', '$catid', '$login', '$password', '$site', '$url','$noteid', '$created','$modified' )"))
         error_log("Password update failure for $loginname ".sql_error($db));
 
     # At this point, too late to backout on an error - should use a transaction here.

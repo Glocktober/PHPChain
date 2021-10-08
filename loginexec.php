@@ -38,7 +38,7 @@ if (isset($login) and isset($key)) {
 		if (sql_num_rows($result)==1) {
 			$row=sql_fetch_assoc($result);
 			$key=md5($key);
-			if (testteststring(trim(decrypt($key,base64_decode($row["teststring"]),base64_decode($row["iv"]))))) {
+			if (testteststring(decrypt($key,$row["teststring"],base64_decode($row["iv"])))) {
 				// Login log
 				sql_query($db,"insert into loginlog values ('$login', '$ip', '$now','1')");
 				# going to skip reporting errors as the db may be in RO mode

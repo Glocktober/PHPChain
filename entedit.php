@@ -32,10 +32,11 @@ if ($itemid!=0) {
     if (sql_num_rows($result)==1) {
         $row=sql_fetch_assoc($result);
         $catid=$row["catid"];
-        $login=trim(decrypt($key,base64_decode($row["login"]),base64_decode($row["iv"])));
-        $password=trim(decrypt($key,base64_decode($row["password"]),base64_decode($row["iv"])));
-        $site=trim(decrypt($key,base64_decode($row["site"]),base64_decode($row["iv"])));
-        $url=trim(decrypt($key,base64_decode($row["url"]),base64_decode($row["iv"])));
+        $iv = base64_decode($row["iv"]);
+        $login=decrypt($key,$row["login"],$iv);
+        $password=decrypt($key,$row["password"],$iv);
+        $site=decrypt($key,$row["site"],$iv);
+        $url=decrypt($key,$row["url"],$iv);
         $noteid=$row['noteid'];
         $modified=$row['modified'];
     } else {

@@ -50,14 +50,15 @@ $catname = $catindex[$catid];
 if (!has_status()) set_status("Folder '$catname' has $number_logins entries");
 
 while ($row=sql_fetch_assoc($result)) {
-    $login=trim(decrypt($key,base64_decode($row["login"]),base64_decode($row["iv"])));
-    $password=trim(decrypt($key,base64_decode($row["password"]),base64_decode($row["iv"])));
-    $site=trim(decrypt($key,base64_decode($row["site"]),base64_decode($row["iv"])));
-    $url=trim(decrypt($key,base64_decode($row["url"]),base64_decode($row["iv"])));
+    $iv = base64_decode($row["iv"]);
+    $login=decrypt($key,$row["login"],$iv);
+    $password=decrypt($key,$row["password"],$iv);
+    $site=decrypt($key,$row["site"],$iv);
+    $url=decrypt($key,$row["url"],$iv);
     $resarray[]=array("id"=>$row["id"], "login"=>$login, "password"=>$password, "site"=>$site, 
     "url"=>$url,"noteid" => $row["noteid"], "modified" => $row["modified"] );
     $sortarray[]=$site;
-}
+} 
 
 array_multisort($sortarray, SORT_ASC, $resarray);
 

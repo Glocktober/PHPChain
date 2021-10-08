@@ -35,7 +35,7 @@ if (sql_num_rows($result)!=0)
 # all is in order, proceed
 $iv=make_iv();
 $key=md5($key);
-$teststring=base64_encode(encrypt($key,maketeststring(),$iv));
+$teststring=encrypt($key,maketeststring(),$iv);
 $iv=base64_encode($iv);
 
 # Add the user

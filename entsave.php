@@ -30,10 +30,10 @@ $url=get_post("url");
 if ($url == 'http://' or ($url == 'https://')) $url = "";
 
 $iv=make_iv();
-$blogin=base64_encode(encrypt($key,$login,$iv));
-$bpassword=base64_encode(encrypt($key,$password,$iv));
-$bsite=base64_encode(encrypt($key,$site,$iv));
-$burl=base64_encode(encrypt($key,$url,$iv));
+$blogin=encrypt($key,$login,$iv);
+$bpassword=encrypt($key,$password,$iv);
+$bsite=encrypt($key,$site,$iv);
+$burl=encrypt($key,$url,$iv);
 $biv=base64_encode($iv);
 
 if ($itemid==0) $noteid=0;
