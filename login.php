@@ -36,7 +36,7 @@ include ("inc/header.php");
     <input id="pass" type="password" name="key" size="30" maxlen="255"
         value="" autocomplete="off" spellcheck="false"
         placeholder="Enter your password..."
-        class='password' title='Your account password' >
+        class='' title='Your account password' >
 </div><br>
 
 <div class='w3-bar w3-margin-top'>
