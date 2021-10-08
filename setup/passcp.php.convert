@@ -1,0 +1,46 @@
+<?php
+$page='passwordsave';
+$reqauth=true;
+include ("inc/config.php");
+include ("inc/form.php");
+include ("inc/crypt.php");
+
+sql_conn();
+
+if (!$result=sql_query($db, "select id, iv, userid, catid, login, password, site, url, noteid, created, modified from logins"))
+    error_log("Error: ($page) updating entreis (1):".sql_error($db));
+
+while ($row=sql_fetch_assoc($result)) {
+
+    $login=base64_decode($row["login"]);
+    $password=base64_decode($row["password"]);
+    $site=base64_decode($row["site"]);
+    $url=base64_decode($row["url"]);
+    $id = $row["id"];
+    $userid = $row["userid"];
+    $biv = $row["iv"];
+    $noteid = $row['noteid'];
+    $created = $row ['created'];
+    $modified = $row['modified'];
+    $catid=$row["catid"];
+
+    # insert reencrypted row as a new row
+    if (!$result2=sql_query($db, "insert into nlogins values (NULL, '$biv', '$userid', '$catid', '$login', '$password', '$site', '$url','$noteid', '$created','$modified' )"))
+        error_log("Password update failure for $loginname ".sql_error($db));
+
+    # At this point, too late to backout on an error - should use a transaction here.
+}
+
+if (!$result = sql_query($db, "select id, name, teststring, iv from user"))
+    error_log("Getting users failure ",sql_error($db));
+    
+while ($row=sql_fetch_assoc($result)){
+    $id = $row["id"];
+    $name = $row["name"];
+    $teststring = base64_decode($row["teststring"]);
+    $biv = $row["iv"];
+
+    if (!$result2=sql_query($db, "insert into nuser values ('$id', '$name', '$teststring', '$biv')"))
+        error_log("inserting users failure ".sql_error($db));
+}
+?>
