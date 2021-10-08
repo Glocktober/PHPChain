@@ -60,12 +60,12 @@ if (sql_num_rows($result)==0) {
 } else {
     $output .= "<pwlist>\n";
     while ($row=sql_fetch_assoc($result)) {
-
-        $login=trim(decrypt($key,base64_decode($row["login"]),base64_decode($row["iv"])));
-        $password=htmlspecialchars(trim(decrypt($key,base64_decode($row["password"]),base64_decode($row["iv"]))));
-        $site=htmlspecialchars(trim(decrypt($key,base64_decode($row["site"]),base64_decode($row["iv"]))));
-        $url=trim(decrypt($key,base64_decode($row["url"]),base64_decode($row["iv"])));
-	    $cat = trim($row["catid"]);
+        $iv = base64_decode($row["iv"]);
+        $login=decrypt($key,$row["login"],$iv);
+        $password=htmlspecialchars(decrypt($key,$row["password"],$iv));
+        $site=htmlspecialchars(decrypt($key,$row["site"],$iv));
+        $url=decrypt($key,$row["url"],$iv);
+	    $cat = $row["catid"];
 
         $output .= "   <pwentry>\n";
         $output .= "      <group>" .  $titles[$cat] . "</group>\n";
