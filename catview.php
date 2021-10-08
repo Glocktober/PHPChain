@@ -291,9 +291,6 @@ editpush = function(el,act){
 notepush = function(el,act){
 
 }
-setTimeout(() => {
-    w3.sortHTML('#cattable','.trow', 'td:nth-child(1)');
-}, 0);
 </script>
 <?php
 
