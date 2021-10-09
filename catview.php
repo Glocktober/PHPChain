@@ -70,7 +70,7 @@ $newvaljs = json_encode([
     'noteid'=> 0,
     'site'=>'', 
     'csrftok'=>get_csrf()
-]);
+], JSON_HEX_APOS|JSON_HEX_QUOT);
 ?>
 
 <div id="catview" class="w3-card w3-round">
@@ -136,7 +136,7 @@ foreach ($resarray as $val) {
         'noteid'=> $val['noteid'],
         'site'=>$site, 
         'csrftok'=>get_csrf()
-    ]);
+    ], JSON_HEX_APOS|JSON_HEX_QUOT);
 
     $dispjs = json_encode([
         'site' => $site,
@@ -144,7 +144,7 @@ foreach ($resarray as $val) {
         'password'=>$password,
         'login'=>$login,
         'url'=>$url,
-    ])
+    ], JSON_HEX_APOS|JSON_HEX_QUOT)
 
 ?>
 <tr class='w3-hover-light-grey trow'>
@@ -152,7 +152,8 @@ foreach ($resarray as $val) {
 <td class="row  login w3-center" title="Click to copy login" onclick="copyclip(this)"><span class="w3-block"><?php echo $login ?></span></td>
 <td class="row  password w3-center" title="Click to copy password" onclick="copyclip(this)"><span class="w3-block"><?php echo $password ?></span></td>
 <td class="sea w3-center" data='<?php echo $valjs?>' disp='<?php echo $dispjs?>'>
-
+	
+<i class="material-icons detailicon" onclick="copypass(this)" title="Copy password">key</i>
 <i class="material-icons detailicon" onclick="editpush(this,'entedit.php')" title="View entry details">zoom_in</i>
 <i class="material-icons editicon" onclick="onpush(this,'entedit.php')" title="Edit this entry">edit</i>
 <i class="material-icons <?php echo $noteclass?>" onclick="onpush(this,'noteedit.php')" title="<?php echo $notetip?>"><?php echo $noteicon?></i>
@@ -251,6 +252,11 @@ foreach ($resarray as $val) {
     </div>
 </div>
 <script>
+copypass = function(el){
+    const jdat = JSON.parse(el.parentElement.getAttribute('disp'))
+    navigator.clipboard.writeText(jdat.password);
+    flashmes(`copied password for ${jdat.site} ...`);
+}
 onpush = function(el,act){
     const jdat = JSON.parse(el.parentElement.getAttribute('data'))
     const fm = document.getElementById('datform')
