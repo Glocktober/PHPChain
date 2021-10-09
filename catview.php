@@ -86,10 +86,10 @@ $newvaljs = json_encode([
 </div> 
 <table  id=cattable width="100%" class="w3-table w3-bordered w3-hoverable">
 <tr class='w3-pale-green'>
-<td class="header w3-center" width="30%" onclick="w3.sortHTML('#cattable','.trow', 'td:nth-child(1)')" title='Click to sort..'>Site <i class='material-icons micon'>sort</i></td>
-<td class="header w3-center" width="25%" onclick="w3.sortHTML('#cattable','.trow', 'td:nth-child(2)')" title='Click to sort..'>Login <i class='material-icons micon'>sort</i></td>
-<td class="header w3-center" width="25%" title="Hover over the box to reveal the password">Password <i class="material-icons micon">key</i></td>
-<td class="header w3-center" width="20%" title="Select an action">Actions <i class="material-icons micon">category</i></td>
+<th class="header w3-center" width="30%" onclick="sortbycolumn(this)" title='Click to sort by site...'>Site <i class='material-icons micon'>sort</i></th>
+<th class="header w3-center" width="25%" onclick="sortbycolumn(this)" title='Click to sort by login...'>Login <i class='material-icons micon'>sort</i></th>
+<th class="header w3-center" width="25%" title="Hover over the box to reveal the password">Password <i class="material-icons micon">key</i></th>
+<th class="header w3-center" width="20%" title="Select an action">Actions <i class="material-icons micon">category</i></th>
 </tr>
 
 <?php
@@ -292,6 +292,20 @@ editpush = function(el,act){
 notepush = function(el,act){
 
 }
+//This off stackoverflow https://stackoverflow.com/questions/14267781/sorting-html-table-with-javascript
+const getCellValue = (tr, idx) => tr.children[idx].innerText || tr.children[idx].textContent;
+
+const comparer = (idx, asc) => (a, b) => ((v1, v2) => 
+    v1 !== '' && v2 !== '' && !isNaN(v1) && !isNaN(v2) ? v1 - v2 : v1.toString().localeCompare(v2)
+    )(getCellValue(asc ? a : b, idx), getCellValue(asc ? b : a, idx));
+
+// do the work...
+sortbycolumn = function(th){
+    const table = th.closest('table');
+    Array.from(table.querySelectorAll('tr:nth-child(n+2)'))
+        .sort(comparer(Array.from(th.parentNode.children).indexOf(th), this.asc = !this.asc))
+        .forEach(tr => table.appendChild(tr) );
+};
 </script>
 <?php
 

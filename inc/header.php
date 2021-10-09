@@ -109,7 +109,8 @@ if ($auth) {
 	include ("inc/listmenu.php");
 	$catid=gorp('catid');
 	$catcount=0;
-	echo "<span class='w3-padding w3-block w3-center w3-pale-blue'>Folders</span>";
+	echo "<span class='w3-padding w3-block w3-small w3-center w3-pale-blue' 
+		onclick=\"w3.sortHTML('#catlist','li')\">Folders&nbsp;<i class='material-icons w3-small micon'>sort</i></span>";
 	echo getmenu($_SESSION["id"],$catid, $catcount);
 
 	if (!$catcount){

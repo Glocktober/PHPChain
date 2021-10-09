@@ -32,9 +32,9 @@ include ("inc/header.php");
     </div>
 <table class="w3-table w3-bordered" id="categorytable" >
 <tr class="w3-pale-blue" >
-<td class=""  id="catcolumn" onclick="w3.sortHTML('#categorytable','.trow', 'td:nth-child(1)')" 
-    title='Click to sort..'>&nbsp;&nbsp;Folder <i class='material-icons micon'>sort</i></td>
-<td class="w3-center"  id="actioncolumn" title="Choose an action">Action <i class="material-icons micon">category</i></td>
+<th class=""  id="catcolumn" onclick="w3.sortHTML('#categorytable','.trow', 'td:nth-child(1)')" 
+    title='Click to sort..'>&nbsp;&nbsp;Folder <i class='material-icons micon'>sort</i></th>
+<th class="w3-center"  id="actioncolumn" title="Choose an action">Action <i class="material-icons micon">category</i></th>
 </tr>
 
 <?php
