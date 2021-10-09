@@ -47,7 +47,6 @@ if ($number_logins==0) error_out("No password entries in the selected Folder. Cr
 
 $catname = $catindex[$catid];
 
-if (!has_status()) set_status("Folder '$catname' has $number_logins entries");
 
 while ($row=sql_fetch_assoc($result)) {
     $iv = base64_decode($row["iv"]);
@@ -55,14 +54,19 @@ while ($row=sql_fetch_assoc($result)) {
     $password=decrypt($key,$row["password"],$iv);
     $site=decrypt($key,$row["site"],$iv);
     $url=decrypt($key,$row["url"],$iv);
-    $resarray[]=array("id"=>$row["id"], "login"=>$login, "password"=>$password, "site"=>$site, 
-    "url"=>$url,"noteid" => $row["noteid"], "modified" => $row["modified"] );
-    $sortarray[]=$site;
+    $resarray[]=[
+        "id"=>$row["id"], 
+        "login"=>$login, 
+        "password"=>$password, 
+        "site"=>$site, 
+        "url"=>$url,
+        "noteid" => $row["noteid"], 
+        "modified" => $row["modified"] 
+    ];
 } 
 
-array_multisort($sortarray, SORT_ASC, $resarray);
-
 include ("inc/header.php");
+
 $catid = $catidx;
 $newvaljs = json_encode([
     'itemid'=>0, 
@@ -74,21 +78,21 @@ $newvaljs = json_encode([
 ?>
 
 <div id="catview" class="w3-card w3-round">
-    <div class="w3-center">
-        <span class="summ"><?php echo "'<b></i>$catname</b><i>' has $number_logins password entries"?></span>
+    <div class="w3-center topnote">
+        <span class="summ"><?php echo "Folder </i><b>$catname</b><i> has </i><span class='w3-badge w3-border w3-pale-green'>$number_logins</span><i> password entries"?></span>
     </div>
 <div class="w3-bar" data='<?php echo $newvaljs?>'>
 <span class="w3-button w3-bar-item w3-left w3-hover-pale-green" title="Add a new password entry"
     onclick="onpush(this,'entedit.php')"><i class='material-icons addicon iconoffs'
     >add</i> Add Entry</span>
-    <input oninput="w3.filterHTML('#cattable', '.trow', this.value)" placeholder='Filter entries...' 
-        class='w3-border w3-bar-item  seafilter focus' title='Filter content'>
+    <input oninput="w3.filterHTML('#cattable', '.trow', this.value)" placeholder='Filter Password Entries...' 
+        class='w3-border w3-bar-item  w3-round seafilter focus' title='Filter content'>
 </div> 
 <table  id=cattable width="100%" class="w3-table w3-bordered w3-hoverable">
 <tr class='w3-pale-green'>
-<th class="header w3-center" width="30%" onclick="sortbycolumn(this)" title='Click to sort by site...'>Site <i class='material-icons micon'>sort</i></th>
+<th id="sortfirst" class="header w3-center" width="30%" onclick="sortbycolumn(this)" title='Click to sort by site...'>Site <i class='material-icons micon'>sort</i></th>
 <th class="header w3-center" width="25%" onclick="sortbycolumn(this)" title='Click to sort by login...'>Login <i class='material-icons micon'>sort</i></th>
-<th class="header w3-center" width="25%" title="Hover over the box to reveal the password">Password <i class="material-icons micon">key</i></th>
+<!-- <th class="header w3-center" width="25%" title="Hover over the box to reveal the password">Password <i class="material-icons micon">key</i></th> -->
 <th class="header w3-center" width="20%" title="Select an action">Actions <i class="material-icons micon">category</i></th>
 </tr>
 
@@ -104,7 +108,7 @@ foreach ($resarray as $val) {
     $mod_time = 'Last modified: '. ($modified? strftime($time_format, $modified): "(the epoch)");
     $noteid = $val['noteid'];
     $noteclass = $noteid ? 'isgreen': 'isgrey';
-    $notetip = $noteid ? 'View existing note' : 'Create a note';
+    $notetip = $noteid ? 'Click to view attached note' : 'Click to attach a note';
     $noteicon = $noteid ? 'edit_note': 'note_add' ;
     $site = $val['site'];
     $url = $val['url'];
@@ -130,7 +134,7 @@ foreach ($resarray as $val) {
     $password = $val['password'];
     $itemid = $val['id'];
     $site = htmlspecialchars($site);
-    $valjs = json_encode([
+    $datajs = json_encode([
         'itemid'=>$itemid, 
         'catid'=>$catid, 
         'noteid'=> $val['noteid'],
@@ -149,16 +153,16 @@ foreach ($resarray as $val) {
 ?>
 <tr class='w3-hover-light-grey trow'>
 <td class="row" title="<?php echo $mod_time?>"><?php echo $outsite ?></td>
-<td class="row  login w3-center" title="Click to copy login" onclick="copyclip(this)"><span class="w3-block"><?php echo $login ?></span></td>
-<td class="row  password w3-center" title="Click to copy password" onclick="copyclip(this)"><span class="w3-block"><?php echo $password ?></span></td>
-<td class="sea w3-center" data='<?php echo $valjs?>' disp='<?php echo $dispjs?>'>
+<td class="row  login w3-center" title="Double click to copy login" ondblclick="copyclip(this)"><span class="w3-block"><?php echo $login ?></span></td>
+<!-- <td class="row  password w3-center" title="Click to copy password" onclick="copyclip(this)"><span class="w3-block"><?php echo $password ?></span></td> -->
+<td class="row w3-center" data='<?php echo $datajs?>' disp='<?php echo $dispjs?>'>
 	
-<i class="material-icons detailicon" onclick="copypass(this)" title="Copy password">key</i>
-<i class="material-icons detailicon" onclick="editpush(this,'entedit.php')" title="View entry details">zoom_in</i>
-<i class="material-icons editicon" onclick="onpush(this,'entedit.php')" title="Edit this entry">edit</i>
-<i class="material-icons <?php echo $noteclass?>" onclick="onpush(this,'noteedit.php')" title="<?php echo $notetip?>"><?php echo $noteicon?></i>
-<i class="material-icons delicon" onclick="delpush(this,'entdelete.php','<?php echo $site?>')" title="Delete this entry">delete</i>
-
+<i class="material-icons passicon" onclick="copyattr(this, 'password')" title="Click to copy password">key</i>&nbsp;&nbsp;&nbsp;
+<i class="material-icons detailicon" onclick="editpush(this,'entedit.php')" title="Click for entry details">zoom_in</i>&nbsp;
+<i class="material-icons editicon" onclick="onpush(this,'entedit.php')" title="Click to edit this entry">edit</i>&nbsp;
+<i class="material-icons <?php echo $noteclass?>" onclick="onpush(this,'noteedit.php')" title="<?php echo $notetip?>"><?php echo $noteicon?></i>&nbsp;
+<i class="material-icons delicon" onclick="delpush(this,'entdelete.php')" title="Click to delete this entry">delete</i>&nbsp;
+<i class="material-icons selicon">chevron_left</i>
 </td></tr>
 <?php 
 }?>
@@ -193,6 +197,7 @@ foreach ($resarray as $val) {
         </div>
     </div>
 </div>
+
 <!-- Modal dialog for detailed display -->
 <div class="w3-modal" id="dispmod">
     <div class="w3-modal-content" id="dispdialog">
@@ -240,7 +245,7 @@ foreach ($resarray as $val) {
                 <button type="button" class="w3-large w3-hover-pale-green w3-button" 
                     title="Cancel" onclick="document.getElementById('dispmod').style.display='none'">
                     <i class="material-icons iconoffs">close</i> Close</button>
-                <button type="button" class="w3-large w3-hover-pale-green w3-button" 
+                <button type="button" id="dispnoteedit" class="w3-large w3-hover-pale-green w3-button" 
                     title="View/Edit Notes" onclick="onpush(this,'noteedit.php')">
                     <i class="material-icons isgreen iconoffs">edit_note</i> Notes</button>
                 <button type="button" class="w3-large w3-hover-pale-red w3-button" 
@@ -252,10 +257,10 @@ foreach ($resarray as $val) {
     </div>
 </div>
 <script>
-copypass = function(el){
+copyattr = function(el, attr){
     const jdat = JSON.parse(el.parentElement.getAttribute('disp'))
-    navigator.clipboard.writeText(jdat.password);
-    flashmes(`copied password for ${jdat.site} ...`);
+    navigator.clipboard.writeText(jdat[attr]);
+    flashmes(`Copied ${attr} for "<i>${jdat.site}</i>"`,1000);
 }
 onpush = function(el,act){
     const jdat = JSON.parse(el.parentElement.getAttribute('data'))
@@ -270,20 +275,23 @@ onpush = function(el,act){
     fm.submit();
 }
 
-delpush = function(el,act,site){
-    document.getElementById('delvertit').innerHTML = `Deleting password entry<br><b><i>"${site}"</i></b>`;
+delpush = function(el,act){
     const jdat = el.parentElement.getAttribute('data');
+    const jd = JSON.parse(jdat);
+    document.getElementById('delvertit').innerHTML = `Deleting password entry<br><b><i>"${jd.site}"</i></b>`;
     document.getElementById('delbar').setAttribute('data',jdat);
     document.getElementById('delemodal').style.display = 'block';
 }
 
 editpush = function(el,act){
     const jdat = el.parentElement.getAttribute('data');
+    const jjdat = JSON.parse(jdat);
     const ddat = JSON.parse(el.parentElement.getAttribute('disp'));
     const df = document.getElementById('dispform');
     const chil = df.children;
     const modmes = ddat['modtime'];
     delete ddat['modtime'];
+    document.getElementById('dispnoteedit').style.display = (jjdat.noteid == 0) ? "none" : "";;
     document.getElementById('dispmodif').innerHTML = modmes;
     document.getElementById('dispbar').setAttribute('data',jdat);
 
@@ -312,6 +320,7 @@ sortbycolumn = function(th){
         .sort(comparer(Array.from(th.parentNode.children).indexOf(th), this.asc = !this.asc))
         .forEach(tr => table.appendChild(tr) );
 };
+sortbycolumn(document.getElementById('sortfirst'));
 </script>
 <?php
 

@@ -65,7 +65,7 @@ $backurl = "catview.php?catid=$catid";
 ?>
 <!-- note view/edit  -->
 <div class="w3-container">
-<div class="w3-card w3-round w3-padding-16" onclick="lockedclick(this)">
+<div class="w3-card w3-round w3-padding-16" id="">
     <div id='statmessage' class="w3-center w3-margin txtgrey"><?php echo $status_message?></div>
 <form id='savf' action="notesave.php" method=post class="w3-container">
     <input type="hidden" form='savf' name="itemid" value=<?php echo $itemid; ?> >
@@ -75,21 +75,21 @@ $backurl = "catview.php?catid=$catid";
     <input type="hidden" form='savf' name="csrftok" value=<?php echo get_csrf();?> >
     
     <textarea name="notes" id="area" form='savf' cols="30" autocomplete="on" maxlength="<?php echo $max_note_size?>"
-        title="click edit to update text" class="w3-block locked focus" spellcheck="true" disabled
+        title="click edit to update text" class="w3-block locked focus" spellcheck="false" disabled
         placeholder="You can keep notes about this password entry here.  These are not encrypted."
         rows="10"><?php echo $notedata; ?></textarea>
     
 <div class="w3-bar w3-center w3-margin-top">
 <div style="">
-    <a class='butbut w3-button w3-hover-pale-green w3-round' href="<?php echo $backurl;?>" title='Make No Changes'><i class='material-icons backicon iconoffs'>chevron_left</i>Back</a>
+    <a class='w3-button w3-hover-pale-green w3-round' href="<?php echo $backurl;?>" title='Make No Changes'><i class='material-icons backicon iconoffs'>chevron_left</i>Back</a>
 <?php if ($noteid) { ?> <!-- unlock button  -->
     <a class='butbut w3-button w3-hover-pale-green w3-round' onclick='enableedit();', type=button title='Enable editing'><i id='padlock' class='material-icons lockicon iconoffs'>lock</i></a>            
 <?php } ?>
-    <button type="submit" form='savf' title='Save changes' class="butbut w3-btn w3-hover-pale-red w3-round locked" ><i class='material-icons saveicon iconoffs'>check_circle</i>Save</button>
+    <button type="submit" form='savf' title='Save changes' class="butbut w3-button w3-hover-pale-red w3-round locked" ><i class='material-icons saveicon iconoffs'>check_circle</i>Save</button>
 </form>
 <?php if ($noteid) {?> <!-- delete button  -->
     <button type='button' form='delf' title='Delete Note' onclick="document.getElementById('delf').submit();"
-        class='butbut w3-btn w3-hover-pale-red w3-round locked'><i class='material-icons delicon iconoffs'>delete</i>Delete</button>
+        class='butbut w3-button w3-hover-pale-red w3-round locked'><i class='material-icons delicon iconoffs'>delete</i>Delete</button>
 <?php } ?>
 <form id='delf' action="notedelete.php" method=post class="w3-container">
     <input type="hidden" form='delf' name="itemid" value=<?php echo $itemid; ?> >
@@ -114,13 +114,17 @@ doenable = function(flag){
     }
 }
 enableedit = ()=>{ 
+    if (islocked){
+        document.getElementById('area').removeEventListener("click",lockedclick);
+        flashmes('<i class="material-icons">lock_open</i> Form unlocked', 1200);
+        doenable(false);
+        pdlck = document.getElementById('padlock')
+        pdlck.innerText='lock_open';
+        pdlck.style.color='green';
+        document.getElementById('statmessage').innerText = "Editing..."
+        document.getElementById("area").focus();
+    }
     islocked=false;
-    doenable(false);
-    pdlck = document.getElementById('padlock')
-    pdlck.innerText='lock_open';
-    pdlck.style.color='green';
-    document.getElementById('statmessage').innerText = "Editing..."
-    document.getElementById("area").focus();
 }
 
 if (noteid) { 
@@ -129,10 +133,11 @@ if (noteid) {
 }
 else doenable(false);
 
-lockedclick = function(el){
+lockedclick = function(){ 
     if (islocked)
-        flashmes('Form is locked - unlock to edit');
+        flashmes('<i class="material-icons padlock">lock</i> Form is locked - unlock to edit ', 1200);
 }
+document.getElementById('area').addEventListener("click",lockedclick);
 </script>
 
 <?php

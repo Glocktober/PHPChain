@@ -77,7 +77,7 @@ function status_message(){
         if (array_key_exists('login',$_SESSION)) $login = $_SESSION['login'];
 
         if (is_authed()) 
-            return "<span class=info><i class='material-icons iconoffs' style='color:lightskyblue'>info</i>&nbsp;Current User: \"<b>$login</b>\"</span>";
+            return "<span class=info><i class='material-icons iconoffs' style='color:lightskyblue'>info</i>&nbsp;Current User: \"<i>$login</i>\"</span>";
         else  return "<span class=error><b></b></span>";
     }
 }

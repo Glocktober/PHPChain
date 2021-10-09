@@ -26,7 +26,7 @@ else{
     $itemid=0;
 }
 if ($itemid!=0) {
-    if (!has_status()) set_status("View/Edit password entry");
+    
     //Get existing data and decrypt it first.
     $result=sql_query($db,"select id, iv, catid, login, password, site, url, noteid, modified from logins where id = '$itemid' and userid='$userid'");
     if (sql_num_rows($result)==1) {
@@ -39,6 +39,7 @@ if ($itemid!=0) {
         $url=decrypt($key,$row["url"],$iv);
         $noteid=$row['noteid'];
         $modified=$row['modified'];
+        if (!has_status()) set_status("View/Edit password entry for <span class='w3-tag w3-green w3-round'>$site</span>");
     } else {
         error_out("Error: Not authorized for this entry",'catview.php' );
     }
@@ -84,7 +85,7 @@ include ("inc/header.php");
 $catid=sanigorp("catid");
 ?>
 <div class="w3-card" id="cardpanel">
-<div class=" w3-padding-16 " onclick="lockedclick(this)">
+<div class=" w3-padding-16 ">
 
 <div class='w3-center fullw' >
     <?php if ($itemid) { ?>
@@ -99,7 +100,7 @@ $catid=sanigorp("catid");
         <input type="hidden" name="noteid" value=<?php echo $noteid ?> >
         <input type="hidden" name="csrftok" value=<?php echo get_csrf() ?> >
 </div>
-
+<div id="lockwarn"> <!-- Warning when lock is set -->
 <div class='w3-center w3-margin-left fullw' >
     <label CLASS="plain labform" ><span class=error>*</span> Folder:</label>
 <!-- Build select options widget  -->
@@ -144,15 +145,17 @@ foreach($cats as $k => $v){
         placeholder="Enter the password..."
         class='locked password' title='Enter the password' >
 </div><br>
+</div> <!-- lockwarn end-->
 <div class='w3-margin w3-bar' >   
     <p class="plain labform">&nbsp;</p>
     <div style="">
-    <a class='butbut w3-button w3-bar-item w3-hover-pale-green w3-round' href="<?php echo $backurl;?>" title='Make No Changes'><i class='material-icons backicon iconoffs'>chevron_left</i>Back</a>
+    <a class='w3-button w3-bar-item w3-hover-pale-green w3-round' href="<?php echo $backurl;?>" title='Make No Changes'><i class='material-icons backicon iconoffs'>chevron_left</i>Back</a>
 <?php if ($itemid) { ?>
-    <a class='butbut w3-button w3-bar-item w3-hover-pale-green w3-round' onclick='enableedit();', type=button title='Enable editing'><i id='padlock' class='material-icons lockicon iconoffs'>lock</i></a>            
+    <a class='butbut w3-button w3-bar-item w3-hover-pale-green w3-round' onclick='enableedit(event);', type=button title='Enable editing'><i id='padlock' class='material-icons lockicon iconoffs'>lock</i></a>            
 <?php } ?>
     <button type="submit" title='Save changes' class="butbut w3-button w3-bar-item w3-hover-pale-red w3-round locked" ><i class='material-icons saveicon iconoffs'>check_circle</i>Save</button>
 </form>
+
 <?php 
 if ($itemid){
 ?>
@@ -185,24 +188,28 @@ doenable = function(flag){
     }
     document.getElementsByClassName("focus")[0].focus();
 }
-enableedit = ()=>{ 
+enableedit = (e)=>{ 
+    if (islocked){
+        document.getElementById('lockwarn').removeEventListener("click",lockedclick);
+        flashmes('<i class="material-icons">lock_open</i> Form unlocked', 1000);
+        doenable(false);
+        pdlck = document.getElementById('padlock')
+        pdlck.innerText='lock_open';
+        pdlck.style.color='green';
+    }
     islocked = false;
-    const cpan = document.getElementById('cardpanel');
-    flashel(cpan);
-    doenable(false);
-    pdlck = document.getElementById('padlock')
-    pdlck.innerText='lock_open';
-    pdlck.style.color='green';
 }
 <?php if ($itemid) { ?> 
     doenable(true); 
     islocked=true;
     <?php } ?>
 
-lockedclick = function(el){
+lockedclick = function(){ 
     if (islocked)
-        flashmes('Form is locked - unlock to edit');
+        flashmes('<i class="material-icons padlock">lock</i> Form is locked - unlock to edit ', 1000);
 }
+document.getElementById('lockwarn').addEventListener("click",lockedclick);
+
 </script>
 <?php
 include ("inc/footer.php");

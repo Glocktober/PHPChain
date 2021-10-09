@@ -33,17 +33,17 @@ include("inc/header.php");
     <form action="catsave.php" method=POST class="w3-center" >
     <input type="hidden" name="catid" value=<?php echo $catid ?> >
     <span  class="w3-center txtgrey" ><?php echo $mast?></span>
-</div>
+</div><br>
 <div class='w3-center fullw ' >
 <label class="plain labform" for="title">Folder Title:</label>
 <input type="text" name="title" required maxlength=255 size=30 id="title" 
     value="<?php echo $title; ?>" spellcheck="false" autocomplete="off"
     placeholder="Enter Folder title"
     title="Folder title" class="plain focus">
-</div>
+</div><br>
 <div class="w3-center w3-bar w3-padding-16">
     <a href="catlist.php" class="w3-btn  w3-hover-pale-green" title="Cancel">
-        <i class="material-icons iconoffs backicon">cancel</i> Back</a>
+        <i class="material-icons iconoffs backicon">chevron_left</i> Back</a>
     <button type="submit" class='butbut w3-btn w3-hover-pale-red ' title="Save this Folder"><i class='material-icons saveicon iconoffs'>check_circle</i>&nbsp;Save</button>
 </form>
 </div>

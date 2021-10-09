@@ -2,6 +2,16 @@
 </div> <!-- end main table  -->
 </div>
 </div><!-- end of outer structure div  -->
+<!-- Modal dialog for flash notify  -->
+<div class="w3-modal" id="flashmodal">
+    <div class="w3-modal-content" id="flashmessmodal" style="width:40%; word-break:break-word;">
+        <div class="w3-container">
+			<div class="w3-panel w3-center w3-border w3-border-red w3-padding">
+				<p class="w3-large" id="flashmess"></p>
+			</div>
+        </div>
+    </div>
+</div> <!-- End notify flash -->
 <script>
 // Copy text from the first child (a span) of a TD
 copyclip = function(el){
@@ -20,13 +30,15 @@ inpclip = function(el){
 
 // Flash a message
 flashmes = function(mess, delay=2000){
-	const mesbar = document.getElementById('messagebar');
-	const curmes = mesbar.innerHTML;
-	mesbar.innerHTML = `<span class=success><i class="material-icons iconoffs">info</i>&nbsp;&nbsp;${mess}</success>`;
-	setTimeout(() => {
-		mesbar.innerHTML = curmes;
-	}, delay);
+    const dia = document.getElementById('flashmodal');
+    const passmes = document.getElementById('flashmess');
+    passmes.innerHTML = mess;
+    dia.style.display = 'block';
+    setTimeout(() => {
+        dia.style.display = 'none';
+    }, delay);	
 }
+
 
 // Flash an element and announce it was copied to the clipboard
 flashel = function(el){
@@ -55,8 +67,12 @@ clearFilters = function(){
 		els[i].value = "";
 		els[i].dispatchEvent(new Event('input'));
 	}
-	flashmes('Filters cleared');
+	// flashmes('Filters cleared', 1000);
 }
+
+// sort navigator menu
+w3.sortHTML('ul#catlist', 'li'); 
+
 </script>
 </BODY>
 </HTML>
