@@ -77,7 +77,7 @@ $newvaljs = json_encode([
 ], JSON_HEX_APOS|JSON_HEX_QUOT);
 ?>
 
-<div id="catview" class="w3-card w3-round">
+<div id="catview" class="w3-card-2 w3-round">
     <span class="w3-left navbutt" title="click to hide folder menu" onclick="toggleNav(this)"><i class="material-icons w3-hover-pale-red" id="navshowmenu" >menu_open</i></span>
     <div class="w3-center topnote">
         <span class="summ"><?php echo "Folder </i><b>$catname</b><i> has </i><span class='w3-badge w3-border w3-pale-green'>$number_logins</span><i> password entries"?></span>

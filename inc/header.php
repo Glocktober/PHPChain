@@ -31,50 +31,33 @@ $document_title = $site_name;
 <!-- outer structure - div-->
 <div class="">
 <!-- menu bar -->
+<div id="titlebar" class="w3-bar w3-teal" style="opacity:0.8;" >
 <?php
 if ($auth){
-	?>  <!-- Authenticated  -->
-<div id="titlebar" class="w3-bar w3-teal" >
-
+?> 	<!--  authenticated menu bar items -->
 	<span class="w3-tooltip w3-bar-item w3-right" onclick="javascript:document.location='logout.php'"><i class='material-icons menuicon iconoffs' title="Logoff">logout</i><span class="w3-text">&nbsp;Logout</span></span>
-
-<!-- drop-down menu  -->
-<div class="w3-left w3-dropdown-hover">
-	<button class="w3-button w3-hover-teal w3-teal" title="Menu"><i class='material-icons  menuicon iconoffs'>menu</i></button>
-<div class="w3-dropdown-content w3-bar-block w3-teal">
-	<button class="w3-button w3-bar-item w3-ripple w3-hover-pale-blue" onclick="clearFilters()" title="Clear search filters"><i class='material-icons  menuicon iconoffs'>clear</i>&nbsp;Clear Filters</button>
-	<form action="logout.php" method="POST" class='butform w3-block' >
-		<button class="w3-button w3-bar-item w3-ripple w3-hover-pale-blue" title="log out of PHPchain"><i class='material-icons  menuicon iconoffs'>logout</i><span class="">&nbsp;Logout</span></button></form>
-	<form action="catlist.php" method="POST" class='butform w3-block' >
-		<button class="w3-button w3-bar-item w3-ripple w3-hover-pale-blue" title="add/edit/remove Folders"><i class='material-icons  menuicon iconoffs'>create_new_folder</i><span >&nbsp;Manage Folders</span></button></form>
-	<form action="entedit.php" method="POST" class='butform w3-block' >
-		<input type="hidden" name="csrftok" value=<?php echo get_csrf()?>>
-		<input type="hidden" name="catid" value=<?php echo (isset($catid)? $catid: 0)?>>
-		<button class="w3-button w3-bar-item w3-ripple w3-hover-pale-blue" title="add a password entry"><i class='material-icons  menuicon iconoffs'>add</i><span class="">&nbsp;Add Password Entry</span></button></form>
-	<form action="password.php" method="POST" class='butform w3-block' >
-		<button class="w3-button w3-bar-item w3-ripple w3-hover-pale-blue" title="Change your PHPchain login password"><i class='material-icons  menuicon iconoffs'>password</i><span class="">&nbsp;Change Password</span></button></form>
-<?php if ($allow_new_accounts){?>
-	<form action="newlogin.php" method="POST" class=' w3-block' >
-		<button class="w3-btn w3-bar-item w3-medium w3-hover-pale-blue butbut" title="Create a PHPchain account"><i class='material-icons  menuicon iconoffs'>person_add</i>&nbsp;<span class="">Add a New Login</span></button></form>
+<?php if ($allow_new_accounts){?> <!-- add new login permitted -->
+	<span class="w3-tooltip w3-bar-item w3-right" onclick="javascript:document.location='newlogin.php'"><i class="material-icons menuicon iconoffs">person_add</i>&nbsp;<span class="w3-text">Add chain user</span></span>
 <?php } ?>
-</div></div>
-<span class="w3-tooltip w3-bar-item" onclick="javascript:document.location='index.php'"><i class='material-icons menuicon iconoffs' title="home">home</i>&nbsp;<span class="w3-text"><?php echo $document_title;?></span></span>
-<span class="w3-tooltip w3-bar-item"><i class='material-icons menuicon iconoffs'>person</i> <span class="w3-text"><?php echo $auth_login? $auth_login: 'Not logged in'; ?>&nbsp;</span></span>
-
+	<span class="w3-tooltip w3-bar-item w3-right" onclick="javascript:document.location='password.php'"><i class="material-icons menuicon iconoffs">password</i>&nbsp;<span class="w3-text">Change <i><?php echo $auth_login?></i> password</span></span>
+	<span class="w3-tooltip w3-bar-item w3-right" onclick="javascript:document.location='index.php'"><i class='material-icons menuicon iconoffs' title="home">home</i>&nbsp;<span class="w3-text"><?php echo $document_title;?></span></span>
+	<span class="w3-tooltip w3-bar-item w3-right"><i class='material-icons menuicon iconoffs'>person</i> <span class="w3-text"><?php echo $auth_login? $auth_login: 'Not logged in'; ?>&nbsp;</span></span>
+	<span class="w3-tooltip w3-bar-item" onclick="javascript:document.location='catlist.php'"><i class="material-icons menuicon iconoffs">list</i>&nbsp;<span class="w3-text">Manage Folders</span></span>
+	<span class="w3-tooltip w3-bar-item" onclick="javascript:document.location='catedit.php?catid=0'"><i class="material-icons menuicon iconoffs">create_new_folder</i>&nbsp;<span class="w3-text">Add Folder</span></span>
+	<span class="w3-tooltip w3-bar-item" onclick="javascript:document.location='entedit.php?catid=<?php echo (isset($catid)? $catid: 0)?>'"><i class="material-icons menuicon iconoffs">add</i>&nbsp;<span class="w3-text">New password entry</span></span>
+	<span class="w3-tooltip w3-bar-item" onclick="clearFilters()"title="Clear search filters" ><i class='material-icons  menuicon iconoffs'>clear</i>&nbsp;<span class="w3-text">Clear Filters</span></span>
 <?php	} else { 
 	if (!has_status()) set_error('You are not logged in...');
-	?>
-	<!-- Not authenticated -->
-<div id="titlebar" class="w3-bar w3-teal" >
+	?>	<!-- Not authenticated menu bar items -->
 	<span class="w3-tooltip w3-bar-item w3-right" onclick="javascript:document.location='login.php'"><i class="material-icons menuicon iconoffs" >login</i>&nbsp;<span class="w3-text">Login</span></span>
-<?php if ($allow_new_accounts and !$auth_for_new_accounts){?>
-	<span class="w3-tooltip w3-bar-item" onclick="javascript:document.location='newlogin.php'"><i class="material-icons menuicon iconoffs" >person_add</i>&nbsp;<span class="w3-text">Create a New Account</span></span>
+<?php if ($allow_new_accounts and !$auth_for_new_accounts){?> 
+	<span class="w3-tooltip w3-bar-item w3-right" onclick="javascript:document.location='newlogin.php'"><i class="material-icons menuicon iconoffs" >person_add</i>&nbsp;<span class="w3-text">Create a New Account</span></span>
 <?php } ?>
 <?php
 }
 ?>
-<!-- info menu  -->
-<span class="w3-tooltip w3-bar-item"><i class='material-icons menuicon iconoffs'>info</i> <span class="w3-text">PHPchain v<?php echo C_VERSION; ?>&nbsp;</span></span>
+
+<span class="w3-tooltip w3-bar-item w3-right"><i class='material-icons menuicon iconoffs'>info</i> <span class="w3-text">PHPchain v<?php echo C_VERSION; ?>&nbsp;</span></span>
 
 </div> <!-- end of menu bar -->
 </div>

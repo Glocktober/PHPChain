@@ -21,7 +21,7 @@ include ("inc/header.php");
 if (!has_status()) set_status("List of <span class='w3-badge w3-green'>$catcount</span> Folders");
 ?>
 
-<div id="tabplane" class="tabplane w3-card" >
+<div id="tabplane" class="tabplane w3-card-4 w3-round-xlarge" >
 <div class="w3-center">
         <span class="summ"><span class="w3-badge w3-green w3-small"><?php echo "$catcount"?></span> Folders</span>
     </div>
