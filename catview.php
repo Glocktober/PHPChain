@@ -78,6 +78,7 @@ $newvaljs = json_encode([
 ?>
 
 <div id="catview" class="w3-card w3-round">
+    <span class="w3-left navbutt" title="click to hide folder menu" onclick="toggleNav(this)"><i class="material-icons w3-hover-pale-red" id="navshowmenu" >menu_open</i></span>
     <div class="w3-center topnote">
         <span class="summ"><?php echo "Folder </i><b>$catname</b><i> has </i><span class='w3-badge w3-border w3-pale-green'>$number_logins</span><i> password entries"?></span>
     </div>
@@ -90,10 +91,13 @@ $newvaljs = json_encode([
 </div> 
 <table  id=cattable width="100%" class="w3-table w3-bordered w3-hoverable">
 <tr class='w3-pale-green'>
-<th id="sortfirst" class="header w3-center" width="30%" onclick="sortbycolumn(this)" title='Click to sort by site...'>Site <i class='material-icons micon'>sort</i></th>
+<th id="sortfirst" class="header w3-center" width="25%" onclick="sortbycolumn(this)" title='Click to sort by site...'>Site <i class='material-icons micon'>sort</i></th>
 <th class="header w3-center" width="25%" onclick="sortbycolumn(this)" title='Click to sort by login...'>Login <i class='material-icons micon'>sort</i></th>
-<!-- <th class="header w3-center" width="25%" title="Hover over the box to reveal the password">Password <i class="material-icons micon">key</i></th> -->
-<th class="header w3-center" width="20%" title="Select an action">Actions <i class="material-icons micon">category</i></th>
+<th class="pwdrow header w3-center w3-hide" width="20%" title="Click to hide passwords" onclick="w3.toggleClass('th.pwdrow, td.pwdrow, i.pwdrow','w3-hide')">
+    Password <i class="material-icons pwdicon micon" >key</i></th>
+<th class="header w3-center" width="25%" title="Select an action" onclick="w3.toggleClass('th.pwdrow, td.pwdrow, i.pwdrow','w3-hide')">
+    <i class="material-icons micon pwdrow pwdicon" title="Click to reveal password column">key</i>&nbsp;&nbsp;&nbsp;
+    Actions <i class="material-icons micon">category</i>&nbsp;&nbsp;&nbsp;</th>
 </tr>
 
 <?php
@@ -153,15 +157,15 @@ foreach ($resarray as $val) {
 ?>
 <tr class='w3-hover-light-grey trow'>
 <td class="row" title="<?php echo $mod_time?>"><?php echo $outsite ?></td>
-<td class="row  login w3-center" title="Double click to copy login" ondblclick="copyclip(this)"><span class="w3-block"><?php echo $login ?></span></td>
-<!-- <td class="row  password w3-center" title="Click to copy password" onclick="copyclip(this)"><span class="w3-block"><?php echo $password ?></span></td> -->
+<td class="row  login w3-center" title="Click to copy login" onclick="copyclip(this)"><span class="w3-block"><?php echo $login ?></span></td>
+<td class="pwdrow row  password w3-center w3-hide" title="Click to copy password" onclick="copyclip(this)"><span class="w3-block"><?php echo $password ?></span></td>
 <td class="row w3-center" data='<?php echo $datajs?>' disp='<?php echo $dispjs?>'>
 	
-<i class="material-icons passicon" onclick="copyattr(this, 'password')" title="Click to copy password">key</i>&nbsp;&nbsp;&nbsp;
+<i class="material-icons passicon pwdrow" onclick="copyattr(this, 'password')" title="Click to copy password">key</i>&nbsp;
 <i class="material-icons detailicon" onclick="editpush(this,'entedit.php')" title="Click for entry details">zoom_in</i>&nbsp;
-<i class="material-icons editicon" onclick="onpush(this,'entedit.php')" title="Click to edit this entry">edit</i>&nbsp;
-<i class="material-icons <?php echo $noteclass?>" onclick="onpush(this,'noteedit.php')" title="<?php echo $notetip?>"><?php echo $noteicon?></i>&nbsp;
-<i class="material-icons delicon" onclick="delpush(this,'entdelete.php')" title="Click to delete this entry">delete</i>&nbsp;
+<i class="material-icons editicon" onclick="onpush(this,'entedit.php')" title="Click to edit this entry">edit</i>
+<i class="material-icons <?php echo $noteclass?>" onclick="onpush(this,'noteedit.php')" title="<?php echo $notetip?>"><?php echo $noteicon?></i>
+<i class="material-icons delicon" onclick="delpush(this,'entdelete.php')" title="Click to delete this entry">delete</i>
 <i class="material-icons selicon">chevron_left</i>
 </td></tr>
 <?php 
@@ -257,11 +261,15 @@ foreach ($resarray as $val) {
     </div>
 </div>
 <script>
+
+// get 'disp' data from el's parent and put 'attr' in clipboard
 copyattr = function(el, attr){
     const jdat = JSON.parse(el.parentElement.getAttribute('disp'))
     navigator.clipboard.writeText(jdat[attr]);
     flashmes(`Copied ${attr} for "<i>${jdat.site}</i>"`,1000);
 }
+
+// load data into form (datform) and submit against passed action.
 onpush = function(el,act){
     const jdat = JSON.parse(el.parentElement.getAttribute('data'))
     const fm = document.getElementById('datform')
@@ -275,6 +283,7 @@ onpush = function(el,act){
     fm.submit();
 }
 
+// set up and display delete validation modal (delemodal)
 delpush = function(el,act){
     const jdat = el.parentElement.getAttribute('data');
     const jd = JSON.parse(jdat);
@@ -283,6 +292,7 @@ delpush = function(el,act){
     document.getElementById('delemodal').style.display = 'block';
 }
 
+// Fill out form with edit data and display modal (dispnoteedit)
 editpush = function(el,act){
     const jdat = el.parentElement.getAttribute('data');
     const jjdat = JSON.parse(jdat);
@@ -303,9 +313,6 @@ editpush = function(el,act){
     document.getElementById('dispmod').style.display = 'block';
 }
 
-notepush = function(el,act){
-
-}
 //This off stackoverflow https://stackoverflow.com/questions/14267781/sorting-html-table-with-javascript
 const getCellValue = (tr, idx) => tr.children[idx].innerText || tr.children[idx].textContent;
 
@@ -320,7 +327,9 @@ sortbycolumn = function(th){
         .sort(comparer(Array.from(th.parentNode.children).indexOf(th), this.asc = !this.asc))
         .forEach(tr => table.appendChild(tr) );
 };
+// initial sort of table
 sortbycolumn(document.getElementById('sortfirst'));
+
 </script>
 <?php
 

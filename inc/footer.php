@@ -67,12 +67,34 @@ clearFilters = function(){
 		els[i].value = "";
 		els[i].dispatchEvent(new Event('input'));
 	}
-	// flashmes('Filters cleared', 1000);
+	flashmes('Filters cleared', 500);
 }
 
-// sort navigator menu
-w3.sortHTML('ul#catlist', 'li'); 
+// toggle nav pane
+var chainnav = true;
+toggleNav = function(){
+	const navshow = document.getElementById('navshowmenu');
+	if (chainnav){
+		// closing nav menu
+		chainnav = false;
+		w3.addClass('#navpane', 'w3-hide');
+		w3.addClass('#detailpane', 'fullw');
+		navshow.style.transform = 'rotate(180deg)';
+		navshow.style.color = 'red';
+		navshow.setAttribute('title','Click to show folder menu');
+	} else {
+		// Opening nav menu
+		chainnav = true;
+		w3.removeClass('#detailpane', 'fullw');
+		w3.removeClass('#navpane','w3-hide');
+		navshow.style.transform = 'rotate(0deg)';
+		navshow.style.color = 'green';
+		navshow.setAttribute('title', 'Click to hide folder menu');
+	}
+}
 
+// sort navigator menu on startup
+w3.sortHTML('ul#catlist', 'li'); 
 </script>
 </BODY>
 </HTML>

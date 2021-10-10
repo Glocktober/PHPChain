@@ -52,7 +52,7 @@ if ($auth){
 		<input type="hidden" name="catid" value=<?php echo (isset($catid)? $catid: 0)?>>
 		<button class="w3-button w3-bar-item w3-ripple w3-hover-pale-blue" title="add a password entry"><i class='material-icons  menuicon iconoffs'>add</i><span class="">&nbsp;Add Password Entry</span></button></form>
 	<form action="password.php" method="POST" class='butform w3-block' >
-		<button class="w3-button w3-bar-item w3-ripple w3-hover-pale-blue" title="Change your PHPchain login password"><i class='material-icons  menuicon iconoffs'>key</i><span class="">&nbsp;Change Password</span></button></form>
+		<button class="w3-button w3-bar-item w3-ripple w3-hover-pale-blue" title="Change your PHPchain login password"><i class='material-icons  menuicon iconoffs'>password</i><span class="">&nbsp;Change Password</span></button></form>
 <?php if ($allow_new_accounts){?>
 	<form action="newlogin.php" method="POST" class=' w3-block' >
 		<button class="w3-btn w3-bar-item w3-medium w3-hover-pale-blue butbut" title="Create a PHPchain account"><i class='material-icons  menuicon iconoffs'>person_add</i>&nbsp;<span class="">Add a New Login</span></button></form>
@@ -139,10 +139,10 @@ if ($auth) {
 <hr>
 </div>
 </div> <!-- end navigation menu content -->
-<div id="detailpane">
+<div id="detailpane" class="detailpane">
 <?php 
 } else {?>
-<div id="singlepane" class="w3-container dinv50">
+<div id="singlepane" class="w3-container">
 
 <?php }?>
 <!-- Here is the detail content -->
