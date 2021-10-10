@@ -61,7 +61,7 @@ while($row=sql_fetch_assoc($result)){
     </span>
     <span class="" onclick="onpush(this,'catdelete.php')"
         title="Delete this Folder">
-        <i class="material-icons delicon">folder_delete</i>&nbsp;
+        <i class="material-icons delicon">delete</i>&nbsp;
     </span>
     <span >
         <a class="" href="entedit.php?catid=<?php echo $catid?>"

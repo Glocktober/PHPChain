@@ -72,7 +72,7 @@ function status_message(){
         return "<span class=success><i class='material-icons iconoffs' style='color:green'>check_circle</i>&nbsp;$msg</span>";
         
     } else {
-
+        return "<span class=error><b>&nbsp;</b></span>";
         $login = "";
         if (array_key_exists('login',$_SESSION)) $login = $_SESSION['login'];
 
