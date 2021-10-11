@@ -73,12 +73,12 @@ $backurl = "catview.php?catid=$catid";
     <input type="hidden" form='savf' name="noteid" value=<?php echo $noteid; ?> >
     <input type="hidden" form='savf' name="site" value=<?php echo $site; ?> >
     <input type="hidden" form='savf' name="csrftok" value=<?php echo get_csrf();?> >
-    
-    <textarea name="notes" id="area" form='savf' cols="30" autocomplete="on" maxlength="<?php echo $max_note_size?>"
-        title="click edit to update text" class="w3-block locked focus" spellcheck="false" disabled
-        placeholder="You can keep notes about this password entry here.  These are not encrypted."
-        rows="10"><?php echo $notedata; ?></textarea>
-    
+     <div id="lockwarn">
+        <textarea name="notes" id="area" form='savf' cols="30" autocomplete="on" maxlength="<?php echo $max_note_size?>"
+            title="click edit to update text" class="w3-block locked focus" spellcheck="false" disabled
+            placeholder="You can keep notes about this password entry here.  These are not encrypted."
+            rows="10"><?php echo $notedata; ?></textarea>
+    </div>
 <div class="w3-bar w3-center w3-margin-top">
 <div style="">
     <a class='w3-button w3-hover-pale-green w3-round' href="<?php echo $backurl;?>" title='Make No Changes'><i class='material-icons backicon iconoffs'>chevron_left</i>Back</a>
@@ -115,7 +115,7 @@ doenable = function(flag){
 }
 enableedit = ()=>{ 
     if (islocked){
-        document.getElementById('area').removeEventListener("click",lockedclick);
+        document.getElementById('lockwarn').removeEventListener("click",lockedclick);
         flashmes('<i class="material-icons">lock_open</i> Form unlocked', 1200);
         doenable(false);
         pdlck = document.getElementById('padlock')
@@ -137,7 +137,7 @@ lockedclick = function(){
     if (islocked)
         flashmes('<i class="material-icons padlock">lock</i> Form is locked - unlock to edit ', 1200);
 }
-document.getElementById('area').addEventListener("click",lockedclick);
+document.getElementById('lockwarn').addEventListener("click",lockedclick);
 </script>
 
 <?php
