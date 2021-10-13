@@ -1,5 +1,5 @@
 <?php
-define ('C_VERSION','21.09.22');
+define ('C_VERSION',$app_version);
 header("Expires: Mon, 26 Jul 1997 05:00:00 GMT");    // Date in the past
 header("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT"); // always modified
 header("Cache-Control: no-store, no-cache, must-revalidate");  // HTTP/1.1
@@ -9,11 +9,12 @@ header("Pragma: no-cache");
 if (!isset($auth)){
 	$auth = is_authed();
 }
-$auth_login = "";
-if ($auth){
-	$auth_login=$_SESSION['login'];
-}
-$document_title = $site_name;
+$hdrcatid = isset($catid) ? $catid : 0;
+$hdruserid = $auth ? $_SESSION['id'] : 0;
+
+$auth_login = $auth ? $_SESSION['login'] :"";
+
+$document_title = $site_name ? $site_name : "Php chain";
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -31,7 +32,7 @@ $document_title = $site_name;
 <!-- outer structure - div-->
 <div class="">
 <!-- menu bar -->
-<div id="titlebar" class="w3-bar w3-teal" style="opacity:0.8;" >
+<div id="titlebar" class="w3-bar w3-teal w3-padding" style="opacity:0.8;" >
 <?php
 if ($auth){
 ?> 	<!--  authenticated menu bar items -->
@@ -44,7 +45,7 @@ if ($auth){
 	<span class="w3-tooltip w3-bar-item w3-right"><i class='material-icons menuicon iconoffs'>person</i> <span class="w3-text"><?php echo $auth_login? $auth_login: 'Not logged in'; ?>&nbsp;</span></span>
 	<span class="w3-tooltip w3-bar-item" onclick="javascript:document.location='catlist.php'"><i class="material-icons menuicon iconoffs">list</i>&nbsp;<span class="w3-text">Manage Folders</span></span>
 	<span class="w3-tooltip w3-bar-item" onclick="javascript:document.location='catedit.php?catid=0'"><i class="material-icons menuicon iconoffs">create_new_folder</i>&nbsp;<span class="w3-text">Add Folder</span></span>
-	<span class="w3-tooltip w3-bar-item" onclick="javascript:document.location='entedit.php?catid=<?php echo (isset($catid)? $catid: 0)?>'"><i class="material-icons menuicon iconoffs">add</i>&nbsp;<span class="w3-text">New password entry</span></span>
+	<span class="w3-tooltip w3-bar-item" onclick="javascript:document.location='entedit.php?catid=<?php echo $hdrcatid ?>'"><i class="material-icons menuicon iconoffs">add</i>&nbsp;<span class="w3-text">New password entry</span></span>
 	<span class="w3-tooltip w3-bar-item" onclick="clearFilters()"title="Clear search filters" ><i class='material-icons  menuicon iconoffs'>clear</i>&nbsp;<span class="w3-text">Clear Filters</span></span>
 <?php	} else { 
 	if (!has_status()) set_error('You are not logged in...');
@@ -70,23 +71,41 @@ if ($auth){
 <div id="toppane" class="toppane w3-container w3-border-top">
 <?php
 if (!isset($nomenu)){
-?>
-<!-- Nav plane and detail plane -->
-<div id="navpane">
-<!-- navigation menu list  -->
-<?php
-if ($auth) {
-	include ("inc/listmenu.php");
-	$catid=gorp('catid');
-	$catcount=0;
-?>
-<span class='w3-padding w3-block w3-center w3-pale-blue'>
-	Folders&nbsp;
-	<a href="catlist.php" class="" title="Manage Folders"><i class="material-icons addicon micon">list</i></a>
-</span>
-<?php
-	echo getmenu($_SESSION["id"],$catid, $catcount);
 
+if ($auth) { 
+	$catcount=0;
+	$db = sql_conn();
+
+	if($hdrresult=sql_query($db,"select id, title from cat where userid = '$hdruserid'")){
+
+		$catcount = sql_num_rows($hdrresult);
+
+?>
+	<!-- Nav plane and detail plane -->
+	<div id="navpane">
+	<span class='w3-padding w3-block w3-center w3-pale-blue'>
+		<span class='w3-badge w3-small w3-blue'><?php echo $catcount?></span>&nbsp;&nbsp;Folders&nbsp;
+		<a href="catlist.php" class="" title="Manage Folders"><i class="material-icons addicon micon">list</i></a>
+	</span>
+	<input class='seafilter w3-round w3-border fullw' oninput="w3.filterHTML('#catlist', 'li', this.value)" placeholder='Type to Filter Folders List...'>
+	<!-- navigation menu list  -->
+	<ul id="catlist" class="w3-smal w3-ul">
+<?php
+		while($row=sql_fetch_assoc($hdrresult)){
+			$hdrid = $row['id'];
+			$hdrtitle = $row['title'];
+			$hdrclass = "w3-hover-pale-blue";
+			$hdrdescr = $hdrtitle;
+			if ($hdrid == $hdrcatid){
+				$hdrdescr .= "&nbsp;&nbsp;<i class='iconchev material-icons' style='font-size:15px;'>format_list_bulleted</i></a></li>";
+				$hdrclass = "w3-pale-blue";
+			}
+?>
+	<li class='<?php echo $hdrclass?> w3-padding-small catitem' title='Open folder <?php echo $hdrtitle?>'>
+	<a class='cat' href='catview.php?catid=<?php echo $hdrid?>'><span><?php echo $hdrdescr?></span></a></li>
+<?php
+		}
+	}
 	if (!$catcount){
 ?>
 <div class="w3-block">
@@ -97,15 +116,13 @@ if ($auth) {
 	} 
 ?>
 	<div class="w3-margin-top w3-center">
-	<span class="w3-small w3-center"><span class='w3-badge w3-blue'><?php echo $catcount?></span> Folders</span>
-<?php
-	$catid=gorp('catid');
-	if ($catid) {
+	<?php
+	if ($hdrcatid) {
 ?>
 
 <form action="entedit.php" id="newbut">
 <input type="hidden" form="newbut" name="csrftok" value="<?php echo get_csrf()?>" >
-<input type="hidden" form="newbut" name="catid" value="<?php echo $catid?>" >
+<input type="hidden" form="newbut" name="catid" value="<?php echo $hdrcatid?>" >
 <input type="hidden" form="newbut" name="itemid" value="0" >
 <a href="javascript: void(0)" onclick="document.getElementById('newbut').submit()" 
 	title="Add a new password entry"
@@ -119,8 +136,8 @@ if ($auth) {
 <?php
 }
 ?>
+</ul><!-- end of list -->
 <hr>
-</div>
 </div> <!-- end navigation menu content -->
 <div id="detailpane" class="detailpane">
 <?php 

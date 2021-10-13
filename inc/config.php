@@ -7,6 +7,8 @@ function env_get($name, $default){
     if (array_key_exists($name,$env_list)) return $env_list[$name];
     else return $default;
 }
+
+$app_version = '21.10.18';
 #
 # Database selection
 #  valid coices are 'SQLITE3' or 'MYSQL'

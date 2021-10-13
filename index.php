@@ -11,11 +11,6 @@ $auth = is_authed();
 $login = "";
 if (array_key_exists('login',$_SESSION)) $login = $_SESSION['login'];
 
-// if (!$auth and !empty($login)){
-// 	header("Location: login.php");
-// 	die();
-// }
-
 if (!$auth) $nomenu=true;
 include("inc/header.php");
 if ($auth) { 
@@ -81,9 +76,7 @@ if ($auth) {
 <?php	}
 } 
 ?> 
-
 </div>
-
 <?php
 include("inc/footer.php");
 ?>

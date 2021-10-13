@@ -86,7 +86,7 @@ $newvaljs = json_encode([
 <span class="w3-button w3-bar-item w3-left w3-hover-pale-green" title="Add a new password entry"
     onclick="onpush(this,'entedit.php')"><i class='material-icons addicon iconoffs'
     >add</i> Add Entry</span>
-    <input oninput="w3.filterHTML('#cattable', '.trow', this.value)" placeholder='Filter Password Entries...' 
+    <input oninput="w3.filterHTML('#cattable', '.trow', this.value)" placeholder='Type to Filter Password Entries...' 
         class='w3-border w3-bar-item  w3-round seafilter focus' title='Filter content'>
 </div> 
 <table  id=cattable width="100%" class="w3-table w3-bordered w3-hoverable">
