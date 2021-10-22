@@ -4,11 +4,8 @@ select{
 option{
 	background-color: transparent;
 }
-.titlebar{
-	padding-top: 1em;
-	padding-bottom: 1em;
-	padding-left: 2em;
-	padding-right: 2em;
+#titlebar{
+	background-image: url(bg5.jpg);
 }
 .butform{
     display: inline-block;
