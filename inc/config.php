@@ -77,6 +77,9 @@ session_set_cookie_params($session_lifetime, '/;SameSite=strict', null , True, T
 session_start();
 include ("inc/sessions.php");
 
+# login name cookie duration
+$chainlogin_expire = 2592000;
+
 # select correct database driver
 if ($db_choice == 'SQLITE3'){
     include ('inc/sqlite_db.php');

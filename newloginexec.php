@@ -44,6 +44,6 @@ if (!sql_query($db,"insert into user values (NULL, \"$login\", \"$teststring\", 
 
 $_SESSION['login'] = $login;
 $_SESSION['isauth'] = FALSE;
-strictcookie('chainlogin',$login,0);
+strictcookie('chainlogin',$login,$chainlogin_expire);
 set_status("The account \"$login\" has been created - please login");
 header ("Location: login.php");

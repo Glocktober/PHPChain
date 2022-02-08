@@ -24,8 +24,8 @@ if (filter_var($ip,FILTER_VALIDATE_IP)===false) $ip="0.0.0.0";
 $error="";
 $now = time();
 sql_conn();
-error_log("Ffff $login");
-if (isset($login)) strictcookie('chainlogin',$login,0);
+
+if (isset($login)) strictcookie('chainlogin',$login,$chainlogin_expire);
 
 if (isset($login) and isset($key)) {
 	// Check for $login_lockout_failures failed login attempts in the last $login_lockout_window minutes.
@@ -49,7 +49,7 @@ if (isset($login) and isset($key)) {
 				$_SESSION['isauth'] = TRUE;
 				session_regenerate_id(TRUE);
 				
-				strictcookie('chainlogin',$login);
+				strictcookie('chainlogin',$login,$chainlogin_expire);
 
 				set_status("\"<b>$login</b>\" - has successfully logged on");
 				header ("Location: index.php");

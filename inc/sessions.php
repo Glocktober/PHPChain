@@ -108,11 +108,14 @@ function getphpver(){
     return $vers[0]*1000 + $vers[1] * 100 + $vers[2];
 }
 
-function strictcookie($key,$val){
+function strictcookie($key,$val,$exp=0){
+    if ($exp != 0){
+        $exp = time()+$exp;
+    }
     if (getphpver() > 7300){
-        setcookie($key, $val, [ 'expires' => 0, 'path' => '/', 'secure' => true, 'httponly' => true, 'samesite' => 'strict']);
+        setcookie($key, $val, [ 'expires' => $exp, 'path' => '/', 'secure' => true, 'httponly' => true, 'samesite' => 'strict']);
     } else {
-        setcookie($key,$val,0,'/;SameSite=strict','',true,true);
+        setcookie($key,$val,$exp,'/;SameSite=strict','',true,true);
     }
 }
 
